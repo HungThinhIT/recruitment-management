@@ -1,0 +1,44 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  deploy:
+      docker:
+        - image: circleci/php:7.3-node-browsers
+      
+      steps:
+        - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
+            fingerprints:
+              - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
+
+        - run:
+            name: fix host authenticity for production server
+            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
+
+        - run:
+            name: Pull server from Github
+            command: |
+              ssh -tt hungthinh@13.76.3.251 <<EOF
+                sudo su
+                cd api.enclavei3dev.tk/public_html/recruitment-management 
+                git pull origin master
+                composer update
+                exit
+                exit
+        #- run:
+            #name: Reset apache
+            #command: |
+              #ssh root@149.28.134.89 "sudo /etc/init.d/apache2 restart"
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: 
+              - master
+              - dev
