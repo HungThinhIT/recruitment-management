@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+    //TEST Route - Signup route only for test.
+    Route::post('signup', 'AuthController@signUp');
+
+
+    Route::post('login', 'AuthController@logIn');
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        //Must login and use access_token to access these route.
+
+        // Route::get('logout', 'AuthController@logout');
+        // Route::get('user', 'AuthController@user');
+    });
+
