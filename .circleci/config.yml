@@ -26,9 +26,6 @@ jobs:
                 cd api.enclavei3dev.tk/public_html/recruitment-management
                 git checkout dev
                 git pull origin dev
-                php artisan migrate
-                php artisan passport:install
-                composer require laravel/passport
                 composer update
                 exit
                 exit
