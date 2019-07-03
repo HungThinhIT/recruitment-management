@@ -22,7 +22,6 @@ use Illuminate\Http\Request;
 
     Route::group(['middleware' => 'auth:api'], function() {
         //Must login and use access_token to access these route.
-
         Route::get('logout', 'AuthController@logout');
         Route::get('profile', 'AuthController@user');
     });
