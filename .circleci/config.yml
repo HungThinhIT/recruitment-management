@@ -18,12 +18,14 @@ jobs:
             command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
 
         - run:
+            #Update for config server-dev-02072019
             name: Pull server from Github
             command: |
               ssh -tt hungthinh@13.76.3.251 <<EOF
                 sudo su
-                cd api.enclavei3dev.tk/public_html/recruitment-management 
-                git pull origin master
+                cd api.enclavei3dev.tk/public_html/recruitment-management
+                git checkout dev
+                git pull origin dev
                 composer update
                 exit
                 exit
