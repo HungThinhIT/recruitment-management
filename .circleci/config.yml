@@ -26,7 +26,6 @@ jobs:
                 cd api.enclavei3dev.tk/public_html/recruitment-management
                 git checkout dev
                 git pull origin dev
-                php artisan db:seed
                 composer update
                 exit
                 exit
