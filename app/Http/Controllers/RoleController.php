@@ -14,7 +14,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Role::find(2)->permissions;
+        // var_dump($permissions);
+        return response()->json($permissions);
     }
 
     /**
