@@ -37,7 +37,16 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-
+        $role = new Role();
+        $role->name = request('name');
+        $permissions = request('permissions');
+        $permission_arr = explode (",", $permissions);  
+        $role->save();
+        foreach ($permission_arr as $permission) {
+            $role->permissions()->attach($permission);
+        }  
+        return response()->json([
+            'message'=>'Created role successfully']); 
     }
 
     /**

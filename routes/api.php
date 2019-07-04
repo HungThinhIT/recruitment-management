@@ -24,14 +24,24 @@ use Illuminate\Http\Request;
         Route::group(['middleware' => 'auth:api'], function() {
           //Must login and use access_token to access these route.
           Route::get('logout', 'AuthController@logout');
-
+          
           /*
           * Profile routes
           */
           Route::get('current-profile','UserController@showCurrentInfoUser'); //Show current profile's information
           Route::put('profile','UserController@update'); //Update profile's information
 
-          Route::resource('role','RoleController');
+          /*
+          * Role routes
+          */
+          Route::get('role','RoleController@index');
+          Route::get('role/{id}','RoleController@show');
+          Route::post('role','RoleController@store');
+
+          /*
+          * P routes
+          */
+          Route::get('permission','PermissionController@index');    
         });
     });
 
