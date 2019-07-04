@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -38,6 +38,12 @@ class UserController extends Controller
         //
     }
 
+    public function showCurrentInfoUser(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -46,7 +52,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+
     }
 
     /**
@@ -64,12 +70,16 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request)
     {
-        //
+        // Param need: 'fullname,email,phone,address'
+        User::find($request->user()->id)->update($request->only("fullname","email","phone","address"));
+
+        return response()->json([
+            'message' => 'Information has been updated successfully!'
+        ], 200);
     }
 
     /**
@@ -82,4 +92,5 @@ class UserController extends Controller
     {
         //
     }
+
 }
