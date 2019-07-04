@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Permission;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\RoleRequest;
 class RoleController extends Controller
 {
     /**
@@ -14,9 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $permissions = Role::find(2)->permissions;
-        // var_dump($permissions);
-        return response()->json($permissions);
+
     }
 
     /**
@@ -26,7 +25,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -35,9 +34,9 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        //
+
     }
 
     /**
@@ -46,9 +45,11 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show($id)
     {
-        //
+        $role = Role::find($id);
+        $permissions = $role->permissions;
+        return response()->json($role);  
     }
 
     /**

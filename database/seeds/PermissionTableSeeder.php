@@ -10,13 +10,103 @@ class PermissionTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-    	
+    { 	
         DB::table('permissions')->insert([[
-        	'name'=>'Create Article'
+        	'name'=>'Role-create'
         ],
         [
-			'name'=>'Update article'
-        ]]);     
+			'name'=>'Role-list'
+        ],
+        [
+            'name'=>'Role-edit'
+        ],
+        [
+            'name'=>'Role-delete'
+        ],
+        [
+            'name'=>'User-list'
+        ],
+        [
+            'name'=>'User-create'
+        ],
+        [
+            'name'=>'User-edit'
+        ],
+        [
+            'name'=>'User-delete'
+        ],
+        [
+            'name'=>'Article-list'
+        ],
+        [
+            'name'=>'Article-create'
+        ],
+        [
+            'name'=>'Article-edit'
+        ],
+        [
+            'name'=>'Article-delete'
+        ],
+        [
+            'name'=>'Candidate-list'
+        ],
+        [
+            'name'=>'Candidate-create'
+        ],
+        [
+            'name'=>'Candidate-edit'
+        ],
+        [
+            'name'=>'Candidate-delete'
+        ],
+        [
+            'name'=>'Interviewer-list'
+        ],
+        [
+            'name'=>'Interviewer-create'
+        ],
+        [
+            'name'=>'Interviewer-edit'
+        ],
+        [
+            'name'=>'Interviewer-delete'
+        ],
+        [
+            'name'=>'Interview-list'
+        ],
+        [
+            'name'=>'Interview-create'
+        ],
+        [
+            'name'=>'Interview-edit'
+        ],
+        [
+            'name'=>'Interview-delete'
+        ],
+        [
+            'name'=>'Job-list'
+        ],
+        [
+            'name'=>'Job-create'
+        ],
+        [
+            'name'=>'Job-edit'
+        ],
+        [
+            'name'=>'Job-delete'
+        ],
+        [
+            'name'=>'Interviewer-list'
+        ],
+        [
+            'name'=>'Interviewer-create'
+        ],
+        [
+            'name'=>'Interviewer-edit'
+        ],
+        [
+            'name'=>'Interviewer-delete'
+        ]
+        ]);     
     }
 }
