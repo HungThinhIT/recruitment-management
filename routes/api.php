@@ -25,7 +25,8 @@ use Illuminate\Http\Request;
           //Must login and use access_token to access these route.
           Route::get('logout', 'AuthController@logout');
           Route::get('profile', 'AuthController@user');
-          Route::resource('role','RoleController');         
+          Route::resource('role','RoleController');      
+          Route::resource('permission','PermissionController');    
         });
     });
 
