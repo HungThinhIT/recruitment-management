@@ -39,7 +39,7 @@ use Illuminate\Http\Request;
           Route::post('role','RoleController@store');
 
           /*
-          * P routes
+          * Permission routes
           */
           Route::get('permission','PermissionController@index');    
         });
