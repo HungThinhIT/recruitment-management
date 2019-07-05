@@ -23,13 +23,14 @@ jobs:
               ssh -tt hungthinh@168.63.251.210 <<EOF
                 sudo su
                 cd api.enclavei3.tk/public_html/recruitment-management
-                git fetch
+                git fetch origin
                 git checkout master
                 git pull origin master
+                composer install
                 php artisan migrate
                 php artisan db:seed
                 php artisan passport:install
-                composer install
+                composer update
                 exit
                 exit
         #- run:
