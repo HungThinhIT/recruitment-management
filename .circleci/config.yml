@@ -23,6 +23,7 @@ jobs:
               ssh -tt hungthinh@168.63.251.210 <<EOF
                 sudo su
                 cd api.enclavei3.tk/public_html/recruitment-management
+                git stash
                 git fetch origin
                 git checkout master
                 git pull origin master
