@@ -13,6 +13,36 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+    //TEST Route - Signup route only for test.
+    Route::group(['middleware' => ['cors']], function () {
+
+        Route::post('signup', 'AuthController@signUp');
+
+        Route::post('login', 'AuthController@logIn');
+
+        Route::group(['middleware' => 'auth:api'], function() {
+          //Must login and use access_token to access these route.
+          Route::get('logout', 'AuthController@logout');
+          
+          /*
+          * Profile routes
+          */
+          Route::get('current-profile','UserController@showCurrentInfoUser'); //Show current profile's information
+          Route::put('profile','UserController@update'); //Update profile's information
+
+          /*
+          * Role routes
+          */
+          Route::get('role','RoleController@index');
+          Route::get('role/{id}','RoleController@show');
+          Route::post('role','RoleController@store');
+
+          /*
+          * Permission routes
+          */
+          Route::get('permission','PermissionController@index');    
+        });
+    });
+
+

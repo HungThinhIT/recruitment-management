@@ -7,7 +7,7 @@ jobs:
   deploy:
       docker:
         - image: circleci/php:7.3-node-browsers
-      
+
       steps:
         - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
             fingerprints:
@@ -22,9 +22,14 @@ jobs:
             command: |
               ssh -tt hungthinh@168.63.251.210 <<EOF
                 sudo su
-                cd api.enclavei3.tk/public_html/recruitment-management 
+                cd api.enclavei3.tk/public_html/recruitment-management
+                git fetch
+                git checkout master
                 git pull origin master
-                composer update
+                php artisan migrate
+                php artisan db:seed
+                php artisan passport:install
+                composer install
                 exit
                 exit
         #- run:
@@ -39,6 +44,6 @@ workflows:
       - deploy:
           filters:
             branches:
-              only: 
+              only:
               - master
               - dev
