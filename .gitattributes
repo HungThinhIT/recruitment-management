@@ -3,4 +3,4 @@
 *.scss linguist-vendored
 *.js linguist-vendored
 CHANGELOG.md export-ignore
-.circleci/config.yml export-ignore
+/.circleci/config.yml export-ignore
