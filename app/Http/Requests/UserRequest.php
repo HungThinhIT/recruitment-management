@@ -40,8 +40,8 @@ class UserRequest extends FormRequest
             'email.unique'      => "The email has been used",
             'phone.required'    => "The phone field is required.",
             'phone.unique'      => "The phone has been used.",
-            'phone.regex'      => "The phone number is invalid",
-            'address.unique'    => "The address has been used.",
+            'phone.regex'       => "The phone number is invalid.",
+            'address.required'  => "The address field is required.",
         ];
     }
 }
