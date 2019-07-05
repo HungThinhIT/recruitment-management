@@ -75,7 +75,7 @@ class UserController extends Controller
     public function update(UserRequest $request)
     {
         // Param need: 'fullname,email,phone,address'
-        User::find($request->user()->id)->update($request->only("fullname","email","phone","address"));
+        User::findOrFail($request->user()->id)->update($request->only("fullname","email","phone","address"));
 
         return response()->json([
             'message' => 'Information has been updated successfully!'
