@@ -16,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::paginate(5);
-        return response()->json($roles);  
+        return response()->json($roles);
     }
 
     /**
@@ -40,13 +40,13 @@ class RoleController extends Controller
         $role = new Role();
         $role->name = request('name');
         $permissions = request('permissions');
-        $permission_arr = explode (",", $permissions);  
+        $permission_arr = explode (",", $permissions);
         $role->save();
         foreach ($permission_arr as $permission) {
             $role->permissions()->attach($permission);
-        }  
+        }
         return response()->json([
-            'message'=>'Created role successfully']); 
+            'message'=>'Created role successfully']);
     }
 
     /**
@@ -57,9 +57,9 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        $role = Role::find($id);
+        $role = Role::findOrFail($id);
         $permissions = $role->permissions;
-        return response()->json($role);  
+        return response()->json($role);
     }
 
     /**
