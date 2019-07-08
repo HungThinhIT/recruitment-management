@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -50,9 +51,21 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-
+        // $isPermission = false;
+        // $listRole = User::findOrFail($id)->roles;
+        // foreach($listRole as $key => $valueRoles){
+        //     foreach($valueRoles->permissions as $valuePermission){
+        //         if(strcmp($valuePermission->name,"User-create"))
+        //             return response()->json(true);
+        //         else
+        //             return response()->json(false);
+        //     }
+        // }
+        $perName = "Candidate-delete";
+        $listRole = Role::findOrFail(1)->hasPermission($perName);
+        return response()->json($listRole);
     }
 
     /**
