@@ -28,8 +28,8 @@ use Illuminate\Http\Request;
           /*
           * Profile routes
           */
-          Route::get('current-profile','UserController@showCurrentInfoUser')->middleware('can:user.view'); //Show current profile's information
-          Route::put('profile','UserController@update')->middleware('can:user.edit'); //Update profile's information
+          Route::get('current-profile','UserController@showCurrentInfoUser'); //Show current profile's information
+          Route::put('profile','UserController@update'); //Update profile's information
 
           /*
           * Role routes
