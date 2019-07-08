@@ -80,7 +80,7 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RoleRequest $request, $id)
     {
         Role::findOrFail($id)->update($request->only("name"));
         $permission_arr = explode (",", request("permissions"));
@@ -95,8 +95,11 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request)
     {
-        //
+        $role_arr = explode (",", request("roles"));
+        Role::destroy($role_arr);
+        return response()->json([
+           'message'=>'Deleted roles successfully']);
     }
 }
