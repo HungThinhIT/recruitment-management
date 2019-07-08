@@ -28,7 +28,7 @@ use Illuminate\Http\Request;
           /*
           * Profile routes
           */
-          Route::get('current-profile','UserController@showCurrentInfoUser')->middleware('can:user.list'); //Show current profile's information
+          Route::get('current-profile','UserController@showCurrentInfoUser')->middleware('can:user.view'); //Show current profile's information
           Route::put('profile','UserController@update')->middleware('can:user.edit'); //Update profile's information
 
           /*
