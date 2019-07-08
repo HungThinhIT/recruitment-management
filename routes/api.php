@@ -28,25 +28,27 @@ use Illuminate\Http\Request;
           /*
           * Profile routes
           */
-          Route::get('current-profile','UserController@showCurrentInfoUser')->middleware('can:user.list');; //Show current profile's information
-          Route::put('profile','UserController@update')->middleware('can:user.edit');; //Update profile's information
+          Route::get('current-profile','UserController@showCurrentInfoUser')->middleware('can:user.list'); //Show current profile's information
+          Route::put('profile','UserController@update')->middleware('can:user.edit'); //Update profile's information
 
           /*
           * Role routes
           */
           Route::get('role','RoleController@index')->middleware('can:Role.list');
-          Route::get('role/{id}','RoleController@show')->middleware('can:Role.list');;
-          Route::post('role','RoleController@store')->middleware('can:Role.create');;
+          Route::get('role/{id}','RoleController@show')->middleware('can:Role.list');
+          Route::post('role','RoleController@store')->middleware('can:Role.create');
+          Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
+          Route::delete('role','RoleController@destroy')->middleware('can:Role.delete');
 
           /*
           * Permission routes
           */
           Route::get('permission','PermissionController@index');
-
-
-
-
-
+          
+          /*
+          * User routes
+          */
+          Route::get('user','UserController@index');
         });
     });
 

@@ -24,7 +24,7 @@ class RoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:roles',
+            'name' => 'required|max:255|unique:roles,name,'.$this->id,
         ];
     }
 
@@ -32,8 +32,8 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => "The name field is required.",
-            'name.max'     => "The name is too long",
-            'name.unique'     => "The name is existed",
+            'name.max'      => "The name is too long",
+            'name.unique'   => "The name is existed",
         ];
     }
 
