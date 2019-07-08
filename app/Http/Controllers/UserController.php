@@ -52,21 +52,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        // $isPermission = false;
-        // $listRole = User::findOrFail($id)->roles;
-        // foreach($listRole as $key => $valueRoles){
-        //     foreach($valueRoles->permissions as $valuePermission){
-        //         if(strcmp($valuePermission->name,"User-create"))
-        //             return response()->json(true);
-        //         else
-        //             return response()->json(false);
-        //     }
-        // }
-        $perName = "Candidate-delete";
-        $listRole = Role::findOrFail(1)->hasPermission($perName);
-        return response()->json($listRole);
+        //
     }
 
     /**
