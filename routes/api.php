@@ -43,7 +43,13 @@ use Illuminate\Http\Request;
           /*
           * Permission routes
           */
-          Route::get('permission','PermissionController@index');    
+          Route::get('permission','PermissionController@index');
+
+          /*
+          * User routes
+          */
+          Route::get('user','UserController@index');
+    
         });
     });
 
