@@ -80,9 +80,13 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        //
+        Role::findOrFail($id)->update($request->only("name"));
+        $permission_arr = explode (",", request("permissions"));
+        Role::findOrFail($id)->permissions()->sync($permission_arr);
+        return response()->json([
+           'message'=>'Updated role successfully']);
     }
 
     /**
