@@ -29,7 +29,7 @@ use Illuminate\Http\Request;
           * Profile routes
           */
           Route::get('current-profile','UserController@showCurrentInfoUser'); //Show current profile's information
-          Route::put('profile','UserController@update'); //Update profile's information
+          Route::put('profile','UserController@updateProfile'); //Update profile's information
 
           /*
           * Role routes
@@ -50,6 +50,7 @@ use Illuminate\Http\Request;
           */
           Route::get('user','UserController@index')->middleware('can:user.view');
           Route::post('user','UserController@store')->middleware('can:user.create');
+          Route::get('user/{id}','UserController@show')->middleware('can:user.view');
 
         });
     });
