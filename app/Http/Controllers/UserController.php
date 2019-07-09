@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 /**
  * @group User management
  *
- * 
+ *
  */
 class UserController extends Controller
 {
@@ -70,10 +70,10 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function edit(User $user)
-    {
+    public function edit(User $user){
         //
     }
+
 
     /**
      * Update the user by id.
@@ -96,6 +96,7 @@ class UserController extends Controller
 
     /**
      * Update the current profile.
+     * Update the profile.
      * @bodyParam fullname string required The fullname of the user.
      * @bodyParam email string required The email of the user.
      * @bodyParam phone string required The phone of the user.
