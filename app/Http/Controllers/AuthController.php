@@ -7,30 +7,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\User;
-
+/**
+ * @group Auth management
+ *
+ * 
+ */
 class AuthController extends Controller
 {
-    public function signUp(AuthRequest $request){
-
-        //THIS IS DEMO (DEV) - FUNCTION. THIS FUNCTION WILL REMOVE AFTER TEST SUCCESSFULLY.
-        $user = new User([
-            'name' => $request->name,
-            'fullname' => $request->fullname,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'image' => $request->image,
-            'password' => Hash::make($request->password)
-        ]);
-
-        $user->save();
-        return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
-
-        // return response()->json(["message" => "Enclave Recruitment System is not support SignUp." ],200);
-    }
-
+    /**
+     * Login.
+     * @bodyParam name string required The name of the user.
+     * @bodyParam password string required The password of the user.
+     */
     public function logIn(AuthRequest $request){
 
         //Store username and passwork to $credentials var
@@ -59,6 +47,11 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
+
+    /**
+     * Logout.
+     * Need access_token to logout.
+     */
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
@@ -66,9 +59,4 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
-
-    // public function user(Request $request)
-    // {
-    //     return response()->json($request->user());
-    // }
 }

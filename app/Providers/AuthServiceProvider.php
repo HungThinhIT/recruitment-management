@@ -61,7 +61,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("user.create",UserPolicy::class."@create");
         Gate::define("user.view",UserPolicy::class."@viewAny");
-        Gate::define("user.edit",UserPolicy::class."@edit");
+        Gate::define("user.edit",UserPolicy::class."@update");
         Gate::define("user.delete",UserPolicy::class."@delete");
 
         /*
@@ -69,7 +69,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("article.create",ArticlePolicy::class."@create");
         Gate::define("article.view",ArticlePolicy::class."@view");
-        Gate::define("article.edit",ArticlePolicy::class."@edit");
+        Gate::define("article.edit",ArticlePolicy::class."@update");
         Gate::define("article.delete",ArticlePolicy::class."@delete");
 
         /*
@@ -77,7 +77,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("candidate.create",CandidatePolicy::class."@create");
         Gate::define("candidate.view",CandidatePolicy::class."@view");
-        Gate::define("candidate.edit",CandidatePolicy::class."@edit");
+        Gate::define("candidate.edit",CandidatePolicy::class."@update");
         Gate::define("candidate.delete",CandidatePolicy::class."@delete");
 
         /*
@@ -85,7 +85,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("interviewer.create",InterviewerPolicy::class."@create");
         Gate::define("interviewer.view",InterviewerPolicy::class."@view");
-        Gate::define("interviewer.edit",InterviewerPolicy::class."@edit");
+        Gate::define("interviewer.edit",InterviewerPolicy::class."@update");
         Gate::define("interviewer.delete",InterviewerPolicy::class."@delete");
 
         /*
@@ -93,7 +93,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("interview.create",InterviewPolicy::class."@create");
         Gate::define("interview.view",InterviewPolicy::class."@view");
-        Gate::define("interview.edit",InterviewPolicy::class."@edit");
+        Gate::define("interview.edit",InterviewPolicy::class."@update");
         Gate::define("interview.delete",InterviewPolicy::class."@delete");
 
         /*
@@ -101,7 +101,7 @@ class AuthServiceProvider extends ServiceProvider
         */
         Gate::define("job.create",JobPolicy::class."@create");
         Gate::define("job.view",JobPolicy::class."@view");
-        Gate::define("job.edit",JobPolicy::class."@edit");
+        Gate::define("job.edit",JobPolicy::class."@update");
         Gate::define("job.delete",JobPolicy::class."@delete");
     }
 }

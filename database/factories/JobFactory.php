@@ -7,9 +7,15 @@ use Faker\Generator as Faker;
 
 $factory->define(Job::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'description' => $faker->text,
-        'technicalSkill' => 'JAVA - 5,PHP-4',
-        'level' => $faker->numberBetween($min = 1, $max = 3)
+        'name' 			=> $faker->name,
+        'description' 	=> $faker->text,
+        'address' 		=> $faker->address,
+        'position' 		=> 'Tester',
+        'salary'   		=> '500$ - 600$',
+        'status'		=> 'Full-time',
+        'experience'	=> '2-3 years',
+        'amount' 		=> $faker->numberBetween($min = 10, $max = 30),
+        'publishedOn'	=> $faker->dateTimeThisMonth($min = 'now'),
+        'deadline'		=> $faker->dateTimeThisMonth($min = 'now'),
     ];
 });
