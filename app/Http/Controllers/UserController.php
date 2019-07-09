@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\CreateUserRequest;
 use App\User;
 use App\Role;
+use Hash;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -35,13 +37,20 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $data = $request->only("name","fullname","email","phone","address","password");
+        $data["password"] = Hash::make($data["password"]);
+        $user = User::create($data);
+        $role_arr = explode (",", request('roles'));
+        $user->roles()->attach($role_arr);
+        return response()->json([
+            'message'=>'Created user successfully']);
     }
 
     public function showCurrentInfoUser(Request $request)
     {
+        $request->user()->roles;
         return response()->json($request->user());
     }
 

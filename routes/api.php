@@ -48,7 +48,9 @@ use Illuminate\Http\Request;
           /*
           * User routes
           */
-          Route::get('user','UserController@index');
+          Route::get('user','UserController@index')->middleware('can:user.view');
+          Route::post('user','UserController@store')->middleware('can:user.create');
+
         });
     });
 

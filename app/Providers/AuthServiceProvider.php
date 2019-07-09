@@ -60,7 +60,7 @@ class AuthServiceProvider extends ServiceProvider
         * User Gate.
         */
         Gate::define("user.create",UserPolicy::class."@create");
-        Gate::define("user.view",UserPolicy::class."@view");
+        Gate::define("user.view",UserPolicy::class."@viewAny");
         Gate::define("user.edit",UserPolicy::class."@edit");
         Gate::define("user.delete",UserPolicy::class."@delete");
 
