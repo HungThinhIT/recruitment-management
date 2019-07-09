@@ -39,7 +39,7 @@ class RoleController extends Controller
      * Create a role.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
+     * @bodyParam name string required list id of permission for the role. Example: 1,2
      */
     public function store(RoleRequest $request)
     {
@@ -79,7 +79,7 @@ class RoleController extends Controller
      * Update the role by ID.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
+     * @bodyParam name string required list id of permission for the role. Example: 1,2,3,4,5
      */
     public function update(RoleRequest $request, $id)
     {
@@ -94,7 +94,7 @@ class RoleController extends Controller
      * Delete the role.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
+     * @bodyParam name string required list id of permission for the role. Example: 1,2,3,4,5
      */
     public function destroy(Request $request)
     {
