@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Permission;
 use Illuminate\Http\Request;
 
+/**
+ * @group Permission management
+ *
+ *
+ */
 class PermissionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the permission
+     * 10 rows/request.
      */
     public function index()
     {
