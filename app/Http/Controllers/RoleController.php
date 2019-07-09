@@ -15,8 +15,8 @@ use App\Http\Requests\RoleRequest;
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the role (5 rows/request) .
-     *
+     * Display a listing of the role.
+     * 5 rows/request
      *
      */
     public function index()
@@ -39,7 +39,7 @@ class RoleController extends Controller
      * Create a role.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam name array required list id of permission for the role. Example: [1,2,3,4,5].
+     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
      */
     public function store(RoleRequest $request)
     {
@@ -62,7 +62,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::findOrFail($id);
-        $role->permissions;
+        $permissions = $role->permissions;
         return response()->json($role);
     }
 
@@ -79,7 +79,7 @@ class RoleController extends Controller
      * Update the role by ID.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam name array required list id of permission for the role. Example: [1],[1,2,3,4,5].
+     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
      */
     public function update(RoleRequest $request, $id)
     {
