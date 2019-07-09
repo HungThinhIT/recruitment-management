@@ -6,12 +6,18 @@ use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+
+/**
+ * @group Role management
+ *
+ *
+ */
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the role (5 rows/request) .
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {
@@ -30,10 +36,10 @@ class RoleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a role.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam name string required name of role.
+     * @bodyParam name array required list id of permission for the role. Example: [1,2,3,4,5].
      */
     public function store(RoleRequest $request)
     {
@@ -50,10 +56,8 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show a role by ID.
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -65,8 +69,6 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function edit(Role $role)
     {
@@ -74,11 +76,10 @@ class RoleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the role by ID.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
+     * @bodyParam name string required name of role.
+     * @bodyParam name array required list id of permission for the role. Example: [1],[1,2,3,4,5].
      */
     public function update(RoleRequest $request, $id)
     {
@@ -90,10 +91,10 @@ class RoleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the role.
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
+     * @bodyParam name string required name of role.
+     * @bodyParam name array required list id of permission for the role. Example: [1], [1,2,3,4,5].
      */
     public function destroy(Request $request)
     {
