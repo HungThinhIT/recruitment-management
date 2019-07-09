@@ -7,13 +7,15 @@ use App\User;
 use App\Role;
 use Hash;
 use Illuminate\Http\Request;
-
+/**
+ * @group User management
+ *
+ * 
+ */
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the user.
      */
     public function index()
     {
@@ -32,10 +34,14 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created user in storage.
+     * @bodyParam name string required The name of the user.
+     * @bodyParam fullname string required The fullname of the user.
+     * @bodyParam email string required The email of the user.
+     * @bodyParam phone string required The phone of the user.
+     * @bodyParam address string The address of the user.
+     * @bodyParam password string required The password of the user.
+     * @bodyParam password_confirmation string required The confirmed password.
      */
     public function store(CreateUserRequest $request)
     {
@@ -47,7 +53,9 @@ class UserController extends Controller
         return response()->json([
             'message'=>'Created user successfully']);
     }
-
+    /**
+     * Show the profile's information.
+     */
     public function showCurrentInfoUser(Request $request)
     {
         $request->user()->roles;
@@ -56,14 +64,13 @@ class UserController extends Controller
 
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * Display the specified user.
      */
-    public function show()
+    public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->roles;
+        return response()->json($user);
     }
 
     /**
@@ -78,12 +85,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Update the profile.
+     * @bodyParam fullname string required The fullname of the user.
+     * @bodyParam email string required The email of the user.
+     * @bodyParam phone string required The phone of the user.
+     * @bodyParam address string The address of the user.
      */
-    public function update(UserRequest $request)
+    public function updateProfile(UserRequest $request)
     {
         // Param need: 'fullname,email,phone,address'
         User::findOrFail($request->user()->id)->update($request->only("fullname","email","phone","address"));

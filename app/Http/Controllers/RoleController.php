@@ -62,7 +62,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::findOrFail($id);
-        $permissions = $role->permissions;
+        $role->permissions;
         return response()->json($role);
     }
 

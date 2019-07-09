@@ -39,7 +39,6 @@ class CreateUserRequest extends FormRequest
         return [
             'name.required'     => "The username field is required.",
             'name.unique'       => "The username has been used.",
-            'name.max'          => "The username is too long.",
             'password.required' => "The password field is required.",
             'password_confirmation.required' => "The password_confirmation field is required.",
             'password.confirmed'=> "Your password and confirmed password do not match.",           
