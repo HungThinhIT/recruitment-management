@@ -20,101 +20,27 @@ Welcome to the generated API reference.
 
 <!-- END_INFO -->
 
-#Auth Management
-
-APIs for managing users
-<!-- START_90f45d502fd52fdc0b289e55ba3c2ec6 -->
-## api/signup
-> Example request:
-
-```bash
-curl -X POST "/api/signup" 
-```
-
-```javascript
-const url = new URL("/api/signup");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST api/signup`
-
-
-<!-- END_90f45d502fd52fdc0b289e55ba3c2ec6 -->
-
-<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
-## api/login
-> Example request:
-
-```bash
-curl -X POST "/api/login" 
-```
-
-```javascript
-const url = new URL("/api/login");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST api/login`
-
-
-<!-- END_c3fa189a6c95ca36ad6ac4791a873d23 -->
-
-<!-- START_00e7e21641f05de650dbe13f242c6f2c -->
-## Logout account.
+#User management
+<!-- START_440f44f2fd3290d79d27dece2f3f30f1 -->
+## Show the profile&#039;s information.
 
 > Example request:
 
 ```bash
-curl -X GET -G "/api/logout" \
-    -H "Content-Type: application/json" \
-    -d '{"title":"deleniti"}'
-
+curl -X GET -G "/api/current-profile" 
 ```
 
 ```javascript
-const url = new URL("/api/logout");
+const url = new URL("/api/current-profile");
 
 let headers = {
-    "Content-Type": "application/json",
     "Accept": "application/json",
-}
-
-let body = {
-    "title": "deleniti"
+    "Content-Type": "application/json",
 }
 
 fetch(url, {
     method: "GET",
     headers: headers,
-    body: body
 })
     .then(response => response.json())
     .then(json => console.log(json));
@@ -130,15 +56,200 @@ fetch(url, {
 ```
 
 ### HTTP Request
-`GET api/logout`
+`GET api/current-profile`
+
+
+<!-- END_440f44f2fd3290d79d27dece2f3f30f1 -->
+
+<!-- START_cf95104e8d1e3bda6b10e9b856955ac6 -->
+## Update the profile.
+
+> Example request:
+
+```bash
+curl -X PUT "/api/profile" \
+    -H "Content-Type: application/json" \
+    -d '{"fullname":"at","email":"repellat","phone":"voluptas","address":"iste"}'
+
+```
+
+```javascript
+const url = new URL("/api/profile");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "fullname": "at",
+    "email": "repellat",
+    "phone": "voluptas",
+    "address": "iste"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`PUT api/profile`
 
 #### Body Parameters
 
 Parameter | Type | Status | Description
 --------- | ------- | ------- | ------- | -----------
-    title | string |  required  | The title of the post.
+    fullname | string |  required  | The fullname of the user.
+    email | string |  required  | The email of the user.
+    phone | string |  required  | The phone of the user.
+    address | string |  optional  | The address of the user.
 
-<!-- END_00e7e21641f05de650dbe13f242c6f2c -->
+<!-- END_cf95104e8d1e3bda6b10e9b856955ac6 -->
+
+<!-- START_2b6e5a4b188cb183c7e59558cce36cb6 -->
+## Display a listing of the user.
+
+> Example request:
+
+```bash
+curl -X GET -G "/api/user" 
+```
+
+```javascript
+const url = new URL("/api/user");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
+
+### HTTP Request
+`GET api/user`
+
+
+<!-- END_2b6e5a4b188cb183c7e59558cce36cb6 -->
+
+<!-- START_f0654d3f2fc63c11f5723f233cc53c83 -->
+## Store a newly created user in storage.
+
+> Example request:
+
+```bash
+curl -X POST "/api/user" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"quas","fullname":"molestiae","email":"distinctio","phone":"veniam","address":"ipsam","password":"mollitia","password_confirmation":"rerum"}'
+
+```
+
+```javascript
+const url = new URL("/api/user");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "name": "quas",
+    "fullname": "molestiae",
+    "email": "distinctio",
+    "phone": "veniam",
+    "address": "ipsam",
+    "password": "mollitia",
+    "password_confirmation": "rerum"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`POST api/user`
+
+#### Body Parameters
+
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    name | string |  required  | The name of the user.
+    fullname | string |  required  | The fullname of the user.
+    email | string |  required  | The email of the user.
+    phone | string |  required  | The phone of the user.
+    address | string |  optional  | The address of the user.
+    password | string |  required  | The password of the user.
+    password_confirmation | string |  required  | The confirmed password.
+
+<!-- END_f0654d3f2fc63c11f5723f233cc53c83 -->
+
+<!-- START_9bbfc13f0750a7e9c27c0786a5f67e0a -->
+## Display the specified user.
+
+> Example request:
+
+```bash
+curl -X GET -G "/api/user/1" 
+```
+
+```javascript
+const url = new URL("/api/user/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
+
+### HTTP Request
+`GET api/user/{id}`
+
+
+<!-- END_9bbfc13f0750a7e9c27c0786a5f67e0a -->
 
 #general
 <!-- START_0c068b4037fb2e47e71bd44bd36e3e2a -->
@@ -671,16 +782,80 @@ fetch(url, {
 
 <!-- END_bae65df80fd9d72a01439241a9ea20d0 -->
 
-<!-- START_440f44f2fd3290d79d27dece2f3f30f1 -->
-## api/current-profile
+<!-- START_90f45d502fd52fdc0b289e55ba3c2ec6 -->
+## api/signup
 > Example request:
 
 ```bash
-curl -X GET -G "/api/current-profile" 
+curl -X POST "/api/signup" 
 ```
 
 ```javascript
-const url = new URL("/api/current-profile");
+const url = new URL("/api/signup");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`POST api/signup`
+
+
+<!-- END_90f45d502fd52fdc0b289e55ba3c2ec6 -->
+
+<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
+## api/login
+> Example request:
+
+```bash
+curl -X POST "/api/login" 
+```
+
+```javascript
+const url = new URL("/api/login");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`POST api/login`
+
+
+<!-- END_c3fa189a6c95ca36ad6ac4791a873d23 -->
+
+<!-- START_00e7e21641f05de650dbe13f242c6f2c -->
+## api/logout
+> Example request:
+
+```bash
+curl -X GET -G "/api/logout" 
+```
+
+```javascript
+const url = new URL("/api/logout");
 
 let headers = {
     "Accept": "application/json",
@@ -705,43 +880,10 @@ fetch(url, {
 ```
 
 ### HTTP Request
-`GET api/current-profile`
+`GET api/logout`
 
 
-<!-- END_440f44f2fd3290d79d27dece2f3f30f1 -->
-
-<!-- START_cf95104e8d1e3bda6b10e9b856955ac6 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT "/api/profile" 
-```
-
-```javascript
-const url = new URL("/api/profile");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT api/profile`
-
-
-<!-- END_cf95104e8d1e3bda6b10e9b856955ac6 -->
+<!-- END_00e7e21641f05de650dbe13f242c6f2c -->
 
 <!-- START_01fc43a11672802a440a34de5e43c9ec -->
 ## Display a listing of the resource.
@@ -961,46 +1103,6 @@ fetch(url, {
 
 
 <!-- END_ed8ced07a2186d44fa31e6f39b573d1c -->
-
-<!-- START_2b6e5a4b188cb183c7e59558cce36cb6 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET -G "/api/user" 
-```
-
-```javascript
-const url = new URL("/api/user");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET api/user`
-
-
-<!-- END_2b6e5a4b188cb183c7e59558cce36cb6 -->
 
 <!-- START_66e08d3cc8222573018fed49e121e96d -->
 ## Show the application&#039;s login form.
