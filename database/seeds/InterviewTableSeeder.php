@@ -11,6 +11,6 @@ class InterviewTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Interview::class, 1)->create();
+        factory(Interview::class, 5)->create();
     }
 }

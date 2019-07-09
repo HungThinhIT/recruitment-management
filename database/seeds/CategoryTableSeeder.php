@@ -15,7 +15,7 @@ class CategoryTableSeeder extends Seeder
         	'name'=>'Tin tuyển dụng'
         ],
         [
-			'name'=>'Kết quả'
+			'name'=>'Chương trình'
         ]]);    
     }
 }
