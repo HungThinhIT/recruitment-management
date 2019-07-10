@@ -12,7 +12,8 @@ class UserRoleTableSeeder extends Seeder
     public function run()
     {
         $roleID = App\Role::where('name','Admin')->first('id')->toArray();
-        $userID = App\Role::where('name','admin')->first('id')->toArray();
+        $userID = App\User::where('name','admin')->first('id')->toArray();
+        //dd($userID["id"]);
         DB::table('user_role')->insert([
         	'roleId'=>$roleID["id"],
         	'userId'=>$userID["id"]
