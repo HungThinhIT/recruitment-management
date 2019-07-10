@@ -48,6 +48,341 @@
 <p>Welcome to the generated API reference.
 <a href="http://localhost/docs/collection.json">Get Postman Collection</a></p>
 <!-- END_INFO -->
+<h1>Auth management</h1>
+<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
+<h2>Login.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "/api/login" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"non","password":"sapiente"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/login");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "name": "non",
+    "password": "sapiente"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/login</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>The name of the user.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>required</td>
+<td>The password of the user.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_c3fa189a6c95ca36ad6ac4791a873d23 -->
+<!-- START_00e7e21641f05de650dbe13f242c6f2c -->
+<h2>Logout.</h2>
+<p>Need access_token to logout.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "/api/logout" </code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/logout");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (401):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/logout</code></p>
+<!-- END_00e7e21641f05de650dbe13f242c6f2c -->
+<h1>Permission management</h1>
+<!-- START_ed8ced07a2186d44fa31e6f39b573d1c -->
+<h2>Display a listing of the permission</h2>
+<p>10 rows/request.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "/api/permission" </code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/permission");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (401):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/permission</code></p>
+<!-- END_ed8ced07a2186d44fa31e6f39b573d1c -->
+<h1>Role management</h1>
+<!-- START_01fc43a11672802a440a34de5e43c9ec -->
+<h2>Display a listing of the role.</h2>
+<p>5 rows/request</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "/api/role" </code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/role");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (401):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/role</code></p>
+<!-- END_01fc43a11672802a440a34de5e43c9ec -->
+<!-- START_1fa1ac63b45ed7a9accbe48dd2501e3c -->
+<h2>Show a role by ID.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET -G "/api/role/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/role/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (401):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "message": "Unauthenticated."
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/role/{id}</code></p>
+<!-- END_1fa1ac63b45ed7a9accbe48dd2501e3c -->
+<!-- START_9da1b300a2c60ef9fb7d7bbbb9f7c300 -->
+<h2>Create a role.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "/api/role" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"magni","permissions":"1,2"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/role");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "name": "magni",
+    "permissions": "1,2"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/role</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>name of role.</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>string</td>
+<td>required</td>
+<td>list id of permission for the role.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_9da1b300a2c60ef9fb7d7bbbb9f7c300 -->
+<!-- START_0759aaaa487c072fe42f26b76af824e9 -->
+<h2>Update the role by ID.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT "/api/role/1" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"qui","permissions":"1,2,3,4,5"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/role/1");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "name": "qui",
+    "permissions": "1,2,3,4,5"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/role/{id}</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>required</td>
+<td>name of role.</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>string</td>
+<td>required</td>
+<td>list id of permission for the role.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_0759aaaa487c072fe42f26b76af824e9 -->
+<!-- START_71202c69c936943be5ca3bebd322bb9b -->
+<h2>Delete the role.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X DELETE "/api/role" \
+    -H "Content-Type: application/json" \
+    -d '{"roles":"1,2,3,4,5"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/role");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "roles": "1,2,3,4,5"
+}
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/role</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>roles</td>
+<td>string</td>
+<td>required</td>
+<td>list id of role want to delete.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_71202c69c936943be5ca3bebd322bb9b -->
 <h1>User management</h1>
 <!-- START_440f44f2fd3290d79d27dece2f3f30f1 -->
 <h2>Show the profile&#039;s information.</h2>
@@ -78,13 +413,14 @@ fetch(url, {
 <p><code>GET api/current-profile</code></p>
 <!-- END_440f44f2fd3290d79d27dece2f3f30f1 -->
 <!-- START_cf95104e8d1e3bda6b10e9b856955ac6 -->
-<h2>Update the profile.</h2>
+<h2>Update the current profile.</h2>
+<p>Update the profile.</p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X PUT "/api/profile" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"at","email":"repellat","phone":"voluptas","address":"iste"}'
+    -d '{"fullname":"quia","email":"sunt","phone":"in","address":"suscipit"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL("/api/profile");
 
@@ -94,10 +430,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "at",
-    "email": "repellat",
-    "phone": "voluptas",
-    "address": "iste"
+    "fullname": "quia",
+    "email": "sunt",
+    "phone": "in",
+    "address": "suscipit"
 }
 
 fetch(url, {
@@ -182,7 +518,7 @@ fetch(url, {
 </blockquote>
 <pre><code class="language-bash">curl -X POST "/api/user" \
     -H "Content-Type: application/json" \
-    -d '{"name":"quas","fullname":"molestiae","email":"distinctio","phone":"veniam","address":"ipsam","password":"mollitia","password_confirmation":"rerum"}'
+    -d '{"name":"nemo","fullname":"reiciendis","email":"molestiae","phone":"et","address":"facere","password":"sunt","password_confirmation":"unde"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL("/api/user");
 
@@ -192,13 +528,13 @@ let headers = {
 }
 
 let body = {
-    "name": "quas",
-    "fullname": "molestiae",
-    "email": "distinctio",
-    "phone": "veniam",
-    "address": "ipsam",
-    "password": "mollitia",
-    "password_confirmation": "rerum"
+    "name": "nemo",
+    "fullname": "reiciendis",
+    "email": "molestiae",
+    "phone": "et",
+    "address": "facere",
+    "password": "sunt",
+    "password_confirmation": "unde"
 }
 
 fetch(url, {
@@ -267,7 +603,7 @@ fetch(url, {
 </table>
 <!-- END_f0654d3f2fc63c11f5723f233cc53c83 -->
 <!-- START_9bbfc13f0750a7e9c27c0786a5f67e0a -->
-<h2>Display the specified user.</h2>
+<h2>Display a user by id.</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
@@ -294,6 +630,132 @@ fetch(url, {
 <h3>HTTP Request</h3>
 <p><code>GET api/user/{id}</code></p>
 <!-- END_9bbfc13f0750a7e9c27c0786a5f67e0a -->
+<!-- START_538c59bd7094f21614fa40efbc87039d -->
+<h2>Update the user by id.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT "/api/user/1" \
+    -H "Content-Type: application/json" \
+    -d '{"fullname":"ut","email":"iure","phone":"occaecati","address":"doloremque","roles":"1,2"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/user/1");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "fullname": "ut",
+    "email": "iure",
+    "phone": "occaecati",
+    "address": "doloremque",
+    "roles": "1,2"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/user/{id}</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fullname</td>
+<td>string</td>
+<td>required</td>
+<td>The fullname of the user.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>required</td>
+<td>The email of the user.</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>required</td>
+<td>The phone of the user.</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>optional</td>
+<td>The address of the user.</td>
+</tr>
+<tr>
+<td>roles</td>
+<td>string</td>
+<td>required</td>
+<td>The string contains role's ID.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_538c59bd7094f21614fa40efbc87039d -->
+<!-- START_43e8ba205ffd3cbca826e9ab0a6f5af1 -->
+<h2>Delete the user.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X DELETE "/api/user" \
+    -H "Content-Type: application/json" \
+    -d '{"users":"1,2,3,4,5"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("/api/user");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "users": "1,2,3,4,5"
+}
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/user</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>users</td>
+<td>string</td>
+<td>required</td>
+<td>list id of user want to delete.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_43e8ba205ffd3cbca826e9ab0a6f5af1 -->
 <h1>general</h1>
 <!-- START_0c068b4037fb2e47e71bd44bd36e3e2a -->
 <h2>Authorize a client to access the user&#039;s account.</h2>
@@ -655,228 +1117,6 @@ fetch(url, {
 <h3>HTTP Request</h3>
 <p><code>DELETE oauth/personal-access-tokens/{token_id}</code></p>
 <!-- END_bae65df80fd9d72a01439241a9ea20d0 -->
-<!-- START_90f45d502fd52fdc0b289e55ba3c2ec6 -->
-<h2>api/signup</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST "/api/signup" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/signup");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<h3>HTTP Request</h3>
-<p><code>POST api/signup</code></p>
-<!-- END_90f45d502fd52fdc0b289e55ba3c2ec6 -->
-<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
-<h2>api/login</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST "/api/login" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/login");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<h3>HTTP Request</h3>
-<p><code>POST api/login</code></p>
-<!-- END_c3fa189a6c95ca36ad6ac4791a873d23 -->
-<!-- START_00e7e21641f05de650dbe13f242c6f2c -->
-<h2>api/logout</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/logout" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/logout");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (401):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "message": "Unauthenticated."
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/logout</code></p>
-<!-- END_00e7e21641f05de650dbe13f242c6f2c -->
-<!-- START_01fc43a11672802a440a34de5e43c9ec -->
-<h2>Display a listing of the resource.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/role" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (401):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "message": "Unauthenticated."
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/role</code></p>
-<!-- END_01fc43a11672802a440a34de5e43c9ec -->
-<!-- START_1fa1ac63b45ed7a9accbe48dd2501e3c -->
-<h2>Display the specified resource.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/role/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role/1");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (401):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "message": "Unauthenticated."
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/role/{id}</code></p>
-<!-- END_1fa1ac63b45ed7a9accbe48dd2501e3c -->
-<!-- START_9da1b300a2c60ef9fb7d7bbbb9f7c300 -->
-<h2>Store a newly created resource in storage.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST "/api/role" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<h3>HTTP Request</h3>
-<p><code>POST api/role</code></p>
-<!-- END_9da1b300a2c60ef9fb7d7bbbb9f7c300 -->
-<!-- START_0759aaaa487c072fe42f26b76af824e9 -->
-<h2>Update the specified resource in storage.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X PUT "/api/role/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role/1");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<h3>HTTP Request</h3>
-<p><code>PUT api/role/{id}</code></p>
-<!-- END_0759aaaa487c072fe42f26b76af824e9 -->
-<!-- START_71202c69c936943be5ca3bebd322bb9b -->
-<h2>Remove the specified resource from storage.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X DELETE "/api/role" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<h3>HTTP Request</h3>
-<p><code>DELETE api/role</code></p>
-<!-- END_71202c69c936943be5ca3bebd322bb9b -->
-<!-- START_ed8ced07a2186d44fa31e6f39b573d1c -->
-<h2>Display a listing of the resource.</h2>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/permission" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/permission");
-
-let headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (401):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "message": "Unauthenticated."
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/permission</code></p>
-<!-- END_ed8ced07a2186d44fa31e6f39b573d1c -->
 <!-- START_66e08d3cc8222573018fed49e121e96d -->
 <h2>Show the application&#039;s login form.</h2>
 <blockquote>

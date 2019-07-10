@@ -6,6 +6,7 @@ use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\DeleteRoleRequest;
 
 /**
  * @group Role management
@@ -92,11 +93,9 @@ class RoleController extends Controller
 
     /**
      * Delete the role.
-     *
-     * @bodyParam name string required name of role.
-     * @bodyParam permissions string required list id of permission for the role. Example: 1,2,3,4,5
+     * @bodyParam roles string required list id of role want to delete. Example: 1,2,3,4,5
      */
-    public function destroy(Request $request)
+    public function destroy(DeleteRoleRequest $request)
     {
         $role_arr = explode (",", request("roles"));
         Role::destroy($role_arr);

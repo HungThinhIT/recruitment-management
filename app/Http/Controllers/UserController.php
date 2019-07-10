@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\DeleteUserRequest;
 use App\User;
 use App\Role;
 use Hash;
@@ -113,14 +114,15 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the user.
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @bodyParam users string required list id of user want to delete. Example: 1,2,3,4,5
      */
-    public function destroy(User $user)
+    public function destroy(DeleteUserRequest $request)
     {
-        //
+        $user_arr = explode (",", request("users"));
+        User::destroy($user_arr);
+        return response()->json([
+           'message'=>'Deleted user successfully']);
     }
-
 }
