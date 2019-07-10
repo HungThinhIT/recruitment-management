@@ -17,5 +17,6 @@ class RoleTableSeeder extends Seeder
         [
 			'name'=>'User'
         ]]);
+        
     }
 }
