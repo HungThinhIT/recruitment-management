@@ -29,7 +29,7 @@ Welcome to the generated API reference.
 ```bash
 curl -X POST "/api/login" \
     -H "Content-Type: application/json" \
-    -d '{"name":"repellendus","password":"consequatur"}'
+    -d '{"name":"id","password":"quia"}'
 
 ```
 
@@ -42,8 +42,8 @@ let headers = {
 }
 
 let body = {
-    "name": "repellendus",
-    "password": "consequatur"
+    "name": "id",
+    "password": "quia"
 }
 
 fetch(url, {
@@ -115,6 +115,8 @@ fetch(url, {
 <!-- START_e92c2cc288ee2a69ef89b50609ade7de -->
 ## Display a listing of the job.
 
+10 rows/request
+
 > Example request:
 
 ```bash
@@ -151,6 +153,58 @@ fetch(url, {
 
 
 <!-- END_e92c2cc288ee2a69ef89b50609ade7de -->
+
+<!-- START_79010532a4dbb7da43f2434bda2f75b6 -->
+## Show a job by ID for Recruitment-Webapp.
+
+> Example request:
+
+```bash
+curl -X GET -G "/api/job-web/1" 
+```
+
+```javascript
+const url = new URL("/api/job-web/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "id": 1,
+    "name": "Demario Hickle",
+    "description": "Sint saepe dignissimos et dolor rerum. Dolore quos sequi voluptas qui quidem. Repudiandae id ipsam deserunt ut rerum ad. Cupiditate minima doloremque vitae ut. Ab et omnis non eligendi id eum.",
+    "address": "59726 Hans Circles Apt. 862\nLake Laurenbury, NY 19272",
+    "position": "Tester",
+    "salary": "500$ - 600$",
+    "status": "Full-time",
+    "experience": "2-3 years",
+    "amount": 10,
+    "publishedOn": "2019-07-07 14:11:10",
+    "deadline": "2019-06-29 18:57:41",
+    "created_at": "2019-07-09 07:57:09",
+    "updated_at": "2019-07-09 07:57:09"
+}
+```
+
+### HTTP Request
+`GET api/job-web/{id}`
+
+
+<!-- END_79010532a4dbb7da43f2434bda2f75b6 -->
 
 <!-- START_2622ddcdb08a3b4445fd08ac3f78b34c -->
 ## Show a job by ID.
@@ -200,7 +254,7 @@ fetch(url, {
 ```bash
 curl -X POST "/api/job" \
     -H "Content-Type: application/json" \
-    -d '{"name":"laborum","description":"quia","address":"rem","position":"cum","salary":"a","status":"est","experience":"minima","amount":6,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"sunt","description":"voluptas","address":"ut","position":"deleniti","salary":"odio","status":"deserunt","experience":"vel","amount":9,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 
 ```
 
@@ -213,14 +267,14 @@ let headers = {
 }
 
 let body = {
-    "name": "laborum",
-    "description": "quia",
-    "address": "rem",
-    "position": "cum",
-    "salary": "a",
-    "status": "est",
-    "experience": "minima",
-    "amount": 6,
+    "name": "sunt",
+    "description": "voluptas",
+    "address": "ut",
+    "position": "deleniti",
+    "salary": "odio",
+    "status": "deserunt",
+    "experience": "vel",
+    "amount": 9,
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
 }
@@ -264,7 +318,7 @@ Parameter | Type | Status | Description
 ```bash
 curl -X PUT "/api/job/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"autem","description":"et","address":"dolor","position":"eos","salary":"ut","status":"qui","experience":"impedit","amount":"unde","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"et","description":"dignissimos","address":"non","position":"odio","salary":"ut","status":"et","experience":"laborum","amount":"iure","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 
 ```
 
@@ -277,14 +331,14 @@ let headers = {
 }
 
 let body = {
-    "name": "autem",
-    "description": "et",
-    "address": "dolor",
-    "position": "eos",
+    "name": "et",
+    "description": "dignissimos",
+    "address": "non",
+    "position": "odio",
     "salary": "ut",
-    "status": "qui",
-    "experience": "impedit",
-    "amount": "unde",
+    "status": "et",
+    "experience": "laborum",
+    "amount": "iure",
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
 }
@@ -499,7 +553,7 @@ fetch(url, {
 ```bash
 curl -X POST "/api/role" \
     -H "Content-Type: application/json" \
-    -d '{"name":"voluptatibus","permissions":"1,2"}'
+    -d '{"name":"voluptatem","permissions":"1,2"}'
 
 ```
 
@@ -512,7 +566,7 @@ let headers = {
 }
 
 let body = {
-    "name": "voluptatibus",
+    "name": "voluptatem",
     "permissions": "1,2"
 }
 
@@ -547,7 +601,7 @@ Parameter | Type | Status | Description
 ```bash
 curl -X PUT "/api/role/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"cum","permissions":"1,2,3,4,5"}'
+    -d '{"name":"nihil","permissions":"1,2,3,4,5"}'
 
 ```
 
@@ -560,7 +614,7 @@ let headers = {
 }
 
 let body = {
-    "name": "cum",
+    "name": "nihil",
     "permissions": "1,2,3,4,5"
 }
 
@@ -588,14 +642,14 @@ Parameter | Type | Status | Description
 <!-- END_0759aaaa487c072fe42f26b76af824e9 -->
 
 <!-- START_71202c69c936943be5ca3bebd322bb9b -->
-## Delete the role.
+## Delete the role
 
 > Example request:
 
 ```bash
 curl -X DELETE "/api/role" \
     -H "Content-Type: application/json" \
-    -d '{"name":"recusandae","permissions":"1,2,3,4,5"}'
+    -d '{"roles":"1,2,3,4,5"}'
 
 ```
 
@@ -608,8 +662,7 @@ let headers = {
 }
 
 let body = {
-    "name": "recusandae",
-    "permissions": "1,2,3,4,5"
+    "roles": "1,2,3,4,5"
 }
 
 fetch(url, {
@@ -630,8 +683,7 @@ fetch(url, {
 
 Parameter | Type | Status | Description
 --------- | ------- | ------- | ------- | -----------
-    name | string |  required  | name of role.
-    permissions | string |  required  | list id of permission for the role.
+    roles | string |  required  | list id of role.
 
 <!-- END_71202c69c936943be5ca3bebd322bb9b -->
 
@@ -686,7 +738,7 @@ Update the profile.
 ```bash
 curl -X PUT "/api/profile" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"quia","email":"tenetur","phone":"laborum","address":"nostrum"}'
+    -d '{"fullname":"fuga","email":"perferendis","phone":"voluptatem","address":"molestiae"}'
 
 ```
 
@@ -699,10 +751,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "quia",
-    "email": "tenetur",
-    "phone": "laborum",
-    "address": "nostrum"
+    "fullname": "fuga",
+    "email": "perferendis",
+    "phone": "voluptatem",
+    "address": "molestiae"
 }
 
 fetch(url, {
@@ -778,7 +830,7 @@ fetch(url, {
 ```bash
 curl -X POST "/api/user" \
     -H "Content-Type: application/json" \
-    -d '{"name":"ut","fullname":"magni","email":"quia","phone":"et","address":"est","password":"aspernatur","password_confirmation":"omnis"}'
+    -d '{"name":"neque","fullname":"dolorum","email":"exercitationem","phone":"est","address":"quis","password":"rem","password_confirmation":"voluptatem"}'
 
 ```
 
@@ -791,13 +843,13 @@ let headers = {
 }
 
 let body = {
-    "name": "ut",
-    "fullname": "magni",
-    "email": "quia",
-    "phone": "et",
-    "address": "est",
-    "password": "aspernatur",
-    "password_confirmation": "omnis"
+    "name": "neque",
+    "fullname": "dolorum",
+    "email": "exercitationem",
+    "phone": "est",
+    "address": "quis",
+    "password": "rem",
+    "password_confirmation": "voluptatem"
 }
 
 fetch(url, {
@@ -876,7 +928,7 @@ fetch(url, {
 ```bash
 curl -X PUT "/api/user/1" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"laboriosam","email":"est","phone":"dolores","address":"culpa","roles":"1,2"}'
+    -d '{"fullname":"est","email":"voluptas","phone":"quo","address":"laborum","roles":"1,2"}'
 
 ```
 
@@ -889,10 +941,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "laboriosam",
-    "email": "est",
-    "phone": "dolores",
-    "address": "culpa",
+    "fullname": "est",
+    "email": "voluptas",
+    "phone": "quo",
+    "address": "laborum",
     "roles": "1,2"
 }
 
@@ -921,6 +973,52 @@ Parameter | Type | Status | Description
     roles | string |  required  | The string contains role's ID.
 
 <!-- END_538c59bd7094f21614fa40efbc87039d -->
+
+<!-- START_43e8ba205ffd3cbca826e9ab0a6f5af1 -->
+## Delete the user
+
+> Example request:
+
+```bash
+curl -X DELETE "/api/user" \
+    -H "Content-Type: application/json" \
+    -d '{"users":"1,2,3,4,5"}'
+
+```
+
+```javascript
+const url = new URL("/api/user");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "users": "1,2,3,4,5"
+}
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`DELETE api/user`
+
+#### Body Parameters
+
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    users | string |  required  | list id of user.
+
+<!-- END_43e8ba205ffd3cbca826e9ab0a6f5af1 -->
 
 #general
 <!-- START_0c068b4037fb2e47e71bd44bd36e3e2a -->
