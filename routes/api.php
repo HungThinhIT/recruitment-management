@@ -17,12 +17,12 @@ use Illuminate\Http\Request;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
-
-    /*
-    * Job Route for Enclave Recruitment web.
-    */
+      /*
+      * Job Route for Enclave Recruitment web.
+      */
     Route::get("job","JobController@index");
     Route::get("job-web/{id}","JobController@showJobForCandidatesPage");
+  
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
@@ -57,15 +57,19 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('user','UserController@store')->middleware('can:user.create');
         Route::get('user/{id}','UserController@show')->middleware('can:user.view');
         Route::put('user/{id}','UserController@update')->middleware('can:user.edit');
+        Route::delete("user","UserController@destroy")->middleware("can:user.delete");
 
         /*
         * Job routes
         */
+        Route::get("job","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
         Route::delete("job","JobController@destroy")->middleware("can:job.delete");
     });
 });
+
+
 
 
