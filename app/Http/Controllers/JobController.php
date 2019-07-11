@@ -52,9 +52,9 @@ class JobController extends Controller
      * Show a job by ID for Recruitment-Webapp.
      *
      */
-    public function showForCandidates($idJob){
-        $job = Job::findOrFail($idJob);
-        return response()->json($job,200);
+    public function showJobForCandidatesPage($idJob)
+    {
+        return response()->json(Job::findOrFail($idJob),200);
     }
 
 
@@ -64,9 +64,8 @@ class JobController extends Controller
      */
     public function show(Job $job, $idJob)
     {
-        //
+        return response()->json(Job::with(['articles','candidates'])->findOrFail($idJob),200);
     }
-
 
     public function edit(Job $job)
     {
@@ -100,8 +99,6 @@ class JobController extends Controller
      */
     public function destroy(Request $request)
     {
-        $this->validate($request,["jobId" => "required"],["jobId.required" => "The jobId field is required."]);
-
         $jobIds = explode(",", $request->jobId);
 
         $exists = Job::whereIn('id', $jobIds)->pluck('id');

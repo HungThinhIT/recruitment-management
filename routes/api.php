@@ -21,8 +21,8 @@ Route::group(['middleware' => ['cors']], function () {
       * Job Route for Enclave Recruitment web.
       */
     Route::get("job","JobController@index");
-    Route::get("job-web/{id}","JobController@showForCandidates");
-
+    Route::get("job-web/{id}","JobController@showJobForCandidatesPage");
+  
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
