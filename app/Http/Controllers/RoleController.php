@@ -16,12 +16,12 @@ class RoleController extends Controller
 {
     /**
      * Display a listing of the role.
-     * 5 rows/request
+     * 10 rows/request
      *
      */
     public function index()
     {
-        $roles = Role::paginate(5);
+        $roles = Role::paginate(10);
         return response()->json($roles);
     }
 
