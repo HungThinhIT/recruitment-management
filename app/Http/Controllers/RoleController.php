@@ -91,15 +91,25 @@ class RoleController extends Controller
     }
 
     /**
-     * Delete the role.
+     * Delete the role
      *
-     * @bodyParam name string required name of role.
-     * @bodyParam permissions string required list id of permission for the role. Example: 1,2,3,4,5
+     * @bodyParam roles string required list id of role. Example: 1,2,3,4,5
      */
     public function destroy(Request $request)
     {
+        $this->validate($request,["roles" => "required"],["roles.required" => "You must choose the role."]);
         $role_arr = explode (",", request("roles"));
-        Role::destroy($role_arr);
+        $exists = Role::whereIn('id', $role_arr)->pluck('id');
+        $notExists = collect($role_arr)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Role::destroy($exists);
         return response()->json([
            'message'=>'Deleted roles successfully']);
     }

@@ -52,6 +52,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('user','UserController@store')->middleware('can:user.create');
         Route::get('user/{id}','UserController@show')->middleware('can:user.view');
         Route::put('user/{id}','UserController@update')->middleware('can:user.edit');
+        Route::delete("user","UserController@destroy")->middleware("can:user.delete");
 
         /*
         * Job routes
