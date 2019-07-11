@@ -89,7 +89,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("interviewer.delete",InterviewerPolicy::class."@delete");
 
         /*
-        * Job Gate.
+        * Interview Gate.
         */
         Gate::define("interview.create",InterviewPolicy::class."@create");
         Gate::define("interview.view",InterviewPolicy::class."@view");
@@ -97,7 +97,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("interview.delete",InterviewPolicy::class."@delete");
 
         /*
-        * Interview Gate.
+        * Job Gate.
         */
         Gate::define("job.create",JobPolicy::class."@create");
         Gate::define("job.view",JobPolicy::class."@view");
