@@ -18,6 +18,11 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
 
+    /*
+    * Job Route for Enclave Recruitment web.
+    */
+    Route::get("job","JobController@index");
+    Route::get("job-web/{id}","JobController@showForCandidates");
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
@@ -57,7 +62,6 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::get("job","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
