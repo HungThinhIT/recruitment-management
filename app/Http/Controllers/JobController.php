@@ -49,12 +49,22 @@ class JobController extends Controller
     }
 
     /**
+     * Show a job by ID for Recruitment-Webapp.
+     *
+     */
+    public function showForCandidates($idJob){
+        $job = Job::findOrFail($idJob);
+        return response()->json($job,200);
+    }
+
+
+    /**
      * Show a job by ID.
      *
      */
-    public function show($idJob)
+    public function show(Job $job, $idJob)
     {
-        return response()->json(Job::findOrFail($idJob),200);
+        //
     }
 
 
