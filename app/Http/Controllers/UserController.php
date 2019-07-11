@@ -118,10 +118,21 @@ class UserController extends Controller
      *
      * @bodyParam users string required list id of user want to delete. Example: 1,2,3,4,5
      */
-    public function destroy(DeleteUserRequest $request)
+    public function destroy(Request $request)
     {
+        $this->validate($request,["users" => "required"],["users.required" => "You must choose the user."]);
         $user_arr = explode (",", request("users"));
-        User::destroy($user_arr);
+        $exists = User::whereIn('id', $user_arr)->pluck('id');
+        $notExists = collect($user_arr)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        User::destroy($exists);
         return response()->json([
            'message'=>'Deleted user successfully']);
     }

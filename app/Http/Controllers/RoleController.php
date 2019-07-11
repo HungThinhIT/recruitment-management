@@ -95,11 +95,22 @@ class RoleController extends Controller
      * Delete the role.
      * @bodyParam roles string required list id of role want to delete. Example: 1,2,3,4,5
      */
-    public function destroy(DeleteRoleRequest $request)
+    public function destroy(Request $request)
     {
+        $this->validate($request,["roles" => "required"],["roles.required" => "You must choose the role."]);
         $role_arr = explode (",", request("roles"));
-        Role::destroy($role_arr);
+        $exists = Role::whereIn('id', $role_arr)->pluck('id');
+        $notExists = collect($role_arr)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Role::destroy($exists);
         return response()->json([
-           'message'=>'Deleted roles successfully']);
+           'message'=>'Deleted role successfully']);
     }
 }
