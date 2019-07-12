@@ -35,7 +35,7 @@ class JobRequest extends FormRequest
                     "salary"      => "required|max:255",
                     "status"      => "required|max:255",
                     "experience"  => "required|max:255",
-                    "amount"      => "required|max:255",
+                    "amount"      => "required|numeric|min:0|max:100",
                     "publishedOn" => ["required","date","max:255","regex:/[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) ([01][0-9]|2[0-3]):[0-5]\d/"],
                     "deadline"    => "required|date|after:publishedOn|max:255",
                 ];
