@@ -23,8 +23,8 @@ class CreateJobsTable extends Migration
             $table->string('status');
             $table->string('experience');
             $table->unsignedInteger('amount');
-            $table->timestamp('publishedOn');
-            $table->timestamp('deadline');
+            $table->timestamp('publishedOn')->nullable();
+            $table->timestamp('deadline')->nullable();
             $table->timestamps();
         }); 
     }
