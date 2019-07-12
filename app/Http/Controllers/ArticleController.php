@@ -86,13 +86,24 @@ class ArticleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * Delete the article by Id.
+     * @bodyParam articleId string required The id/list id of job. Example: 1,2,3,4,5
      */
     public function destroy(Article $article)
     {
-        //
+        $articleIds = explode (",", request("articleId"));
+        $exists = Article::whereIn('id', $articleIds)->pluck('id');
+        $notExists = collect($articleIds)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Article::destroy($exists);
+        return response()->json([
+           'message'=>'Deleted the article successfully']);
     }
 }
