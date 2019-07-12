@@ -11,13 +11,11 @@ class UserRoleTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('user_role')->insert([[
-        	'roleId'=>App\Role::all()->random()->id,
-        	'userId'=>App\User::all()->random()->id
-        ],
-        [
-			'roleId'=>App\Role::all()->random()->id,
-        	'userId'=>App\User::all()->random()->id
-        ]]);
+        $roleID = App\Role::where('name','Admin')->first('id')->toArray();
+        $userID = App\User::where('name','admin')->first('id')->toArray();
+        DB::table('user_role')->insert([
+        	'roleId'=>$roleID["id"],
+        	'userId'=>$userID["id"]
+        ]);
     }
 }

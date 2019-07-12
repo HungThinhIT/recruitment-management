@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Role;
+use App\Permission;
 
 class RolePermissionTableSeeder extends Seeder
 {
@@ -11,13 +13,10 @@ class RolePermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('role_permission')->insert([[
-        	'roleId'=>App\Role::all()->random()->id,
-        	'permissionId'=>App\Permission::all()->random()->id
-        ],
-        [
-			'roleId'=>App\Role::all()->random()->id,
-        	'permissionId'=>App\Permission::all()->random()->id
-        ]]);
+        $permissionsId = Permission::get("id")->toArray();
+        $role = Role::where("name","Admin")->first();
+        foreach ($permissionsId as $key => $value) {
+            $role->permissions()->attach($value); 
+        }
     }
 }

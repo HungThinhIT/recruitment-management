@@ -8,6 +8,9 @@ class Job extends Model
 {
     protected $table = 'jobs';
     protected $primaryKey = 'id';
+    protected $fillable = ["name", "description", "address", "position", "salary", "status", "experience", "amount", "publishedOn", "deadline"];
+    public $timestamps = true;
+
     public function articles()
     {
         return $this->hasMany('App\Article','jobId','id');

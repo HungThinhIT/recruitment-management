@@ -16,10 +16,10 @@ class CreateInterviewersTable extends Migration
         Schema::create('interviewers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('fullname');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('technicalSkill');
             $table->timestamps();
         });

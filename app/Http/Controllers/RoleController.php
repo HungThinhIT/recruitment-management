@@ -6,16 +6,22 @@ use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
+
+/**
+ * @group Role management
+ *
+ *
+ */
 class RoleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the role.
+     * 10 rows/request
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $roles = Role::paginate(5);
+        $roles = Role::paginate(10);
         return response()->json($roles);
     }
 
@@ -30,10 +36,10 @@ class RoleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a role.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam name string required name of role.
+     * @bodyParam permissions string required list id of permission for the role. Example: 1,2
      */
     public function store(RoleRequest $request)
     {
@@ -50,10 +56,8 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show a role by ID.
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -65,8 +69,6 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function edit(Role $role)
     {
@@ -74,25 +76,41 @@ class RoleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the role by ID.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
+     * @bodyParam name string required name of role.
+     * @bodyParam permissions string required list id of permission for the role. Example: 1,2,3,4,5
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, $id)
     {
-        //
+        Role::findOrFail($id)->update($request->only("name"));
+        $permission_arr = explode (",", request("permissions"));
+        Role::findOrFail($id)->permissions()->sync($permission_arr);
+        return response()->json([
+           'message'=>'Updated role successfully']);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the role
      *
-     * @param  \App\Role  $role
-     * @return \Illuminate\Http\Response
+     * @bodyParam roles string required list id of role. Example: 1,2,3,4,5
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request)
     {
-        //
+        $this->validate($request,["roles" => "required"],["roles.required" => "You must choose the role."]);
+        $role_arr = explode (",", request("roles"));
+        $exists = Role::whereIn('id', $role_arr)->pluck('id');
+        $notExists = collect($role_arr)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Role::destroy($exists);
+        return response()->json([
+           'message'=>'Deleted roles successfully']);
     }
 }

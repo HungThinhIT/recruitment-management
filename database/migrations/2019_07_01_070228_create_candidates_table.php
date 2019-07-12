@@ -20,7 +20,7 @@ class CreateCandidatesTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('CV');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('technicalSkill');
             $table->unsignedInteger('status');
             $table->timestamps();

@@ -10,12 +10,12 @@ class PermissionTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    { 	
+    {   
         DB::table('permissions')->insert([[
-        	'name'=>'Role-create'
+            'name'=>'Role-create'
         ],
         [
-			'name'=>'Role-list'
+            'name'=>'Role-list'
         ],
         [
             'name'=>'Role-edit'
@@ -96,17 +96,8 @@ class PermissionTableSeeder extends Seeder
             'name'=>'Job-delete'
         ],
         [
-            'name'=>'Interviewer-list'
-        ],
-        [
-            'name'=>'Interviewer-create'
-        ],
-        [
-            'name'=>'Interviewer-edit'
-        ],
-        [
-            'name'=>'Interviewer-delete'
+            'name'=>'Statistics'
         ]
         ]);     
-    }
+}
 }

@@ -23,7 +23,7 @@ jobs:
               ssh -tt hungthinh@168.63.251.210 <<EOF
                 sudo su
                 cd api.enclavei3.tk/public_html/recruitment-management
-                git stash
+                git reset --hard HEAD^
                 git fetch origin
                 git checkout master
                 git pull origin master
@@ -31,6 +31,7 @@ jobs:
                 php artisan migrate
                 php artisan db:seed
                 php artisan passport:install
+                php artisan apidoc:generate
                 composer update
                 exit
                 exit

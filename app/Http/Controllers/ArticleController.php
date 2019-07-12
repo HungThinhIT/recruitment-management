@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\ArticleRequest;
+/**
+ * @group Article management
+ */
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the article.
+     * 10 rows/request
      */
     public function index()
     {
-
+        return response()->json(Article::with(["user","job","category"])->paginate(10));
     }
 
     /**
@@ -28,25 +30,37 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an article.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam title string required The title of the article.
+     * @bodyParam image string  The image of the article.
+     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam content string required The content of the article.
+     * @bodyParam catId string required The catId of the article.
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        //
+        $request->request->add(["userId"=>$request->user()->id]);
+        Article::create($request->except("created_at","updated_at"));
+        return response()->json([
+            'message'=>'Created an article successfully']);
+    }
+    /**
+     * Display an Article by Id for Candidate page.
+     *
+     */
+    public function showArticleForCandidatePage($idArticle)
+    {
+        return response()->json(Article::findOrFail($idArticle));
     }
 
     /**
-     * Display the specified resource.
+     * Display an Article by Id.
      *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show($idArticle)
     {
-        //
+        return response()->json(Article::with(["user","job","category"])->findOrFail($idArticle));
     }
 
     /**
@@ -61,25 +75,40 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the article by Id.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * @bodyParam title string required The title of the article.
+     * @bodyParam image string  The image of the article.
+     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam content string required The content of the article.
+     * @bodyParam catId string required The catId of the article.
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, $idArticle)
     {
-        //
+        $request->request->add(["userId"=>$request->user()->id]);
+        Article::findOrFail($idArticle)->update($request->except("created_at","updated_at"));
+        return response()->json(['message'=>'Updated the article successfully'],200);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * Delete the article by Id.
+     * @bodyParam articleId string required The id/list id of job. Example: 1,2,3,4,5
      */
     public function destroy(Article $article)
     {
-        //
+        $articleIds = explode (",", request("articleId"));
+        $exists = Article::whereIn('id', $articleIds)->pluck('id');
+        $notExists = collect($articleIds)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Article::destroy($exists);
+        return response()->json([
+           'message'=>'Deleted the article successfully']);
     }
 }

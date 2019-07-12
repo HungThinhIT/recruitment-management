@@ -11,6 +11,6 @@ class CandidateTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Candidate::class, 1)->create(); 
+        factory(Candidate::class, 5)->create(); 
     }
 }
