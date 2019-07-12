@@ -67,6 +67,13 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
         Route::delete("job","JobController@destroy")->middleware("can:job.delete");
+
+        /*
+        * Article routes
+        */
+        Route::post("article","ArticleController@store")->middleware("can:article.create");
+
+
     });
 });
 

@@ -19,12 +19,12 @@ class CreateJobsTable extends Migration
             $table->longText('description')->nullable();
             $table->string('address');
             $table->string('position');
-            $table->string('salary')->nullable();
+            $table->string('salary');
             $table->string('status');
             $table->string('experience');
             $table->unsignedInteger('amount');
-            $table->timestamp('publishedOn')->nullable();;
-            $table->timestamp('deadline')->nullable();;
+            $table->timestamp('publishedOn');
+            $table->timestamp('deadline');
             $table->timestamps();
         }); 
     }
