@@ -16,7 +16,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return response()->json(Article::paginate(10));
+        return response()->json(Article::with(["user","job","category"])->paginate(10));
     }
 
     /**
