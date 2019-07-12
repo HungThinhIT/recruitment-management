@@ -112,7 +112,7 @@ class JobController extends Controller
 
         if($notExists->isNotEmpty()){
             return response()->json([
-                'message'=>'Not found id: '.$idsNotFound],404);
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
         }
 
         Job::whereIn('id', explode(",", $request->jobId))->delete();

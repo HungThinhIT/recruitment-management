@@ -79,7 +79,7 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
-
+        Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
 
     });
 });

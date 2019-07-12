@@ -37,7 +37,7 @@ class ArticleRequest extends FormRequest
             }
             case 'DELETE': {
                 return [
-
+                    "articleId" => "required"
                 ];
             }
                 break;
