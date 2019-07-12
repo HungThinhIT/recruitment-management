@@ -95,7 +95,7 @@ class JobController extends Controller
     /**
      * Remove a job/many jobs by ID.
      *
-     * @bodyParam jobsID string required The id/list id of job. Example: 1,2,3,4,5
+     * @bodyParam jobID string required The id/list id of job. Example: 1,2,3,4,5
      */
     public function destroy(Request $request)
     {

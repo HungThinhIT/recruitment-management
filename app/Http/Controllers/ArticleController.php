@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Article;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
-
+/**
+ * @group Article management
+ */
 class ArticleController extends Controller
 {
     /**
@@ -29,10 +31,13 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an article.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam title string required The title of the article.
+     * @bodyParam image string  The image of the article.
+     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam content string required The content of the article.
+     * @bodyParam catId string required The catId of the article.
      */
     public function store(ArticleRequest $request)
     {
@@ -65,15 +70,19 @@ class ArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the article by Id.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
+     * @bodyParam title string required The title of the article.
+     * @bodyParam image string  The image of the article.
+     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam content string required The content of the article.
+     * @bodyParam catId string required The catId of the article.
      */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, $idArticle)
     {
-        //
+        $request->request->add(["userId"=>$request->user()->id]);
+        Article::findOrFail($idArticle)->update($request->except("created_at","updated_at"));
+        return response()->json(['message'=>'Updated the article successfully'],200);
     }
 
     /**

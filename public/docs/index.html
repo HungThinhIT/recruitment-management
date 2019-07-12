@@ -46,19 +46,19 @@
           <!-- START_INFO -->
 <h1>Info</h1>
 <p>Welcome to the generated API reference.
-<a href="http://localhost/docs/collection.json">Get Postman Collection</a></p>
+<a href="api.enclavei3dev.tk/docs/collection.json">Get Postman Collection</a></p>
 <!-- END_INFO -->
-<h1>Auth management</h1>
-<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
-<h2>Login.</h2>
+<h1>Article management</h1>
+<!-- START_706a660bd426dfde8ef5e730869db3f8 -->
+<h2>Create an article.</h2>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/api/login" \
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/api/article" \
     -H "Content-Type: application/json" \
-    -d '{"name":"id","password":"quia"}'
+    -d '{"title":"necessitatibus","image":"officia","jobId":"ratione","content":"provident","userId":"non","catId":"harum"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/login");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/article");
 
 let headers = {
     "Content-Type": "application/json",
@@ -66,8 +66,177 @@ let headers = {
 }
 
 let body = {
-    "name": "id",
-    "password": "quia"
+    "title": "necessitatibus",
+    "image": "officia",
+    "jobId": "ratione",
+    "content": "provident",
+    "userId": "non",
+    "catId": "harum"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/article</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>required</td>
+<td>The title of the article.</td>
+</tr>
+<tr>
+<td>image</td>
+<td>string</td>
+<td>optional</td>
+<td>The image of the article.</td>
+</tr>
+<tr>
+<td>jobId</td>
+<td>numeric</td>
+<td>required</td>
+<td>The jobId of the article.</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>required</td>
+<td>The content of the article.</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>string</td>
+<td>required</td>
+<td>The userId of the article.</td>
+</tr>
+<tr>
+<td>catId</td>
+<td>string</td>
+<td>required</td>
+<td>The catId of the article.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_706a660bd426dfde8ef5e730869db3f8 -->
+<!-- START_6ff7ff26b034677d2a797186d18b3acf -->
+<h2>Update the article by Id.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/api/article/1" \
+    -H "Content-Type: application/json" \
+    -d '{"title":"laudantium","image":"perspiciatis","jobId":"et","content":"similique","userId":"adipisci","catId":"officia"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/article/1");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "title": "laudantium",
+    "image": "perspiciatis",
+    "jobId": "et",
+    "content": "similique",
+    "userId": "adipisci",
+    "catId": "officia"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/article/{id}</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>required</td>
+<td>The title of the article.</td>
+</tr>
+<tr>
+<td>image</td>
+<td>string</td>
+<td>optional</td>
+<td>The image of the article.</td>
+</tr>
+<tr>
+<td>jobId</td>
+<td>numeric</td>
+<td>required</td>
+<td>The jobId of the article.</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>required</td>
+<td>The content of the article.</td>
+</tr>
+<tr>
+<td>userId</td>
+<td>string</td>
+<td>required</td>
+<td>The userId of the article.</td>
+</tr>
+<tr>
+<td>catId</td>
+<td>string</td>
+<td>required</td>
+<td>The catId of the article.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_6ff7ff26b034677d2a797186d18b3acf -->
+<h1>Auth management</h1>
+<!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
+<h2>Login.</h2>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/api/login" \
+    -H "Content-Type: application/json" \
+    -d '{"name":"asperiores","password":"a"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/login");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "name": "asperiores",
+    "password": "a"
 }
 
 fetch(url, {
@@ -111,8 +280,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/logout" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/logout");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/logout" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/logout");
 
 let headers = {
     "Accept": "application/json",
@@ -141,8 +310,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/job" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/job" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Accept": "application/json",
@@ -169,8 +338,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/job-web/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job-web/1");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/job-web/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job-web/1");
 
 let headers = {
     "Accept": "application/json",
@@ -209,8 +378,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/job/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job/1");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/job/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job/1");
 
 let headers = {
     "Accept": "application/json",
@@ -237,11 +406,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/api/job" \
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/api/job" \
     -H "Content-Type: application/json" \
-    -d '{"name":"sunt","description":"voluptas","address":"ut","position":"deleniti","salary":"odio","status":"deserunt","experience":"vel","amount":9,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"voluptatum","description":"enim","address":"fugit","position":"ut","salary":"voluptas","status":"hic","experience":"et","amount":1,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Content-Type": "application/json",
@@ -249,14 +418,14 @@ let headers = {
 }
 
 let body = {
-    "name": "sunt",
-    "description": "voluptas",
-    "address": "ut",
-    "position": "deleniti",
-    "salary": "odio",
-    "status": "deserunt",
-    "experience": "vel",
-    "amount": 9,
+    "name": "voluptatum",
+    "description": "enim",
+    "address": "fugit",
+    "position": "ut",
+    "salary": "voluptas",
+    "status": "hic",
+    "experience": "et",
+    "amount": 1,
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
 }
@@ -349,11 +518,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT "/api/job/1" \
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/api/job/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"et","description":"dignissimos","address":"non","position":"odio","salary":"ut","status":"et","experience":"laborum","amount":"iure","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"eligendi","description":"nihil","address":"consectetur","position":"voluptatum","salary":"incidunt","status":"ut","experience":"quidem","amount":"totam","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job/1");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -361,14 +530,14 @@ let headers = {
 }
 
 let body = {
-    "name": "et",
-    "description": "dignissimos",
-    "address": "non",
-    "position": "odio",
-    "salary": "ut",
-    "status": "et",
-    "experience": "laborum",
-    "amount": "iure",
+    "name": "eligendi",
+    "description": "nihil",
+    "address": "consectetur",
+    "position": "voluptatum",
+    "salary": "incidunt",
+    "status": "ut",
+    "experience": "quidem",
+    "amount": "totam",
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
 }
@@ -461,11 +630,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/api/job" \
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/api/job" \
     -H "Content-Type: application/json" \
     -d '{"jobsID":"1,2,3,4,5"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/job");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Content-Type": "application/json",
@@ -512,8 +681,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/permission" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/permission");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/permission" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/permission");
 
 let headers = {
     "Accept": "application/json",
@@ -542,8 +711,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/role" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/role" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Accept": "application/json",
@@ -570,8 +739,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/role/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role/1");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/role/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/role/1");
 
 let headers = {
     "Accept": "application/json",
@@ -598,11 +767,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/api/role" \
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/api/role" \
     -H "Content-Type: application/json" \
-    -d '{"name":"voluptatem","permissions":"1,2"}'
+    -d '{"name":"culpa","permissions":"1,2"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Content-Type": "application/json",
@@ -610,7 +779,7 @@ let headers = {
 }
 
 let body = {
-    "name": "voluptatem",
+    "name": "culpa",
     "permissions": "1,2"
 }
 
@@ -654,11 +823,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT "/api/role/1" \
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/api/role/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"nihil","permissions":"1,2,3,4,5"}'
+    -d '{"name":"quam","permissions":"1,2,3,4,5"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role/1");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/role/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -666,7 +835,7 @@ let headers = {
 }
 
 let body = {
-    "name": "nihil",
+    "name": "quam",
     "permissions": "1,2,3,4,5"
 }
 
@@ -710,11 +879,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/api/role" \
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/api/role" \
     -H "Content-Type: application/json" \
     -d '{"roles":"1,2,3,4,5"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/role");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Content-Type": "application/json",
@@ -760,8 +929,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/current-profile" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/current-profile");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/current-profile" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/current-profile");
 
 let headers = {
     "Accept": "application/json",
@@ -789,11 +958,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT "/api/profile" \
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/api/profile" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"fuga","email":"perferendis","phone":"voluptatem","address":"molestiae"}'
+    -d '{"fullname":"aut","email":"eligendi","phone":"reiciendis","address":"est"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/profile");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/profile");
 
 let headers = {
     "Content-Type": "application/json",
@@ -801,10 +970,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "fuga",
-    "email": "perferendis",
-    "phone": "voluptatem",
-    "address": "molestiae"
+    "fullname": "aut",
+    "email": "eligendi",
+    "phone": "reiciendis",
+    "address": "est"
 }
 
 fetch(url, {
@@ -859,8 +1028,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/user" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/user");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/user" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Accept": "application/json",
@@ -887,11 +1056,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/api/user" \
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/api/user" \
     -H "Content-Type: application/json" \
-    -d '{"name":"neque","fullname":"dolorum","email":"exercitationem","phone":"est","address":"quis","password":"rem","password_confirmation":"voluptatem"}'
+    -d '{"name":"repudiandae","fullname":"sed","email":"ducimus","phone":"et","address":"enim","password":"fuga","password_confirmation":"dolorum"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/user");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Content-Type": "application/json",
@@ -899,13 +1068,13 @@ let headers = {
 }
 
 let body = {
-    "name": "neque",
-    "fullname": "dolorum",
-    "email": "exercitationem",
-    "phone": "est",
-    "address": "quis",
-    "password": "rem",
-    "password_confirmation": "voluptatem"
+    "name": "repudiandae",
+    "fullname": "sed",
+    "email": "ducimus",
+    "phone": "et",
+    "address": "enim",
+    "password": "fuga",
+    "password_confirmation": "dolorum"
 }
 
 fetch(url, {
@@ -978,8 +1147,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/api/user/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/user/1");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/api/user/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/user/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1006,11 +1175,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT "/api/user/1" \
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/api/user/1" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"est","email":"voluptas","phone":"quo","address":"laborum","roles":"1,2"}'
+    -d '{"fullname":"atque","email":"consequuntur","phone":"repudiandae","address":"impedit","roles":"1,2"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/user/1");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/user/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -1018,10 +1187,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "est",
-    "email": "voluptas",
-    "phone": "quo",
-    "address": "laborum",
+    "fullname": "atque",
+    "email": "consequuntur",
+    "phone": "repudiandae",
+    "address": "impedit",
     "roles": "1,2"
 }
 
@@ -1083,11 +1252,11 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/api/user" \
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/api/user" \
     -H "Content-Type: application/json" \
     -d '{"users":"1,2,3,4,5"}'
 </code></pre>
-<pre><code class="language-javascript">const url = new URL("/api/user");
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Content-Type": "application/json",
@@ -1133,8 +1302,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/oauth/authorize" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/authorize");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/oauth/authorize" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1161,8 +1330,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/oauth/authorize" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/authorize");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/oauth/authorize" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1183,8 +1352,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/oauth/authorize" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/authorize");
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/oauth/authorize" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1205,8 +1374,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/oauth/token" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/token");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/oauth/token" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/token");
 
 let headers = {
     "Accept": "application/json",
@@ -1227,8 +1396,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/oauth/tokens" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/tokens");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/oauth/tokens" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1255,8 +1424,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/oauth/tokens/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/tokens/1");
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/oauth/tokens/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/tokens/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1277,8 +1446,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/oauth/token/refresh" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/token/refresh");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/oauth/token/refresh" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/token/refresh");
 
 let headers = {
     "Accept": "application/json",
@@ -1299,8 +1468,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/oauth/clients" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/clients");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/oauth/clients" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/clients");
 
 let headers = {
     "Accept": "application/json",
@@ -1327,8 +1496,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/oauth/clients" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/clients");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/oauth/clients" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/clients");
 
 let headers = {
     "Accept": "application/json",
@@ -1349,8 +1518,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X PUT "/oauth/clients/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/clients/1");
+<pre><code class="language-bash">curl -X PUT "api.enclavei3dev.tk/oauth/clients/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/clients/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1371,8 +1540,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/oauth/clients/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/clients/1");
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/oauth/clients/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/clients/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1393,8 +1562,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/oauth/scopes" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/scopes");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/oauth/scopes" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/scopes");
 
 let headers = {
     "Accept": "application/json",
@@ -1421,8 +1590,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/oauth/personal-access-tokens" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/personal-access-tokens");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/oauth/personal-access-tokens" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1449,8 +1618,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/oauth/personal-access-tokens" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/personal-access-tokens");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/oauth/personal-access-tokens" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1471,8 +1640,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X DELETE "/oauth/personal-access-tokens/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/oauth/personal-access-tokens/1");
+<pre><code class="language-bash">curl -X DELETE "api.enclavei3dev.tk/oauth/personal-access-tokens/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1493,8 +1662,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/login" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/login");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/login" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/login");
 
 let headers = {
     "Accept": "application/json",
@@ -1519,8 +1688,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/login" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/login");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/login" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/login");
 
 let headers = {
     "Accept": "application/json",
@@ -1541,8 +1710,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/logout" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/logout");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/logout" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/logout");
 
 let headers = {
     "Accept": "application/json",
@@ -1563,8 +1732,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/register" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/register");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/register" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/register");
 
 let headers = {
     "Accept": "application/json",
@@ -1589,8 +1758,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/register" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/register");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/register" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/register");
 
 let headers = {
     "Accept": "application/json",
@@ -1611,8 +1780,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/password/reset" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/password/reset");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/password/reset" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/password/reset");
 
 let headers = {
     "Accept": "application/json",
@@ -1637,8 +1806,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/password/email" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/password/email");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/password/email" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/password/email");
 
 let headers = {
     "Accept": "application/json",
@@ -1660,8 +1829,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/password/reset/1" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/password/reset/1");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/password/reset/1" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/password/reset/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1686,8 +1855,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X POST "/password/reset" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/password/reset");
+<pre><code class="language-bash">curl -X POST "api.enclavei3dev.tk/password/reset" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/password/reset");
 
 let headers = {
     "Accept": "application/json",
@@ -1708,8 +1877,8 @@ fetch(url, {
 <blockquote>
 <p>Example request:</p>
 </blockquote>
-<pre><code class="language-bash">curl -X GET -G "/home" </code></pre>
-<pre><code class="language-javascript">const url = new URL("/home");
+<pre><code class="language-bash">curl -X GET -G "api.enclavei3dev.tk/home" </code></pre>
+<pre><code class="language-javascript">const url = new URL("api.enclavei3dev.tk/home");
 
 let headers = {
     "Accept": "application/json",
