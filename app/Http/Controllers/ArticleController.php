@@ -11,13 +11,12 @@ use App\Http\Requests\ArticleRequest;
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the article.
+     * 10 rows/request
      */
     public function index()
     {
-
+        return response()->json(Article::paginate(10));
     }
 
     /**
