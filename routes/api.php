@@ -28,6 +28,7 @@ Route::group(['middleware' => ['cors']], function () {
     * Article routes for Enclave Recruitment web.
     */
     Route::get("article","ArticleController@index");
+    Route::get("article/{id}","ArticleController@show");
 
     Route::group(['middleware' => 'auth:api'], function() {
         /*

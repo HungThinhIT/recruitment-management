@@ -47,14 +47,12 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display an Article by Id.
      *
-     * @param  \App\Article  $article
-     * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show($idArticle)
     {
-        //
+        return response()->json(Article::with(["user","job","category"])->findOrFail($idArticle));
     }
 
     /**
