@@ -45,6 +45,14 @@ class ArticleController extends Controller
         return response()->json([
             'message'=>'Created an article successfully']);
     }
+    /**
+     * Display an Article by Id for Candidate page.
+     *
+     */
+    public function showArticleForCandidatePage($idArticle)
+    {
+        return response()->json(Article::findOrFail($idArticle));
+    }
 
     /**
      * Display an Article by Id.
