@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
+use App\Http\Requests\ArticleRequest;
 
 class ArticleController extends Controller
 {
@@ -33,9 +34,12 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
-        //
+        $request->request->add(["userId"=>$request->user()->id]);
+        Article::create($request->except("created_at","updated_at"));
+        return response()->json([
+            'message'=>'Created an article successfully']);
     }
 
     /**
