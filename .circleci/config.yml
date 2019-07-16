@@ -28,13 +28,13 @@ jobs:
             name: Deploy to product-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                ssh -tt hungthinh@168.63.251.210 ' sudo su && cd api.enclavei3.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout master && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
+                ssh -tt hungthinh@168.63.251.210 ' cd ../api.enclavei3.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout master && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
               fi
         - run:
             name: Deploy to dev-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
-                ssh -tt hungthinh@13.76.3.251 ' sudo su && cd api.enclavei3dev.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout dev && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
+                ssh -tt hungthinh@13.76.3.251 'cd ../api.enclavei3dev.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout dev && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
               fi
         #- run:
             #name: Reset apache
