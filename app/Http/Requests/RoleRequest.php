@@ -22,17 +22,29 @@ class RoleRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
-        return [
-            'name' => 'required|max:255|unique:roles,name,'.$this->id,
-        ];
+    {   
+        switch ($this->method()) {
+            case ('POST'):
+            case ('PUT'):
+            {
+                return [
+                    'name' => 'required|max:255|unique:roles,name,'.$this->id,
+                    'permissions'=>'required|array'
+                ];
+            }
+            case 'DELETE': {
+                return [
+                    'roleId' => 'required|array'
+                ];
+            }                
+            default:
+            break;
+        }
     }
 
     public function messages()
     {
         return [
-            'name.required' => "The name field is required.",
-            'name.max'      => "The name is too long",
             'name.unique'   => "The name is existed",
         ];
     }
