@@ -28,7 +28,7 @@ jobs:
                 git reset --hard HEAD^
                 git pull origin dev
                 composer install
-		php artisan passport:install
+                php artisan passport:install
                 php artisan apidoc:generate
                 exit
                 exit
