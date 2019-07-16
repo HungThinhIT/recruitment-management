@@ -59,12 +59,11 @@ class AuthController extends Controller
      */
     public function changePassword(AuthRequest $request)
     {
-        $user = User::findOrFail($request->user()->id);
-        if (!Hash::check($request->old_password, $user->password))
+        if (!Hash::check($request->old_password, $request->user()->password))
         {
             return response()->json(['message' => "The old password is not correct.",],422);
         }
-        $user->update(["password" => Hash::make($request->password)]);
+        User::findOrFail($request->user()->id)->update(["password" => Hash::make($request->password)]);
         return response()->json(["message" => "Changed password successfully."],200);
     }
 
