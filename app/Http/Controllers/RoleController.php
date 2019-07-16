@@ -75,13 +75,12 @@ class RoleController extends Controller
      * Update the role by ID.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam permissions string required list id of permission for the role. Example: 1,2,3,4,5
+     * @bodyParam permissions array required list id of permission for the role. Example: [1,2,3,4,5]
      */
     public function update(RoleRequest $request, $id)
     {
         Role::findOrFail($id)->update($request->only("name"));
-        $permission_arr = explode (",", request("permissions"));
-        Role::findOrFail($id)->permissions()->sync($permission_arr);
+        Role::findOrFail($id)->permissions()->sync(request("permissions"));
         return response()->json([
            'message'=>'Updated role successfully']);
     }
