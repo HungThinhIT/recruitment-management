@@ -35,7 +35,7 @@ class AuthRequest extends FormRequest
             case 'PUT':
             {
                 return [
-                    'old_password'              => "required|sometimes|min:3|max:50",
+                    'old_password'              => "required|string|min:3|max:50",
                     'password'                  => "required|string|min:3|max:50|confirmed|different:old_password",
                     'password_confirmation'     => "required|string|min:3|max:50",
                 ];
