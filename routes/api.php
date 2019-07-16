@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,7 +17,9 @@ use Illuminate\Http\Request;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
-
+    Route::get('hash/{id}',function($p){
+        return Hash::make($p);
+    });
     /*
     * Job Routes for Enclave Recruitment web.
     */
