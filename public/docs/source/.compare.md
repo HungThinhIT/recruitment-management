@@ -16,25 +16,335 @@ toc_footers:
 # Info
 
 Welcome to the generated API reference.
-[Get Postman Collection](api.enclavei3dev.tk/docs/collection.json)
+[Get Postman Collection](http://api.enclavei3dev.tk/docs/collection.json)
 
 <!-- END_INFO -->
 
 #Article management
+<!-- START_280a28fc53a425f7521a44fe924a3ea6 -->
+## Display a listing of the article.
+
+10 rows/request
+
+> Example request:
+
+```bash
+curl -X GET -G "http://api.enclavei3dev.tk/api/article" 
+```
+
+```javascript
+const url = new URL("http://api.enclavei3dev.tk/api/article");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "title": "Johns, Kautzer and Hessel",
+            "image": "89vge.png",
+            "jobId": 1,
+            "content": "Nesciunt veritatis et saepe voluptatem facilis culpa quo. Dicta quas fuga veniam eveniet a aut.",
+            "userId": 5,
+            "catId": 2,
+            "created_at": "2019-07-16 04:04:02",
+            "updated_at": "2019-07-16 04:04:02",
+            "user": {
+                "id": 5,
+                "name": "oreilly.marguerite",
+                "fullname": "Pearlie Breitenberg II",
+                "email": "hwilliamson@example.net",
+                "phone": "+13843638849",
+                "address": "62627 Beulah Creek Suite 991\nGersonton, ID 51912",
+                "image": "wZMhw.png",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "job": {
+                "id": 1,
+                "name": "Khalid Gusikowski",
+                "description": "Quaerat rerum voluptatibus delectus dignissimos. Maxime aut inventore nam cum ratione molestiae. Odio optio fugiat laudantium aut iste quo.",
+                "address": "6402 Rath Pike Apt. 922\nSouth Magdalenfurt, MD 83373-1364",
+                "position": "Tester",
+                "salary": "500$ - 600$",
+                "status": "Full-time",
+                "experience": "2-3 years",
+                "amount": 19,
+                "publishedOn": "2019-07-14 00:23:55",
+                "deadline": "2019-06-24 05:50:58",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "category": {
+                "id": 2,
+                "name": "Program",
+                "formatArticle": "<p><\/p>"
+            }
+        },
+        {
+            "id": 2,
+            "title": "Eichmann-Abshire",
+            "image": "9GTSp.png",
+            "jobId": 3,
+            "content": "Aut ad ipsam eligendi est ad. Illum occaecati voluptatibus exercitationem ut vero laudantium. Amet dolores non officiis velit placeat architecto. Dolor adipisci reiciendis est accusantium.",
+            "userId": 1,
+            "catId": 1,
+            "created_at": "2019-07-16 04:04:03",
+            "updated_at": "2019-07-16 04:04:03",
+            "user": {
+                "id": 1,
+                "name": "admin",
+                "fullname": "Admin",
+                "email": "admin@gmail.com",
+                "phone": "0123456789",
+                "address": "453-455 Hoàng Diệu, TP Đà Nẵng",
+                "image": "avt_default_profile.png",
+                "created_at": null,
+                "updated_at": "2019-07-16 08:14:26"
+            },
+            "job": {
+                "id": 3,
+                "name": "Dewitt Heathcote",
+                "description": "Est velit in quidem nostrum facere aperiam. Voluptas est eligendi ex est explicabo alias est. Est tempore tenetur earum. Doloremque qui molestiae vero voluptatibus unde mollitia.",
+                "address": "7977 Katelyn Heights Suite 265\nDeronport, SD 41387-3407",
+                "position": "Tester",
+                "salary": "500$ - 600$",
+                "status": "Full-time",
+                "experience": "2-3 years",
+                "amount": 15,
+                "publishedOn": "2019-06-30 03:03:23",
+                "deadline": "2019-07-11 04:51:22",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "category": {
+                "id": 1,
+                "name": "Recruitment",
+                "formatArticle": "<!doctype html>\r\n<html lang=\"en\">\r\n\r\n<head>\r\n  <title>Recruitment Format<\/title>\r\n  <meta charset=\"utf-8\">\r\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\r\n  <link rel=\"stylesheet\" href=\"css\/custom-bs.css\">\r\n  <link rel=\"stylesheet\" href=\"css\/bootstrap-select.min.css\">\r\n  <link rel=\"stylesheet\" href=\"fonts\/icomoon\/style.css\">\r\n  <link rel=\"stylesheet\" href=\"fonts\/line-icons\/style.css\">\r\n  <link rel=\"stylesheet\" href=\"css\/style.css\">\r\n<\/head>\r\n\r\n<body id=\"top\">\r\n  <div class=\"site-wrap\">    \r\n    <section class=\"site-section\">\r\n      <div class=\"container\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-8\">\r\n            <div class=\"mb-5\">\r\n              <h3 class=\"h5 d-flex align-items-center mb-4 text-primary\"><span class=\"icon-align-left mr-3\"><\/span>Job\r\n                Description<\/h3>\r\n                <p>Gaming Audio Headset Engineer<\/p>\r\n                <p>Enclave, a company of and by software engineering professionals. We have been providing outstanding quality for software engineering and software testing services since 2007. Basing on demanding features collecting from many big names in IT and ITO industries, we – by ourselves – have created innovative working environment and effective solutions that are now available to all-sized companies.<\/p>\r\n              <p>We are looking for an experience engineer for the gaming audio headset project.<\/p>\r\n            <\/div>\r\n            <div class=\"mb-5\">\r\n              <h3 class=\"h5 d-flex align-items-center mb-4 text-primary\"><span\r\n                  class=\"icon-rocket mr-3\"><\/span>Responsibilities<\/h3>\r\n              <ul class=\"list-unstyled m-0 p-0\">\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Work with the audio team to implement new features in new products.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Work closely with the audio design team to improve our gaming headset audio.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Work with other engineers to interface audio systems to other game systems.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Design, document, implement audio gaming headsets to achieve the team’s vision.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>DExpand our audio technology to enable our designers to create world class game audio.<\/span><\/li>\r\n              <\/ul>\r\n            <\/div>\r\n    \r\n            <div class=\"mb-5\">\r\n              <h3 class=\"h5 d-flex align-items-center mb-4 text-primary\"><span class=\"icon-book mr-3\"><\/span>Qualifications<\/h3>\r\n              <ul class=\"list-unstyled m-0 p-0\">\r\n                <h4 class=\"h5 d-flex align-items-center mb-4 text-primary\"><\/span>Minimum Qualifications:<\/h4>\r\n\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>3+ years as an Audio\/Sound Software Engineer.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Experience with Windows Core Audio APIs.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Windows audio driver experience.<\/span><\/li>\r\n\r\n                <h4 class=\"h5 d-flex align-items-center mb-4 text-primary\"><\/span>Preferred Qualifications:<\/h4>\r\n\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Fluent in C++, strong C# skills..<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>BS\/BEng in Math, CS or equivalent.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Experience with Universal Windows Drivers for Audio.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Technical knowledge of the principles of sound and audio manipulation.<\/span><\/li>\r\n\r\n                    <h4 class=\"h5 d-flex align-items-center mb-4 text-primary\"><\/span>Bonus skills:<\/h4>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Windows Spatial Audio Session API (SASAPI) Experience.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Python.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>3D Math.<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Knowledge and\/or experience of audio DSP technology.<\/span><\/li>\r\n              <\/ul>\r\n            <\/div>\r\n    \r\n            <div class=\"mb-5\">\r\n              <h3 class=\"h5 d-flex align-items-center mb-4 text-primary\"><span class=\"icon-turned_in mr-3\"><\/span>Other\r\n                Benifits<\/h3>\r\n              <ul class=\"list-unstyled m-0 p-0\">\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Necessitatibus quibusdam facilis<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Velit\r\n                    unde aliquam et voluptas reiciendis non sapiente labore<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Commodi quae ipsum quas est itaque<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Lorem\r\n                    ipsum dolor sit amet, consectetur adipisicing elit<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Deleniti asperiores blanditiis nihil quia\r\n                    officiis dolor<\/span><\/li>\r\n              <\/ul>\r\n\r\n               <div class=\"mb-5\">\r\n              <ul class=\"list-unstyled m-0 p-0\">\r\n                <h5>Please, submit your CV at jobs@enclave.vn. Or you can contact us via below contact for further information:<\/h5>  \r\n                <li class=\"d-flex align-items-start mb-2\"><span\r\n                    class=\"icon-check_circle mr-2 text-muted\"><\/span><span>HR Hotline: 0932 516 721 (Sunny) or 0905 630 209 (Rosie)<\/span><\/li>\r\n                <li class=\"d-flex align-items-start mb-2\"><span class=\"icon-check_circle mr-2 text-muted\"><\/span><span>Skype: Enclave Jobs<\/span><\/li>\r\n              <\/ul>\r\n            <\/div>\r\n                \r\n          <\/div>\r\n        <\/div>\r\n      <\/div>\r\n    <\/section>\r\n  <\/div>\r\n<\/body>\r\n\r\n<\/html>"
+            }
+        },
+        {
+            "id": 4,
+            "title": "Ankunding-McKenzie",
+            "image": "2R3Sp.png",
+            "jobId": 1,
+            "content": "Consectetur iste enim itaque cum quasi sit aut aperiam. Dolores rerum quod non quo earum et aliquid. Impedit qui omnis eligendi omnis consequatur omnis iste. Quis ut et id sapiente et vel.",
+            "userId": 2,
+            "catId": 2,
+            "created_at": "2019-07-16 04:04:03",
+            "updated_at": "2019-07-16 04:04:03",
+            "user": {
+                "id": 2,
+                "name": "ephraim58",
+                "fullname": "Ashly Robel IV",
+                "email": "triston27@example.org",
+                "phone": "915-542-4656 x049",
+                "address": "2455 Keeley Coves\nNorth Bernardohaven, NY 62656-4192",
+                "image": "LFck2.png",
+                "created_at": "2019-07-16 04:03:56",
+                "updated_at": "2019-07-16 04:03:56"
+            },
+            "job": {
+                "id": 1,
+                "name": "Khalid Gusikowski",
+                "description": "Quaerat rerum voluptatibus delectus dignissimos. Maxime aut inventore nam cum ratione molestiae. Odio optio fugiat laudantium aut iste quo.",
+                "address": "6402 Rath Pike Apt. 922\nSouth Magdalenfurt, MD 83373-1364",
+                "position": "Tester",
+                "salary": "500$ - 600$",
+                "status": "Full-time",
+                "experience": "2-3 years",
+                "amount": 19,
+                "publishedOn": "2019-07-14 00:23:55",
+                "deadline": "2019-06-24 05:50:58",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "category": {
+                "id": 2,
+                "name": "Program",
+                "formatArticle": "<p><\/p>"
+            }
+        },
+        {
+            "id": 5,
+            "title": "Cruickshank-Purdy",
+            "image": "JzlcH.png",
+            "jobId": 4,
+            "content": "In non vel mollitia deleniti nemo. Reprehenderit deserunt nesciunt mollitia vel repudiandae. Quos quasi aut fugit exercitationem et quaerat.",
+            "userId": 5,
+            "catId": 2,
+            "created_at": "2019-07-16 04:04:03",
+            "updated_at": "2019-07-16 04:04:03",
+            "user": {
+                "id": 5,
+                "name": "oreilly.marguerite",
+                "fullname": "Pearlie Breitenberg II",
+                "email": "hwilliamson@example.net",
+                "phone": "+13843638849",
+                "address": "62627 Beulah Creek Suite 991\nGersonton, ID 51912",
+                "image": "wZMhw.png",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "job": {
+                "id": 4,
+                "name": "Cheyenne McGlynn",
+                "description": "Cupiditate at quia aperiam molestias. Nihil ipsa numquam eligendi soluta ut nesciunt. Reprehenderit dolor voluptatibus laborum tempora voluptates at.",
+                "address": "5368 Genesis Turnpike\nKreigerside, NC 50002-3194",
+                "position": "Tester",
+                "salary": "500$ - 600$",
+                "status": "Full-time",
+                "experience": "2-3 years",
+                "amount": 27,
+                "publishedOn": "2019-07-08 01:48:34",
+                "deadline": "2019-07-10 17:26:47",
+                "created_at": "2019-07-16 04:03:57",
+                "updated_at": "2019-07-16 04:03:57"
+            },
+            "category": {
+                "id": 2,
+                "name": "Program",
+                "formatArticle": "<p><\/p>"
+            }
+        }
+    ],
+    "first_page_url": "http:\/\/localhost\/api\/article?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http:\/\/localhost\/api\/article?page=1",
+    "next_page_url": null,
+    "path": "http:\/\/localhost\/api\/article",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 4,
+    "total": 4
+}
+```
+
+### HTTP Request
+`GET api/article`
+
+
+<!-- END_280a28fc53a425f7521a44fe924a3ea6 -->
+
+<!-- START_81d67ae333e049e406f985ba31ff0894 -->
+## Display an Article by Id for Candidate page.
+
+> Example request:
+
+```bash
+curl -X GET -G "http://api.enclavei3dev.tk/api/article-web/1" 
+```
+
+```javascript
+const url = new URL("http://api.enclavei3dev.tk/api/article-web/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "id": 1,
+    "title": "Johns, Kautzer and Hessel",
+    "image": "89vge.png",
+    "jobId": 1,
+    "content": "Nesciunt veritatis et saepe voluptatem facilis culpa quo. Dicta quas fuga veniam eveniet a aut.",
+    "userId": 5,
+    "catId": 2,
+    "created_at": "2019-07-16 04:04:02",
+    "updated_at": "2019-07-16 04:04:02"
+}
+```
+
+### HTTP Request
+`GET api/article-web/{id}`
+
+
+<!-- END_81d67ae333e049e406f985ba31ff0894 -->
+
+<!-- START_a92651a991429ff89af216ff17612d94 -->
+## Display an Article by Id.
+
+> Example request:
+
+```bash
+curl -X GET -G "http://api.enclavei3dev.tk/api/article/1" 
+```
+
+```javascript
+const url = new URL("http://api.enclavei3dev.tk/api/article/1");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
+
+### HTTP Request
+`GET api/article/{id}`
+
+
+<!-- END_a92651a991429ff89af216ff17612d94 -->
+
 <!-- START_706a660bd426dfde8ef5e730869db3f8 -->
 ## Create an article.
 
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/api/article" \
+curl -X POST "http://api.enclavei3dev.tk/api/article" \
     -H "Content-Type: application/json" \
-    -d '{"title":"necessitatibus","image":"officia","jobId":"ratione","content":"provident","userId":"non","catId":"harum"}'
+    -d '{"title":"et","image":"molestiae","jobId":"incidunt","content":"dolorem","catId":"voluptas"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/article");
+const url = new URL("http://api.enclavei3dev.tk/api/article");
 
 let headers = {
     "Content-Type": "application/json",
@@ -42,12 +352,11 @@ let headers = {
 }
 
 let body = {
-    "title": "necessitatibus",
-    "image": "officia",
-    "jobId": "ratione",
-    "content": "provident",
-    "userId": "non",
-    "catId": "harum"
+    "title": "et",
+    "image": "molestiae",
+    "jobId": "incidunt",
+    "content": "dolorem",
+    "catId": "voluptas"
 }
 
 fetch(url, {
@@ -72,7 +381,6 @@ Parameter | Type | Status | Description
     image | string |  optional  | The image of the article.
     jobId | numeric |  required  | The jobId of the article.
     content | string |  required  | The content of the article.
-    userId | string |  required  | The userId of the article.
     catId | string |  required  | The catId of the article.
 
 <!-- END_706a660bd426dfde8ef5e730869db3f8 -->
@@ -83,14 +391,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/api/article/1" \
+curl -X PUT "http://api.enclavei3dev.tk/api/article/1" \
     -H "Content-Type: application/json" \
-    -d '{"title":"laudantium","image":"perspiciatis","jobId":"et","content":"similique","userId":"adipisci","catId":"officia"}'
+    -d '{"title":"laudantium","image":"velit","jobId":"nihil","content":"nisi","catId":"aut"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/article/1");
+const url = new URL("http://api.enclavei3dev.tk/api/article/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -99,11 +407,10 @@ let headers = {
 
 let body = {
     "title": "laudantium",
-    "image": "perspiciatis",
-    "jobId": "et",
-    "content": "similique",
-    "userId": "adipisci",
-    "catId": "officia"
+    "image": "velit",
+    "jobId": "nihil",
+    "content": "nisi",
+    "catId": "aut"
 }
 
 fetch(url, {
@@ -128,10 +435,55 @@ Parameter | Type | Status | Description
     image | string |  optional  | The image of the article.
     jobId | numeric |  required  | The jobId of the article.
     content | string |  required  | The content of the article.
-    userId | string |  required  | The userId of the article.
     catId | string |  required  | The catId of the article.
 
 <!-- END_6ff7ff26b034677d2a797186d18b3acf -->
+
+<!-- START_9e21e276a45e8d02a85f6129022896eb -->
+## Delete the article by Id.
+
+> Example request:
+
+```bash
+curl -X DELETE "http://api.enclavei3dev.tk/api/article" \
+    -H "Content-Type: application/json" \
+    -d '{"articleId":"1,2,3,4,5"}'
+
+```
+
+```javascript
+const url = new URL("http://api.enclavei3dev.tk/api/article");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "articleId": "1,2,3,4,5"
+}
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`DELETE api/article`
+
+#### Body Parameters
+
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    articleId | string |  required  | The id/list id of job.
+
+<!-- END_9e21e276a45e8d02a85f6129022896eb -->
 
 #Auth management
 <!-- START_c3fa189a6c95ca36ad6ac4791a873d23 -->
@@ -140,14 +492,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/api/login" \
+curl -X POST "http://api.enclavei3dev.tk/api/login" \
     -H "Content-Type: application/json" \
-    -d '{"name":"asperiores","password":"a"}'
+    -d '{"name":"id","password":"occaecati"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/login");
+const url = new URL("http://api.enclavei3dev.tk/api/login");
 
 let headers = {
     "Content-Type": "application/json",
@@ -155,8 +507,8 @@ let headers = {
 }
 
 let body = {
-    "name": "asperiores",
-    "password": "a"
+    "name": "id",
+    "password": "occaecati"
 }
 
 fetch(url, {
@@ -182,6 +534,56 @@ Parameter | Type | Status | Description
 
 <!-- END_c3fa189a6c95ca36ad6ac4791a873d23 -->
 
+<!-- START_3d174376b769283a96757e33dc0e8f64 -->
+## Change password.
+
+> Example request:
+
+```bash
+curl -X PUT "http://api.enclavei3dev.tk/api/change-password" \
+    -H "Content-Type: application/json" \
+    -d '{"old_password":"ut","password":"modi","password_confirmation":"qui"}'
+
+```
+
+```javascript
+const url = new URL("http://api.enclavei3dev.tk/api/change-password");
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+}
+
+let body = {
+    "old_password": "ut",
+    "password": "modi",
+    "password_confirmation": "qui"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+
+### HTTP Request
+`PUT api/change-password`
+
+#### Body Parameters
+
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    old_password | string |  required  | The old password.
+    password | string |  required  | The new new password.
+    password_confirmation | string |  required  | The password for confirm.
+
+<!-- END_3d174376b769283a96757e33dc0e8f64 -->
+
 <!-- START_00e7e21641f05de650dbe13f242c6f2c -->
 ## Logout.
 
@@ -190,11 +592,11 @@ Need access_token to logout.
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/logout" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/logout" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/logout");
+const url = new URL("http://api.enclavei3dev.tk/api/logout");
 
 let headers = {
     "Accept": "application/json",
@@ -233,11 +635,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/job" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/job" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job");
+const url = new URL("http://api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Accept": "application/json",
@@ -273,11 +675,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/job-web/1" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/job-web/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job-web/1");
+const url = new URL("http://api.enclavei3dev.tk/api/job-web/1");
 
 let headers = {
     "Accept": "application/json",
@@ -298,18 +700,18 @@ fetch(url, {
 ```json
 {
     "id": 1,
-    "name": "Demario Hickle",
-    "description": "Sint saepe dignissimos et dolor rerum. Dolore quos sequi voluptas qui quidem. Repudiandae id ipsam deserunt ut rerum ad. Cupiditate minima doloremque vitae ut. Ab et omnis non eligendi id eum.",
-    "address": "59726 Hans Circles Apt. 862\nLake Laurenbury, NY 19272",
+    "name": "Khalid Gusikowski",
+    "description": "Quaerat rerum voluptatibus delectus dignissimos. Maxime aut inventore nam cum ratione molestiae. Odio optio fugiat laudantium aut iste quo.",
+    "address": "6402 Rath Pike Apt. 922\nSouth Magdalenfurt, MD 83373-1364",
     "position": "Tester",
     "salary": "500$ - 600$",
     "status": "Full-time",
     "experience": "2-3 years",
-    "amount": 10,
-    "publishedOn": "2019-07-07 14:11:10",
-    "deadline": "2019-06-29 18:57:41",
-    "created_at": "2019-07-09 07:57:09",
-    "updated_at": "2019-07-09 07:57:09"
+    "amount": 19,
+    "publishedOn": "2019-07-14 00:23:55",
+    "deadline": "2019-06-24 05:50:58",
+    "created_at": "2019-07-16 04:03:57",
+    "updated_at": "2019-07-16 04:03:57"
 }
 ```
 
@@ -325,11 +727,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/job/1" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/job/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job/1");
+const url = new URL("http://api.enclavei3dev.tk/api/job/1");
 
 let headers = {
     "Accept": "application/json",
@@ -365,14 +767,14 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/api/job" \
+curl -X POST "http://api.enclavei3dev.tk/api/job" \
     -H "Content-Type: application/json" \
-    -d '{"name":"voluptatum","description":"enim","address":"fugit","position":"ut","salary":"voluptas","status":"hic","experience":"et","amount":1,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"aut","description":"vel","address":"non","position":"corporis","salary":"aut","status":"voluptas","experience":"iusto","amount":1,"publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job");
+const url = new URL("http://api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Content-Type": "application/json",
@@ -380,13 +782,13 @@ let headers = {
 }
 
 let body = {
-    "name": "voluptatum",
-    "description": "enim",
-    "address": "fugit",
-    "position": "ut",
-    "salary": "voluptas",
-    "status": "hic",
-    "experience": "et",
+    "name": "aut",
+    "description": "vel",
+    "address": "non",
+    "position": "corporis",
+    "salary": "aut",
+    "status": "voluptas",
+    "experience": "iusto",
     "amount": 1,
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
@@ -429,14 +831,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/api/job/1" \
+curl -X PUT "http://api.enclavei3dev.tk/api/job/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"eligendi","description":"nihil","address":"consectetur","position":"voluptatum","salary":"incidunt","status":"ut","experience":"quidem","amount":"totam","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
+    -d '{"name":"vel","description":"quis","address":"quam","position":"a","salary":"excepturi","status":"saepe","experience":"repellat","amount":"sed","publishedOn":"2019-07-10 00:00:00","deadline":"2019-07-10 00:00:00"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job/1");
+const url = new URL("http://api.enclavei3dev.tk/api/job/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -444,14 +846,14 @@ let headers = {
 }
 
 let body = {
-    "name": "eligendi",
-    "description": "nihil",
-    "address": "consectetur",
-    "position": "voluptatum",
-    "salary": "incidunt",
-    "status": "ut",
-    "experience": "quidem",
-    "amount": "totam",
+    "name": "vel",
+    "description": "quis",
+    "address": "quam",
+    "position": "a",
+    "salary": "excepturi",
+    "status": "saepe",
+    "experience": "repellat",
+    "amount": "sed",
     "publishedOn": "2019-07-10 00:00:00",
     "deadline": "2019-07-10 00:00:00"
 }
@@ -493,14 +895,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/api/job" \
+curl -X DELETE "http://api.enclavei3dev.tk/api/job" \
     -H "Content-Type: application/json" \
-    -d '{"jobsID":"1,2,3,4,5"}'
+    -d '{"jobID":"1,2,3,4,5"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/job");
+const url = new URL("http://api.enclavei3dev.tk/api/job");
 
 let headers = {
     "Content-Type": "application/json",
@@ -508,7 +910,7 @@ let headers = {
 }
 
 let body = {
-    "jobsID": "1,2,3,4,5"
+    "jobID": "1,2,3,4,5"
 }
 
 fetch(url, {
@@ -529,7 +931,7 @@ fetch(url, {
 
 Parameter | Type | Status | Description
 --------- | ------- | ------- | ------- | -----------
-    jobsID | string |  required  | The id/list id of job.
+    jobID | string |  required  | The id/list id of job.
 
 <!-- END_bb68871d1fc0b4e5051d021ad0764440 -->
 
@@ -541,11 +943,11 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/permission" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/permission" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/permission");
+const url = new URL("http://api.enclavei3dev.tk/api/permission");
 
 let headers = {
     "Accept": "application/json",
@@ -584,11 +986,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/role" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/role" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/role");
+const url = new URL("http://api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Accept": "application/json",
@@ -624,11 +1026,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/role/1" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/role/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/role/1");
+const url = new URL("http://api.enclavei3dev.tk/api/role/1");
 
 let headers = {
     "Accept": "application/json",
@@ -664,14 +1066,14 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/api/role" \
+curl -X POST "http://api.enclavei3dev.tk/api/role" \
     -H "Content-Type: application/json" \
-    -d '{"name":"culpa","permissions":"1,2"}'
+    -d '{"name":"autem","permissions":"1,2"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/role");
+const url = new URL("http://api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Content-Type": "application/json",
@@ -679,7 +1081,7 @@ let headers = {
 }
 
 let body = {
-    "name": "culpa",
+    "name": "autem",
     "permissions": "1,2"
 }
 
@@ -712,14 +1114,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/api/role/1" \
+curl -X PUT "http://api.enclavei3dev.tk/api/role/1" \
     -H "Content-Type: application/json" \
-    -d '{"name":"quam","permissions":"1,2,3,4,5"}'
+    -d '{"name":"ut","permissions":"1,2,3,4,5"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/role/1");
+const url = new URL("http://api.enclavei3dev.tk/api/role/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -727,7 +1129,7 @@ let headers = {
 }
 
 let body = {
-    "name": "quam",
+    "name": "ut",
     "permissions": "1,2,3,4,5"
 }
 
@@ -760,14 +1162,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/api/role" \
+curl -X DELETE "http://api.enclavei3dev.tk/api/role" \
     -H "Content-Type: application/json" \
     -d '{"roles":"1,2,3,4,5"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/role");
+const url = new URL("http://api.enclavei3dev.tk/api/role");
 
 let headers = {
     "Content-Type": "application/json",
@@ -807,11 +1209,11 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/current-profile" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/current-profile" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/current-profile");
+const url = new URL("http://api.enclavei3dev.tk/api/current-profile");
 
 let headers = {
     "Accept": "application/json",
@@ -849,14 +1251,14 @@ Update the profile.
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/api/profile" \
+curl -X PUT "http://api.enclavei3dev.tk/api/profile" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"aut","email":"eligendi","phone":"reiciendis","address":"est"}'
+    -d '{"fullname":"officia","email":"est","phone":"saepe","address":"saepe"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/profile");
+const url = new URL("http://api.enclavei3dev.tk/api/profile");
 
 let headers = {
     "Content-Type": "application/json",
@@ -864,10 +1266,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "aut",
-    "email": "eligendi",
-    "phone": "reiciendis",
-    "address": "est"
+    "fullname": "officia",
+    "email": "est",
+    "phone": "saepe",
+    "address": "saepe"
 }
 
 fetch(url, {
@@ -901,11 +1303,11 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/user" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/user" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/user");
+const url = new URL("http://api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Accept": "application/json",
@@ -941,14 +1343,14 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/api/user" \
+curl -X POST "http://api.enclavei3dev.tk/api/user" \
     -H "Content-Type: application/json" \
-    -d '{"name":"repudiandae","fullname":"sed","email":"ducimus","phone":"et","address":"enim","password":"fuga","password_confirmation":"dolorum"}'
+    -d '{"name":"sunt","fullname":"est","email":"perspiciatis","phone":"dicta","address":"laboriosam","password":"omnis","password_confirmation":"ad"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/user");
+const url = new URL("http://api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Content-Type": "application/json",
@@ -956,13 +1358,13 @@ let headers = {
 }
 
 let body = {
-    "name": "repudiandae",
-    "fullname": "sed",
-    "email": "ducimus",
-    "phone": "et",
-    "address": "enim",
-    "password": "fuga",
-    "password_confirmation": "dolorum"
+    "name": "sunt",
+    "fullname": "est",
+    "email": "perspiciatis",
+    "phone": "dicta",
+    "address": "laboriosam",
+    "password": "omnis",
+    "password_confirmation": "ad"
 }
 
 fetch(url, {
@@ -999,11 +1401,11 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/api/user/1" 
+curl -X GET -G "http://api.enclavei3dev.tk/api/user/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/user/1");
+const url = new URL("http://api.enclavei3dev.tk/api/user/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1039,14 +1441,14 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/api/user/1" \
+curl -X PUT "http://api.enclavei3dev.tk/api/user/1" \
     -H "Content-Type: application/json" \
-    -d '{"fullname":"atque","email":"consequuntur","phone":"repudiandae","address":"impedit","roles":"1,2"}'
+    -d '{"fullname":"sed","email":"sit","phone":"sit","address":"odit","roles":"1,2"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/user/1");
+const url = new URL("http://api.enclavei3dev.tk/api/user/1");
 
 let headers = {
     "Content-Type": "application/json",
@@ -1054,10 +1456,10 @@ let headers = {
 }
 
 let body = {
-    "fullname": "atque",
-    "email": "consequuntur",
-    "phone": "repudiandae",
-    "address": "impedit",
+    "fullname": "sed",
+    "email": "sit",
+    "phone": "sit",
+    "address": "odit",
     "roles": "1,2"
 }
 
@@ -1093,14 +1495,14 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/api/user" \
+curl -X DELETE "http://api.enclavei3dev.tk/api/user" \
     -H "Content-Type: application/json" \
     -d '{"users":"1,2,3,4,5"}'
 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/api/user");
+const url = new URL("http://api.enclavei3dev.tk/api/user");
 
 let headers = {
     "Content-Type": "application/json",
@@ -1140,11 +1542,11 @@ Parameter | Type | Status | Description
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/oauth/authorize" 
+curl -X GET -G "http://api.enclavei3dev.tk/oauth/authorize" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/authorize");
+const url = new URL("http://api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1180,11 +1582,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/oauth/authorize" 
+curl -X POST "http://api.enclavei3dev.tk/oauth/authorize" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/authorize");
+const url = new URL("http://api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1213,11 +1615,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/oauth/authorize" 
+curl -X DELETE "http://api.enclavei3dev.tk/oauth/authorize" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/authorize");
+const url = new URL("http://api.enclavei3dev.tk/oauth/authorize");
 
 let headers = {
     "Accept": "application/json",
@@ -1246,11 +1648,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/oauth/token" 
+curl -X POST "http://api.enclavei3dev.tk/oauth/token" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/token");
+const url = new URL("http://api.enclavei3dev.tk/oauth/token");
 
 let headers = {
     "Accept": "application/json",
@@ -1279,11 +1681,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/oauth/tokens" 
+curl -X GET -G "http://api.enclavei3dev.tk/oauth/tokens" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/tokens");
+const url = new URL("http://api.enclavei3dev.tk/oauth/tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1319,11 +1721,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/oauth/tokens/1" 
+curl -X DELETE "http://api.enclavei3dev.tk/oauth/tokens/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/tokens/1");
+const url = new URL("http://api.enclavei3dev.tk/oauth/tokens/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1352,11 +1754,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/oauth/token/refresh" 
+curl -X POST "http://api.enclavei3dev.tk/oauth/token/refresh" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/token/refresh");
+const url = new URL("http://api.enclavei3dev.tk/oauth/token/refresh");
 
 let headers = {
     "Accept": "application/json",
@@ -1385,11 +1787,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/oauth/clients" 
+curl -X GET -G "http://api.enclavei3dev.tk/oauth/clients" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/clients");
+const url = new URL("http://api.enclavei3dev.tk/oauth/clients");
 
 let headers = {
     "Accept": "application/json",
@@ -1425,11 +1827,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/oauth/clients" 
+curl -X POST "http://api.enclavei3dev.tk/oauth/clients" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/clients");
+const url = new URL("http://api.enclavei3dev.tk/oauth/clients");
 
 let headers = {
     "Accept": "application/json",
@@ -1458,11 +1860,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X PUT "api.enclavei3dev.tk/oauth/clients/1" 
+curl -X PUT "http://api.enclavei3dev.tk/oauth/clients/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/clients/1");
+const url = new URL("http://api.enclavei3dev.tk/oauth/clients/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1491,11 +1893,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/oauth/clients/1" 
+curl -X DELETE "http://api.enclavei3dev.tk/oauth/clients/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/clients/1");
+const url = new URL("http://api.enclavei3dev.tk/oauth/clients/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1524,11 +1926,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/oauth/scopes" 
+curl -X GET -G "http://api.enclavei3dev.tk/oauth/scopes" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/scopes");
+const url = new URL("http://api.enclavei3dev.tk/oauth/scopes");
 
 let headers = {
     "Accept": "application/json",
@@ -1564,11 +1966,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/oauth/personal-access-tokens" 
+curl -X GET -G "http://api.enclavei3dev.tk/oauth/personal-access-tokens" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens");
+const url = new URL("http://api.enclavei3dev.tk/oauth/personal-access-tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1604,11 +2006,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/oauth/personal-access-tokens" 
+curl -X POST "http://api.enclavei3dev.tk/oauth/personal-access-tokens" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens");
+const url = new URL("http://api.enclavei3dev.tk/oauth/personal-access-tokens");
 
 let headers = {
     "Accept": "application/json",
@@ -1637,11 +2039,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X DELETE "api.enclavei3dev.tk/oauth/personal-access-tokens/1" 
+curl -X DELETE "http://api.enclavei3dev.tk/oauth/personal-access-tokens/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/oauth/personal-access-tokens/1");
+const url = new URL("http://api.enclavei3dev.tk/oauth/personal-access-tokens/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1670,11 +2072,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/login" 
+curl -X GET -G "http://api.enclavei3dev.tk/login" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/login");
+const url = new URL("http://api.enclavei3dev.tk/login");
 
 let headers = {
     "Accept": "application/json",
@@ -1708,11 +2110,11 @@ null
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/login" 
+curl -X POST "http://api.enclavei3dev.tk/login" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/login");
+const url = new URL("http://api.enclavei3dev.tk/login");
 
 let headers = {
     "Accept": "application/json",
@@ -1741,11 +2143,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/logout" 
+curl -X POST "http://api.enclavei3dev.tk/logout" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/logout");
+const url = new URL("http://api.enclavei3dev.tk/logout");
 
 let headers = {
     "Accept": "application/json",
@@ -1774,11 +2176,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/register" 
+curl -X GET -G "http://api.enclavei3dev.tk/register" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/register");
+const url = new URL("http://api.enclavei3dev.tk/register");
 
 let headers = {
     "Accept": "application/json",
@@ -1812,11 +2214,11 @@ null
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/register" 
+curl -X POST "http://api.enclavei3dev.tk/register" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/register");
+const url = new URL("http://api.enclavei3dev.tk/register");
 
 let headers = {
     "Accept": "application/json",
@@ -1845,11 +2247,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/password/reset" 
+curl -X GET -G "http://api.enclavei3dev.tk/password/reset" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/password/reset");
+const url = new URL("http://api.enclavei3dev.tk/password/reset");
 
 let headers = {
     "Accept": "application/json",
@@ -1883,11 +2285,11 @@ null
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/password/email" 
+curl -X POST "http://api.enclavei3dev.tk/password/email" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/password/email");
+const url = new URL("http://api.enclavei3dev.tk/password/email");
 
 let headers = {
     "Accept": "application/json",
@@ -1918,11 +2320,11 @@ If no token is present, display the link request form.
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/password/reset/1" 
+curl -X GET -G "http://api.enclavei3dev.tk/password/reset/1" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/password/reset/1");
+const url = new URL("http://api.enclavei3dev.tk/password/reset/1");
 
 let headers = {
     "Accept": "application/json",
@@ -1956,11 +2358,11 @@ null
 > Example request:
 
 ```bash
-curl -X POST "api.enclavei3dev.tk/password/reset" 
+curl -X POST "http://api.enclavei3dev.tk/password/reset" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/password/reset");
+const url = new URL("http://api.enclavei3dev.tk/password/reset");
 
 let headers = {
     "Accept": "application/json",
@@ -1989,11 +2391,11 @@ fetch(url, {
 > Example request:
 
 ```bash
-curl -X GET -G "api.enclavei3dev.tk/home" 
+curl -X GET -G "http://api.enclavei3dev.tk/home" 
 ```
 
 ```javascript
-const url = new URL("api.enclavei3dev.tk/home");
+const url = new URL("http://api.enclavei3dev.tk/home");
 
 let headers = {
     "Accept": "application/json",
