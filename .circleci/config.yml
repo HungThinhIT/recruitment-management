@@ -18,8 +18,8 @@ jobs:
             fingerprints:
               - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
         - run:
-              name: fix host authenticity for production server
-              command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
+            name: fix host authenticity for production server
+            command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
         - run:
             name: fix host authenticity for dev server
             command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
@@ -28,13 +28,13 @@ jobs:
             name: Deploy to product-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                ssh -tt hungthinh@168.63.251.210 'cd ../api.enclavei3.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout master && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
+                ssh -tt hungthinh@168.63.251.210 ' sudo su && cd api.enclavei3.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout master && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
               fi
         - run:
             name: Deploy to dev-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
-                ssh -tt hungthinh@13.76.3.251 'cd ../api.enclavei3dev.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout dev && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
+                ssh -tt hungthinh@13.76.3.251 ' sudo su && cd api.enclavei3dev.tk/public_html/recruitment-management/ && git reset --hard HEAD^ && git fetch origin && git checkout dev && composer install && php artisan migrate && php artisan db:seed && php artisan passport:install && php artisan apidoc:generate && exit && exit'
               fi
         #- run:
             #name: Reset apache
