@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Collection;
 
 use App\Candidate;
 use Illuminate\Http\Request;
@@ -39,14 +40,22 @@ class CandidateController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Candidate  $candidate
-     * @return \Illuminate\Http\Response
+     * Show a candidate by ID
      */
-    public function show(Candidate $candidate)
+    public function show($candidateID)
     {
-        //
+        $candidate = Candidate::with(["interviews","jobs"])->findOrFail($candidateID);
+        $technical_arr = explode(",",$candidate->technicalSkill);
+        $technicalSkill =  new Collection();
+        foreach ($technical_arr as $key => $technical) {
+            $tech = explode("-",$technical);
+            $technicalSkill ->push([
+                "name"=>$tech[0],
+                "year"=>$tech[1]
+            ]);
+        }
+        $candidate->technicalSkill = $technicalSkill;
+        return response()->json($candidate);
     }
 
     /**
