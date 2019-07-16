@@ -1,0 +1,53 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  deploy:
+      docker:
+        - image: circleci/php:7.3-node-browsers
+
+      steps:
+
+        - add_ssh_keys:
+            fingerprints:
+            - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
+
+        - add_ssh_keys:
+            fingerprints:
+              - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
+        - run:
+            name: fix host authenticity for production server
+            command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
+        - run:
+            name: fix host authenticity for dev server
+            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
+
+        - run:
+            name: Deploy to product-server from Github
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                ssh -tt hungthinh@168.63.251.210 ' cd ../api.enclavei3.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout master && sudo git pull origin master && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && exit && exit'
+              fi
+        - run:
+            name: Deploy to dev-server from Github
+            command: |
+              if [ "${CIRCLE_BRANCH}" == "dev" ]; then
+                ssh -tt hungthinh@13.76.3.251 'cd ../api.enclavei3dev.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout dev && sudo git pull origin dev && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && exit && exit'
+              fi
+        #- run:
+            #name: Reset apache
+            #command: |
+              #ssh root@149.28.134.89 "sudo /etc/init.d/apache2 restart"
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+              - master
+              - dev
