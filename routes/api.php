@@ -34,8 +34,8 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Auth routes
         */
-        //Must login and use access_token to access these route.
-        Route::get('logout', 'AuthController@logout');
+        Route::put('change-password','AuthController@changePassword');
+        Route::get('logout', 'AuthController@logout');        //Must login and use access_token to access these route.
 
         /*
         * Profile routes
