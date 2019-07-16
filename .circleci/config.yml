@@ -9,10 +9,12 @@ jobs:
         - image: circleci/php:7.3-node-browsers
 
       steps:
-        - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
-          fingerprints:
+
+        - add_ssh_keys:
+            fingerprints:
             - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
-        - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
+
+        - add_ssh_keys:
             fingerprints:
               - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
         - run:
