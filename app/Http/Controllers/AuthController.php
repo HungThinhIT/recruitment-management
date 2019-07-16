@@ -64,7 +64,7 @@ class AuthController extends Controller
         {
             return response()->json(['message' => "The old password is not correct.",],422);
         }
-        $user->update(["password" => $request->password]);
+        $user->update(["password" => Hash::make($request->password)]);
         return response()->json(["message" => "Changed password successfully."],200);
     }
 
