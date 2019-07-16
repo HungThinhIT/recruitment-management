@@ -11,28 +11,25 @@ jobs:
       steps:
         - add_ssh_keys: # add private SSH key from CircleCI account based on fingerprint.
             fingerprints:
-              - "72:14:ea:79:61:df:a6:51:07:e3:2c:88:27:eb:b4:3f"
+              - "84:f6:98:9e:c2:b1:3c:0d:39:ff:96:df:a1:6f:e4:80"
 
         - run:
-            name: Fix host authenticity for production server
-            command: ssh-keyscan 168.63.251.210 >> ~/.ssh/known_hosts
+            name: fix host authenticity for production server
+            command: ssh-keyscan 13.76.3.251 >> ~/.ssh/known_hosts
 
         - run:
-            name: Deploy to product-server from Github
+            #Update for config server-dev-02072019
+            name: Pull server from Github
             command: |
-              ssh -tt hungthinh@168.63.251.210 <<EOF
+              ssh -tt hungthinh@13.76.3.251 <<EOF
                 sudo su
-                cd api.enclavei3.tk/public_html/recruitment-management
+                cd api.enclavei3dev.tk/public_html/recruitment-management
+                git checkout dev
                 git reset --hard HEAD^
-                git fetch origin
-                git checkout master
-                git pull origin master
+                git pull origin dev
                 composer install
-                php artisan migrate
-                php artisan db:seed
-                php artisan passport:install
+		php artisan passport:install
                 php artisan apidoc:generate
-                composer update
                 exit
                 exit
         #- run:
