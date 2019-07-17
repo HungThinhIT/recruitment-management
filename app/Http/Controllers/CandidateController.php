@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
  */
 class CandidateController extends Controller
 {
+
     /**
      * Display a listing of the candidate.
      * @bodyParam keyword string keyword want to search.
@@ -19,47 +20,56 @@ class CandidateController extends Controller
      */
     public function index(Request $request)
     {   
-        if ($request->has("keyword","property","orderby")&& $request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-        {
-            $data = $request->only("keyword","property","orderby");
-            return response()->json(
-                    Candidate::where('fullname', 'like', '%'.$data["keyword"].'%')
-                            ->orWhere('email', 'like', '%'.$data["keyword"].'%')
-                            ->orWhere('phone', 'like', '%'.$data["keyword"].'%')
-                            ->orWhere('address', 'like', '%'.$data["keyword"].'%')
-                            ->orWhere('technicalSkill', 'like', '%'.$data["keyword"].'%')
-                            ->orderBy($data["property"], $data["orderby"])
-                            ->with(["jobs","interviews"])
-                            ->paginate(10)
+        try{
+            if ($request->has("keyword","property","orderby")&& $request->keyword !=null&& $request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("keyword","property","orderby");
+                return response()->json(
+                        Candidate::where('fullname', 'like', '%'.$data["keyword"].'%')
+                                ->orWhere('email', 'like', '%'.$data["keyword"].'%')
+                                ->orWhere('phone', 'like', '%'.$data["keyword"].'%')
+                                ->orWhere('address', 'like', '%'.$data["keyword"].'%')
+                                ->orWhere('technicalSkill', 'like', '%'.$data["keyword"].'%')
+                                ->orderBy($data["property"], $data["orderby"])
+                                ->with(["jobs","interviews"])
+                                ->paginate(10)
+                    );
+            }     
+            else if ($request->has("keyword")&& $request->keyword !=null)
+            {
+                $data = $request->keyword;
+                return response()->json(
+                        Candidate::where('fullname', 'like', '%'.$data.'%')
+                                ->orWhere('email', 'like', '%'.$data.'%')
+                                ->orWhere('phone', 'like', '%'.$data.'%')
+                                ->orWhere('address', 'like', '%'.$data.'%')
+                                ->orWhere('technicalSkill', 'like', '%'.$data.'%')
+                                ->with(["jobs","interviews"])
+                                ->paginate(10)
+                    );
+            }
+            else if ($request->has("property","orderby")&& $request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("property","orderby");
+                return response()->json(
+                    Candidate::orderBy($data["property"], $data["orderby"])
+                                ->with(["jobs","interviews"])
+                                ->paginate(10)
                 );
-        }     
-        else if ($request->has("keyword")&& $request->keyword !=null)
-        {
-            $data = $request->keyword;
-            return response()->json(
-                    Candidate::where('fullname', 'like', '%'.$data.'%')
-                            ->orWhere('email', 'like', '%'.$data.'%')
-                            ->orWhere('phone', 'like', '%'.$data.'%')
-                            ->orWhere('address', 'like', '%'.$data.'%')
-                            ->orWhere('technicalSkill', 'like', '%'.$data.'%')
-                            ->with(["jobs","interviews"])
-                            ->paginate(10)
-                );
+            }
+            else{
+                return response()->json(Candidate::with(["jobs","interviews"])->paginate(10));
+            }
+
         }
-        else if ($request->has("property","orderby")&& $request->property !=null && $request->orderby !=null )
-        {
-            $data = $request->only("property","orderby");
-            return response()->json(
-                Candidate::orderBy($data["property"], $data["orderby"])
-                            ->with(["jobs","interviews"])
-                            ->paginate(10)
-            );
+        catch(\Illuminate\Database\QueryException $queryEx){
+            return response()->json(['message' => $data["property"]." field is not existed"],422);
         }
-        else 
-            return response()->json(Candidate::with(["jobs","interviews"])->paginate(10));
+        catch(\InvalidArgumentException $ex){
+            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
+        }
     }
         
-
     /**
      * Show the form for creating a new resource.
      *
@@ -81,6 +91,7 @@ class CandidateController extends Controller
         //
     }
 
+    
     /**
      * Show a candidate by ID
      */
@@ -133,4 +144,5 @@ class CandidateController extends Controller
     {
         //
     }
+
 }
