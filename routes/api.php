@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,9 +16,13 @@ use Illuminate\Support\Facades\Hash;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
-    Route::get('hash/{id}',function($p){
-        return Hash::make($p);
+  
+    Route::group(['prefix' => 'password'], function () {
+        Route::post('forgot', 'PasswordResetController@forgotPasswordRequest');
+        Route::get('verify/{token}', 'PasswordResetController@verifyToken');
+        Route::post('reset', 'PasswordResetController@resetPassword');
     });
+
     /*
     * Job Routes for Enclave Recruitment web.
     */
@@ -84,6 +87,15 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
+
+        /*
+        * Candidate routes
+        */
+        Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
+        Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
+        //Route::post("candidate","CandidateController@store")->middleware("can:candidate.create");
+        Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
+        Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
     });
 });
