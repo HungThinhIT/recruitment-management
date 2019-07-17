@@ -18,6 +18,12 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
 
+    Route::group(['prefix' => 'password'], function () {
+        Route::post('forgot', 'PasswordResetController@forgotPasswordRequest');
+        Route::get('verify/{token}', 'PasswordResetController@verifyToken');
+        Route::post('reset', 'PasswordResetController@resetPassword');
+    });
+
     /*
     * Job Routes for Enclave Recruitment web.
     */
