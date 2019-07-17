@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\User;
+use App\Notifications\ChangePasswordSuccessfully;
 
 /**
  * @group Auth management
@@ -64,6 +65,9 @@ class AuthController extends Controller
             return response()->json(['message' => "The old password is not correct.",],422);
         }
         User::findOrFail($request->user()->id)->update(["password" => Hash::make($request->password)]);
+        //For send mail
+        $user = User::findOrFail($request->user()->id);
+        $user->notify(new ChangePasswordSuccessfully($user->fullname));
         return response()->json(["message" => "Changed password successfully."],200);
     }
 
