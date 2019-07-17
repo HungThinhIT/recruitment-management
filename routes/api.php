@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,9 +16,13 @@ use Illuminate\Support\Facades\Hash;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
-    Route::get('hash/{id}',function($p){
-        return Hash::make($p);
+  
+    Route::group(['prefix' => 'password'], function () {
+        Route::post('forgot', 'PasswordResetController@forgotPasswordRequest');
+        Route::get('verify/{token}', 'PasswordResetController@verifyToken');
+        Route::post('reset', 'PasswordResetController@resetPassword');
     });
+
     /*
     * Job Routes for Enclave Recruitment web.
     */
