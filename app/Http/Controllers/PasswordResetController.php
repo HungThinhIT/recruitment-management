@@ -65,13 +65,12 @@ class PasswordResetController extends Controller
                 'message' => 'This password reset token is invalid.'
             ], 404);
         }
-        return response()->json($passwordReset);
+        return response()->json(["message"=>"Your token is valid"],200);
     }
 
     /**
      * Reset the password.
      *
-     * @bodyParam email email required The email of user. Example: enclave-recruitment@enclave.vn
      * @bodyParam password string required The new password.
      * @bodyParam password_confirmation string required The password confirmation.
      * @bodyParam token string required The token of request from mail.
