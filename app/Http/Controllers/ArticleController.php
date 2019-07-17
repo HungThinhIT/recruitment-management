@@ -11,7 +11,7 @@ use App\Http\Requests\ArticleRequest;
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the article.
+     * Display a listing of the article for admin/user.
      * 10 rows/request
      */
     public function index()
@@ -19,6 +19,18 @@ class ArticleController extends Controller
         return response()->json(Article::with(["user","job","category"])->paginate(10));
     }
 
+    /**
+     * Display a listing of the article recruitment for guests.
+     * 10 rows/request
+     */
+    public function showListArticleForCandidatePage()
+    {
+        // return the article in category Recruitment (catId=1)
+        return response()->json(
+            Article::with(["job"])
+            ->where('catId',1)
+            ->paginate(10));
+    }
     /**
      * Show the form for creating a new resource.
      *
