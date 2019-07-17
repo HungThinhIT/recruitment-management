@@ -85,6 +85,15 @@ Route::group(['middleware' => ['cors']], function () {
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
 
+        /*
+        * Candidate routes
+        */
+        Route::get("candidate","CandidateController@index");
+        Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
+        Route::post("candidate","CandidateController@store")->middleware("can:article.create");
+        Route::put("candidate/{id}","CandidateController@update")->middleware("can:article.edit");
+        Route::delete("candidate","CandidateController@destroy")->middleware("can:article.delete");
+
     });
 });
 
