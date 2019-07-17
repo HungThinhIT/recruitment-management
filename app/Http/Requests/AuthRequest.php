@@ -23,17 +23,35 @@ class AuthRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|max:255',
-            'password' => 'required',
-        ];
+        switch ($this->method()) {
+            case 'GET':
+            case 'POST':
+            {
+                return [
+                    'name'     => 'required|max:255',
+                    'password' => 'required',
+                ];
+            }
+            case 'PUT':
+            {
+                return [
+                    'old_password'              => "required|string|min:3|max:50",
+                    'password'                  => "required|string|min:3|max:50|confirmed|different:old_password",
+                    'password_confirmation'     => "required|string|min:3|max:50",
+                ];
+            }
+            case 'DELETE':
+                break;
+            default:
+                break;
+        }
     }
 
     public function messages()
     {
         return [
-            'name.required' => "The name field is required.",
-            'name.max'     => "The name is too long",
+            'name.required'     => "The name field is required.",
+            'name.max'          => "The name is too long",
             'password.required' => "The password is required",
         ];
     }

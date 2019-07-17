@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use App\Role;
 use Hash;
@@ -38,16 +37,16 @@ class UserController extends Controller
      * @bodyParam address string The address of the user.
      * @bodyParam password string required The password of the user.
      * @bodyParam password_confirmation string required The confirmed password.
+     * @bodyParam roles array required The list id of the role.
      */
     public function store(CreateUserRequest $request)
     {
         $data = $request->only("name","fullname","email","phone","address","password");
         $data["password"] = Hash::make($data["password"]);
         $user = User::create($data);
-        $role_arr = explode (",", request('roles'));
-        $user->roles()->attach($role_arr);
+        $user->roles()->attach(request('roles'));
         return response()->json([
-            'message'=>'Created user successfully']);
+            'message'=>'Created an user successfully']);
     }
 
     /**
@@ -81,16 +80,15 @@ class UserController extends Controller
      * @bodyParam email string required The email of the user.
      * @bodyParam phone string required The phone of the user.
      * @bodyParam address string The address of the user.
-     * @bodyParam roles string required The string contains role's ID. Example: 1,2
+     * @bodyParam roles array required The string contains role's ID. Example: [1,2]
      */
-    public function update(UpdateUserRequest $request,$id)
+    public function update(CreateUserRequest $request,$id)
     {
         $user = User::findOrFail($id);
         $user->update($request->only("fullname","email","phone","address"));
-        $role_arr = explode (",", request('roles'));
-        $user->roles()->sync($role_arr);
+        $user->roles()->sync(request('roles'));
         return response()->json([
-            'message' => 'Information of user has been updated successfully!'
+            'message' => 'Updated user successfully!'
         ], 200);
     }
 
@@ -115,12 +113,11 @@ class UserController extends Controller
     /**
      * Delete the user
      *
-     * @bodyParam users string required list id of user. Example: 1,2,3,4,5
+     * @bodyParam userId array required list id of user. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    public function destroy(CreateUserRequest $request)
     {
-        $this->validate($request,["users" => "required"],["users.required" => "You must choose the user."]);
-        $user_arr = explode (",", request("users"));
+        $user_arr = request("userId");
         $exists = User::whereIn('id', $user_arr)->pluck('id');
         $notExists = collect($user_arr)->diff($exists);
         $idsNotFound = "";
