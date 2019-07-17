@@ -21,13 +21,13 @@ Route::group(['middleware' => ['cors']], function () {
     /*
     * Job Routes for Enclave Recruitment web.
     */
-    Route::get("job","JobController@index");
-    Route::get("job-web/{id}","JobController@showJobForCandidatesPage");
+    /*Route::get("job","JobController@index");
+    Route::get("job-web/{id}","JobController@showJobForCandidatesPage");*/
 
     /*
     * Article routes for Enclave Recruitment web.
     */
-    Route::get("article","ArticleController@index");
+    Route::get("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
     Route::group(['middleware' => 'auth:api'], function() {
@@ -78,7 +78,8 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Article routes
         */
-        Route::get("article/{id}","ArticleController@show");
+        Route::get("article","ArticleController@index")->middleware("can:article.view");
+        Route::get("article/{id}","ArticleController@show")->middleware("can:article.view");
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
