@@ -6,17 +6,49 @@ use Illuminate\Support\Collection;
 use App\Candidate;
 use Illuminate\Http\Request;
 
+/**
+ * @group Candidate management
+ */
 class CandidateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the candidate.
+     * @bodyParam keyword string keyword want to search.
+     * @bodyParam property string Field in table you want to sort(fullname,email,phone,address,cv,status,created_at,updated_at). Example: fullname
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
-    public function index()
-    {
-        //
+    public function index(Request $request)
+    {        
+        if ($request->has("keyword","property","orderby")&& ($request->keyword !=null || $request->property!=null))
+        {
+            $data = $request->only("keyword","property","orderby");
+            if ($data["keyword"]!=null)
+            {
+                return response()->json(
+                    Candidate::where('fullname', 'like', '%'.$data["keyword"].'%')
+                            ->orWhere('email', 'like', '%'.$data["keyword"].'%')
+                            ->orWhere('phone', 'like', '%'.$data["keyword"].'%')
+                            ->orWhere('address', 'like', '%'.$data["keyword"].'%')
+                            ->orWhere('technicalSkill', 'like', '%'.$data["keyword"].'%')
+                            ->with(["jobs","interviews"])
+                            ->paginate(10)
+                );
+            }
+            if ($data["property"]!=null)
+            {
+                return response()->json(
+                    Candidate::orderBy($data["property"], $data["orderby"])
+                            ->with(["jobs","interviews"])
+                            ->paginate(10)
+                );
+            }
+
+            return response()->json($data);
+        }
+        else 
+            return response()->json(Candidate::with(["jobs","interviews"])->paginate(10));
     }
+        
 
     /**
      * Show the form for creating a new resource.
