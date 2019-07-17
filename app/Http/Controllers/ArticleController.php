@@ -25,6 +25,7 @@ class ArticleController extends Controller
      */
     public function showListArticleForCandidatePage()
     {
+        // return the article in category Recruitment (catId=1)
         return response()->json(
             Article::with(["job"])
             ->where('catId',1)
