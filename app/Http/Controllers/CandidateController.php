@@ -18,32 +18,42 @@ class CandidateController extends Controller
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
-    {        
-        if ($request->has("keyword","property","orderby")&& ($request->keyword !=null || $request->property!=null))
+    {   
+        if ($request->has("keyword","property","orderby")&& $request->keyword !=null&& $request->property !=null && $request->orderby !=null )
         {
             $data = $request->only("keyword","property","orderby");
-            if ($data["keyword"]!=null)
-            {
-                return response()->json(
+            return response()->json(
                     Candidate::where('fullname', 'like', '%'.$data["keyword"].'%')
                             ->orWhere('email', 'like', '%'.$data["keyword"].'%')
                             ->orWhere('phone', 'like', '%'.$data["keyword"].'%')
                             ->orWhere('address', 'like', '%'.$data["keyword"].'%')
                             ->orWhere('technicalSkill', 'like', '%'.$data["keyword"].'%')
+                            ->orderBy($data["property"], $data["orderby"])
                             ->with(["jobs","interviews"])
                             ->paginate(10)
                 );
-            }
-            if ($data["property"]!=null)
-            {
-                return response()->json(
-                    Candidate::orderBy($data["property"], $data["orderby"])
+        }     
+        else if ($request->has("keyword")&& $request->keyword !=null)
+        {
+            $data = $request->keyword;
+            return response()->json(
+                    Candidate::where('fullname', 'like', '%'.$data.'%')
+                            ->orWhere('email', 'like', '%'.$data.'%')
+                            ->orWhere('phone', 'like', '%'.$data.'%')
+                            ->orWhere('address', 'like', '%'.$data.'%')
+                            ->orWhere('technicalSkill', 'like', '%'.$data.'%')
                             ->with(["jobs","interviews"])
                             ->paginate(10)
                 );
-            }
-
-            return response()->json($data);
+        }
+        else if ($request->has("property","orderby")&& $request->property !=null && $request->orderby !=null )
+        {
+            $data = $request->only("property","orderby");
+            return response()->json(
+                Candidate::orderBy($data["property"], $data["orderby"])
+                            ->with(["jobs","interviews"])
+                            ->paginate(10)
+            );
         }
         else 
             return response()->json(Candidate::with(["jobs","interviews"])->paginate(10));
