@@ -143,12 +143,11 @@ class JobController extends Controller
     /**
      * Remove a job/many jobs by ID.
      *
-     * @bodyParam jobID string required The id/list id of job. Example: 1,2,3,4,5
+     * @bodyParam jobID array required The id/list id of job. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    public function destroy(JobRequest $request)
     {
-        $jobIds = explode(",", $request->jobId);
-
+        $jobIds = $request->jobId;
         $exists = Job::whereIn('id', $jobIds)->pluck('id');
         $notExists = collect($jobIds)->diff($exists);
 
@@ -163,7 +162,7 @@ class JobController extends Controller
                 'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
         }
 
-        Job::whereIn('id', explode(",", $request->jobId))->delete();
+        Job::whereIn('id', $jobIds)->delete();
         return response()->json([
            'message'=>'Deleted job successfully'],200);
     }

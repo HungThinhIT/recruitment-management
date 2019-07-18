@@ -80,6 +80,18 @@ class ArticleController extends Controller
     }
 
     /**
+     * Display a listing of the article recruitment for guests.
+     * 10 rows/request
+     */
+    public function showListArticleForCandidatePage()
+    {
+        // return the article in category Recruitment (catId=1)
+        return response()->json(
+            Article::with(["job"])
+            ->where('catId',1)
+            ->paginate(10));
+    }
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -96,12 +108,11 @@ class ArticleController extends Controller
      * @bodyParam image string  The image of the article.
      * @bodyParam jobId numeric required The jobId of the article.
      * @bodyParam content string required The content of the article.
-     * @bodyParam catId string required The catId of the article.
+     * @bodyParam catId numeric required The catId of the article.
      */
     public function store(ArticleRequest $request)
     {
-        $request->request->add(["userId"=>$request->user()->id]);
-        Article::create($request->except("created_at","updated_at"));
+        Article::create($request->except("created_at","updated_at") + ["userId" => $request->user()->id]);
         return response()->json([
             'message'=>'Created an article successfully']);
     }
@@ -141,22 +152,21 @@ class ArticleController extends Controller
      * @bodyParam image string  The image of the article.
      * @bodyParam jobId numeric required The jobId of the article.
      * @bodyParam content string required The content of the article.
-     * @bodyParam catId string required The catId of the article.
+     * @bodyParam catId numeric required The catId of the article.
      */
     public function update(ArticleRequest $request, $idArticle)
     {
-        $request->request->add(["userId"=>$request->user()->id]);
         Article::findOrFail($idArticle)->update($request->except("created_at","updated_at"));
         return response()->json(['message'=>'Updated the article successfully'],200);
     }
 
     /**
      * Delete the article by Id.
-     * @bodyParam articleId string required The id/list id of job. Example: 1,2,3,4,5
+     * @bodyParam articleId array required The id/list id of job. Example: [1,2,3,4,5]
      */
-    public function destroy(Article $article)
+    public function destroy(ArticleRequest $request)
     {
-        $articleIds = explode (",", request("articleId"));
+        $articleIds = request("articleId");
         $exists = Article::whereIn('id', $articleIds)->pluck('id');
         $notExists = collect($articleIds)->diff($exists);
         $idsNotFound = "";
