@@ -51,6 +51,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('role','RoleController@store')->middleware('can:Role.create');
         Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
         Route::delete('role','RoleController@destroy')->middleware('can:Role.delete');
+        Route::get('role/{id}/edit','RoleController@edit')->middleware('can:Role.edit');
 
         /*
         * Permission routes

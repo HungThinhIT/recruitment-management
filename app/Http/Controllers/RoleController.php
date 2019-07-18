@@ -67,38 +67,45 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the message for editing the role Admin.
      *
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        if (Role::findOrFail($id)->name =="Admin")
+            return response()->json(['message'=>'The role Admin can not be updated!']);
     }
 
     /**
      * Update the role by ID.
      *
      * @bodyParam name string required name of role.
-     * @bodyParam permissions string required list id of permission for the role. Example: 1,2,3,4,5
+     * @bodyParam permissions array required list id of permission for the role. Example: [1,2,3,4,5]
      */
     public function update(RoleRequest $request, $id)
     {
-        Role::findOrFail($id)->update($request->only("name"));
-        $permission_arr = explode (",", request("permissions"));
-        Role::findOrFail($id)->permissions()->sync($permission_arr);
-        return response()->json([
-           'message'=>'Updated role successfully']);
+         $role = Role::findOrFail($id);
+        //if the role is admin, it can not be updated
+        if ($role->name =="Admin")
+            return response()->json(['message'=>'The role Admin can not be updated!']);
+        $role->update($request->only("name"));
+        $role->permissions()->sync(request("permissions"));
+        return response()->json(['message'=>'Updated role successfully']);
     }
 
     /**
      * Delete the role
      *
-     * @bodyParam roles string required list id of role. Example: 1,2,3,4,5
+     * @bodyParam roleId array required list id of role. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    //If the role is admin, it can not be deleted
+    public function destroy(RoleRequest $request)
     {
-        $this->validate($request,["roles" => "required"],["roles.required" => "You must choose the role."]);
-        $role_arr = explode (",", request("roles"));
+        $role_arr = request("roleId");
+        foreach ($role_arr as $key => $value) {
+            if (Role::findOrFail($value)->name == "Admin")
+                return response()->json(['message'=>'The role Admin can not be deleted!']);
+        }
         $exists = Role::whereIn('id', $role_arr)->pluck('id');
         $notExists = collect($role_arr)->diff($exists);
         $idsNotFound = "";

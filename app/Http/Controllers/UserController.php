@@ -115,12 +115,15 @@ class UserController extends Controller
     /**
      * Delete the user
      *
-     * @bodyParam users string required list id of user. Example: 1,2,3,4,5
+     * @bodyParam userId array required list id of user. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    public function destroy(CreateUserRequest $request)
     {
-        $this->validate($request,["users" => "required"],["users.required" => "You must choose the user."]);
-        $user_arr = explode (",", request("users"));
+        $user_arr = request("userId");
+        foreach ($user_arr as $key => $value) {
+            if (User::findOrFail($value)->name == "admin")
+                return response()->json(['message'=>'The user admin can not be deleted!']);
+        }
         $exists = User::whereIn('id', $user_arr)->pluck('id');
         $notExists = collect($user_arr)->diff($exists);
         $idsNotFound = "";
