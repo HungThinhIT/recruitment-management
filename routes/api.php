@@ -46,7 +46,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Role routes
         */
-        Route::get('role','RoleController@index')->middleware('can:Role.list');
+        Route::post('list-role','RoleController@index')->middleware('can:Role.list');
         Route::get('role/{id}','RoleController@show')->middleware('can:Role.list');
         Route::post('role','RoleController@store')->middleware('can:Role.create');
         Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
@@ -60,7 +60,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * User routes
         */
-        Route::get('user','UserController@index')->middleware('can:user.view');
+        Route::post('list-user','UserController@index')->middleware('can:user.view');
         Route::post('user','UserController@store')->middleware('can:user.create');
         Route::get('user/{id}','UserController@show')->middleware('can:user.view');
         Route::put('user/{id}','UserController@update')->middleware('can:user.edit');
@@ -69,7 +69,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::get("job","JobController@index")->middleware("can:job.view");
+        Route::post("ljob","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
@@ -78,6 +78,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Article routes
         */
+        Route::post("list-article","ArticleController@index")->middleware("can:article.view");
         Route::get("article/{id}","ArticleController@show");
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
