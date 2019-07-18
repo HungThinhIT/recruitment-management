@@ -47,6 +47,7 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::get('current-profile','UserController@showCurrentInfoUser'); //Show current profile's information
         Route::put('profile','UserController@updateCurrentProfile'); //Update profile's information
+        Route::post('profile/avatar',"UserController@changeAvatar");
 
         /*
         * Role routes
