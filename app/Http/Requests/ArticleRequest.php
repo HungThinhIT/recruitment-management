@@ -25,19 +25,21 @@ class ArticleRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'GET':
-            case 'POST' || 'PUT':
+                {return [];}
+            case 'PUT':{return[];}
+            case 'POST':
             {
                 return [
-                    'title' => 'required|max:255',
-                    'content'=>'required',
-                    'image'=>'max:255',
-                    'jobId'=>'required|integer|exists:jobs,id',
-                    'catId'=>'required|integer|exists:categories,id',
+                    'title'   =>'required|max:255',
+                    'content' =>'required',
+                    'image'   =>'max:255',
+                    'jobId'   =>'required|integer|exists:jobs,id',
+                    'catId'   =>'required|integer|exists:categories,id',
                 ];
             }
             case 'DELETE': {
                 return [
-                    "articleId" => "required"
+                    "articleId" => "required|array"
                 ];
             }
                 break;
