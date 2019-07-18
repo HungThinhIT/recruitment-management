@@ -15,11 +15,59 @@ class JobController extends Controller
 {
     /**
      * Display a listing of the job.
-     * 10 rows/request
+     * @bodyParam keyword string keyword want to search (search by name, description, position,address, salary, status,experience,amount).
+     * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, status,experience,amount,publishOn,deadline). Example: name
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Job::paginate(10));
+        try{
+            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("keyword","property","orderby");
+                return response()->json(
+                        Job::where('name', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('description', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('position', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('salary', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('address', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('status', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('experience', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('amount', '=', $data["keyword"])
+                                ->orderBy($data["property"], $data["orderby"])
+                                ->paginate(10)
+                    );
+            }     
+            else if ($request->keyword !=null)
+            {
+                $data = $request->keyword;
+                return response()->json(
+                        Job::where('name', 'like', '%'.$data.'%')
+                                ->orwhere('description', 'like', '%'.$data.'%')
+                                ->orwhere('position', 'like', '%'.$data.'%')
+                                ->orwhere('salary', 'like', '%'.$data.'%')
+                                ->orwhere('address', 'like', '%'.$data.'%')
+                                ->orwhere('status', 'like', '%'.$data.'%')
+                                ->orwhere('experience', 'like', '%'.$data.'%')
+                                ->orwhere('amount', '=', $data)
+                                ->paginate(10));    
+            }
+            else if ($request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("property","orderby");
+                return response()->json(Job::orderBy($data["property"], $data["orderby"])
+                                ->paginate(10));
+            }
+            else{
+                return response()->json(Job::paginate(10));
+            }
+        }
+        catch(\Illuminate\Database\QueryException $queryEx){
+            return response()->json(['message' => $data["property"]." field is not existed"],422);
+        }
+        catch(\InvalidArgumentException $ex){
+            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
+        }
     }
 
     public function create()
@@ -95,12 +143,11 @@ class JobController extends Controller
     /**
      * Remove a job/many jobs by ID.
      *
-     * @bodyParam jobID string required The id/list id of job. Example: 1,2,3,4,5
+     * @bodyParam jobID array required The id/list id of job. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    public function destroy(JobRequest $request)
     {
-        $jobIds = explode(",", $request->jobId);
-
+        $jobIds = $request->jobId;
         $exists = Job::whereIn('id', $jobIds)->pluck('id');
         $notExists = collect($jobIds)->diff($exists);
 
@@ -115,7 +162,7 @@ class JobController extends Controller
                 'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
         }
 
-        Job::whereIn('id', explode(",", $request->jobId))->delete();
+        Job::whereIn('id', $jobIds)->delete();
         return response()->json([
            'message'=>'Deleted job successfully'],200);
     }
