@@ -83,6 +83,10 @@ Route::group(['middleware' => ['cors']], function () {
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
 
+        /*
+        * Interviewer routes
+        */
+        Route::post("list-interviewer","InterviewerController@index")->middleware("can:interviewer.view");
     });
 });
 
