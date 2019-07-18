@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use App\Role;
 use Hash;
-use Illuminate\Http\Request;
 /**
  * @group User management
  *
@@ -15,6 +15,13 @@ use Illuminate\Http\Request;
  */
 class UserController extends Controller
 {
+    protected $userServices;
+
+    public function __construct()
+    {
+        $this->userServices = new UserServices;
+    }
+
     /**
      * Display a listing of the user.
      */
@@ -95,6 +102,24 @@ class UserController extends Controller
     }
 
     /**
+     * Upload the image avatar profile.
+     * @bodyParam image file required The image avatar profile.
+     */
+    public function changeAvatar(Request $request){
+        $this->validate($request,
+        ['image' => 'mimes:jpeg,jpg,png|required|max:5000']);
+
+        $user = User::findOrFail($request->user()->id);
+
+        $imageProfileName = $this->userServices->handleUploadedImage($request->file('image'),$user->image);
+        if($imageProfileName == NULL){
+            return response()->json(['message' => "Upload failed, file not exist"],422);
+        }
+        $user->update(['image' => $imageProfileName]);
+        return response()->json(['message' => "Upload avatar susscessfully"],200);
+    }
+
+    /**
      * Update the current profile.
      * Update the profile.
      * @bodyParam fullname string required The fullname of the user.
@@ -134,5 +159,25 @@ class UserController extends Controller
         User::destroy($exists);
         return response()->json([
            'message'=>'Deleted users successfully']);
+    }
+
+}
+
+class UserServices
+{
+    public function handleUploadedImage($image,$oldImageName)
+    {
+        if (!is_null($image)) {
+            //Delete old image except default image
+            if($oldImageName != "avt_default_profile.png"){
+                unlink('upload/images/avatars/'.$oldImageName);
+            }
+            $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('upload/images/avatars'),$imageProfileName);
+            return $imageProfileName;
+        }
+        else{
+            return NULL;
+        }
     }
 }
