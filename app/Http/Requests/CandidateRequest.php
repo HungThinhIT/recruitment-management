@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleRequest extends FormRequest
+class CandidateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,31 +22,22 @@ class RoleRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {   
+    {
         switch ($this->method()) {
-            case ('POST'):
-            case ('PUT'):
+            case 'PUT':
+            case 'POST':
             {
                 return [
-                    'name' => 'required|max:255|unique:roles,name,'.$this->id,
-                    'permissions'=>'required|array'
                 ];
             }
             case 'DELETE': {
                 return [
-                    'roleId' => 'required|array'
+                    "candidateId" => "required|array"
                 ];
-            }                
+            }
+                break;
             default:
-            break;
+                break;
         }
     }
-
-    public function messages()
-    {
-        return [
-            'name.unique'   => "The name is existed",
-        ];
-    }
-
 }

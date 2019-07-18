@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\CreateUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\User;
 use App\Role;
 use Hash;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 /**
  * @group User management
  *
@@ -24,11 +24,62 @@ class UserController extends Controller
 
     /**
      * Display a listing of the user.
+     * @bodyParam keyword string keyword want to search (search by username, fullname, phone,address, email, name of role).
+     * @bodyParam property string Field in table you want to sort(username, fullname, phone,address, email). Example: username
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
-    public function index()
-    {
-        $users = User::paginate(10);
-        return response()->json($users);
+    public function index(Request $request)
+    {        
+        try{
+            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("keyword","property","orderby");
+                return response()->json(
+                        User::where('name', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('fullname', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('email', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('phone', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('address', 'like', '%'.$data["keyword"].'%')
+                                ->orWhereHas('roles', function (Builder $query) use ($data){
+                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
+                                })
+                                ->orderBy($data["property"], $data["orderby"])
+                                ->with(["roles:name"])
+                                ->paginate(10)
+                    );
+            }     
+            else if ($request->keyword !=null)
+            {
+                $data = $request->keyword;
+                return response()->json(
+                        User::where('name', 'like', '%'.$data.'%')
+                                ->orwhere('fullname', 'like', '%'.$data.'%')
+                                ->orwhere('email', 'like', '%'.$data.'%')
+                                ->orwhere('phone', 'like', '%'.$data.'%')
+                                ->orwhere('address', 'like', '%'.$data.'%')
+                                ->orWhereHas('roles', function (Builder $query) use ($data) {
+                                    $query->where('name', 'like', '%'.$data.'%');
+                                })
+                                ->with(["roles:name"])
+                                ->paginate(10));    
+            }
+            else if ($request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("property","orderby");
+                return response()->json(User::orderBy($data["property"], $data["orderby"])
+                                ->with(["roles:name"])
+                                ->paginate(10));
+            }
+            else{
+                return response()->json(User::with(["roles:name"])->paginate(10));
+            }
+        }
+        catch(\Illuminate\Database\QueryException $queryEx){
+            return response()->json(['message' => $data["property"]." field is not existed"],422);
+        }
+        catch(\InvalidArgumentException $ex){
+            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
+        }
     }
 
     public function create()
@@ -45,16 +96,16 @@ class UserController extends Controller
      * @bodyParam address string The address of the user.
      * @bodyParam password string required The password of the user.
      * @bodyParam password_confirmation string required The confirmed password.
+     * @bodyParam roles array required The list id of the role.
      */
     public function store(CreateUserRequest $request)
     {
         $data = $request->only("name","fullname","email","phone","address","password");
         $data["password"] = Hash::make($data["password"]);
         $user = User::create($data);
-        $role_arr = explode (",", request('roles'));
-        $user->roles()->attach($role_arr);
+        $user->roles()->attach(request('roles'));
         return response()->json([
-            'message'=>'Created user successfully']);
+            'message'=>'Created an user successfully']);
     }
 
     /**
@@ -88,16 +139,15 @@ class UserController extends Controller
      * @bodyParam email string required The email of the user.
      * @bodyParam phone string required The phone of the user.
      * @bodyParam address string The address of the user.
-     * @bodyParam roles string required The string contains role's ID. Example: 1,2
+     * @bodyParam roles array required The string contains role's ID. Example: [1,2]
      */
-    public function update(UpdateUserRequest $request,$id)
+    public function update(CreateUserRequest $request,$id)
     {
         $user = User::findOrFail($id);
         $user->update($request->only("fullname","email","phone","address"));
-        $role_arr = explode (",", request('roles'));
-        $user->roles()->sync($role_arr);
+        $user->roles()->sync(request('roles'));
         return response()->json([
-            'message' => 'Information of user has been updated successfully!'
+            'message' => 'Updated user successfully!'
         ], 200);
     }
 
@@ -140,12 +190,11 @@ class UserController extends Controller
     /**
      * Delete the user
      *
-     * @bodyParam users string required list id of user. Example: 1,2,3,4,5
+     * @bodyParam userId array required list id of user. Example: [1,2,3,4,5]
      */
-    public function destroy(Request $request)
+    public function destroy(CreateUserRequest $request)
     {
-        $this->validate($request,["users" => "required"],["users.required" => "You must choose the user."]);
-        $user_arr = explode (",", request("users"));
+        $user_arr = request("userId");
         $exists = User::whereIn('id', $user_arr)->pluck('id');
         $notExists = collect($user_arr)->diff($exists);
         $idsNotFound = "";

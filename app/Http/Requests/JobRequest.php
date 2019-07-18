@@ -24,8 +24,8 @@ class JobRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'POST' || 'PUT':
+            case 'PUT':
+            case 'POST':
             {
                 return [
                     "name"        => "required|max:255",
@@ -42,7 +42,7 @@ class JobRequest extends FormRequest
             }
             case 'DELETE': {
                 return [
-                    "jobId" => "required"
+                    "jobId" => "required|array"
                 ];
             }
                 break;

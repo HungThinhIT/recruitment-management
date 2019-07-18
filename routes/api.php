@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,25 +16,31 @@ use Illuminate\Http\Request;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
+  
+    Route::group(['prefix' => 'password'], function () {
+        Route::post('forgot', 'PasswordResetController@forgotPasswordRequest');
+        Route::get('verify/{token}', 'PasswordResetController@verifyToken');
+        Route::post('reset', 'PasswordResetController@resetPassword');
+    });
 
     /*
     * Job Routes for Enclave Recruitment web.
     */
-    Route::get("job","JobController@index");
-    Route::get("job-web/{id}","JobController@showJobForCandidatesPage");
+    /*Route::get("job","JobController@index");
+    Route::get("job-web/{id}","JobController@showJobForCandidatesPage");*/
 
     /*
     * Article routes for Enclave Recruitment web.
     */
-    Route::get("article","ArticleController@index");
+    Route::get("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
         */
-        //Must login and use access_token to access these route.
-        Route::get('logout', 'AuthController@logout');
+        Route::put('change-password','AuthController@changePassword');
+        Route::get('logout', 'AuthController@logout');        //Must login and use access_token to access these route.
 
         /*
         * Profile routes
@@ -47,7 +52,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Role routes
         */
-        Route::get('role','RoleController@index')->middleware('can:Role.list');
+        Route::post('list-role','RoleController@index')->middleware('can:Role.list');
         Route::get('role/{id}','RoleController@show')->middleware('can:Role.list');
         Route::post('role','RoleController@store')->middleware('can:Role.create');
         Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
@@ -61,7 +66,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * User routes
         */
-        Route::get('user','UserController@index')->middleware('can:user.view');
+        Route::post('list-user','UserController@index')->middleware('can:user.view');
         Route::post('user','UserController@store')->middleware('can:user.create');
         Route::get('user/{id}','UserController@show')->middleware('can:user.view');
         Route::put('user/{id}','UserController@update')->middleware('can:user.edit');
@@ -70,7 +75,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::get("job","JobController@index")->middleware("can:job.view");
+        Route::post("ljob","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
@@ -79,10 +84,20 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Article routes
         */
-        Route::get("article/{id}","ArticleController@show");
+        Route::post("list-article","ArticleController@index")->middleware("can:article.view");
+        Route::get("article/{id}","ArticleController@show")->middleware("can:article.view");
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
+
+        /*
+        * Candidate routes
+        */
+        Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
+        Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
+        //Route::post("candidate","CandidateController@store")->middleware("can:candidate.create");
+        Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
+        Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
     });
 });
