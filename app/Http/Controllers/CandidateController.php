@@ -5,13 +5,13 @@ use Illuminate\Support\Collection;
 
 use App\Candidate;
 use Illuminate\Http\Request;
+use App\Http\Requests\CandidateRequest;
 
 /**
  * @group Candidate management
  */
 class CandidateController extends Controller
 {
-
     /**
      * Display a listing of the candidate.
      * @bodyParam keyword string keyword want to search.
@@ -135,14 +135,25 @@ class CandidateController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Candidate  $candidate
-     * @return \Illuminate\Http\Response
+     * Delete the candidate by Id.
+     * @bodyParam candidateId array required The id/list id of candidate. Example: [1,2,3,4,5]
      */
-    public function destroy(Candidate $candidate)
+    public function destroy(CandidateRequest $request)
     {
-        //
+        $candidateIds = request("candidateId");
+        $exists = Candidate::whereIn('id', $candidateIds)->pluck('id');
+        $notExists = collect($candidateIds)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Candidate::destroy($exists);
+        return response()->json([
+           'message'=>'Deleted the candidate successfully']);
     }
 
 }
