@@ -9,7 +9,6 @@ use App\Http\Requests\JobRequest;
 /**
  * @group Job management
  *
- *
  */
 class JobController extends Controller
 {

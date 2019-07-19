@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Interviewer;
 use Illuminate\Http\Request;
 
+/**
+ * @group Interviewer management
+ *
+ */
 class InterviewerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @bodyParam keyword string keyword want to search (search by fullname, email, address, phone, technicalSkill of interviewer).
+     * @bodyParam property string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
     {
