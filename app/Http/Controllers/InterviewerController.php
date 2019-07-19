@@ -65,7 +65,7 @@ class InterviewerController extends Controller
      * @bodyParam phone phone required The phone number of the interviewer.
      * @bodyParam address string The address of the interviewer.
      * @bodyParam technicalSkill string required The technical skill of the interviewer.
-     * @bodyParam image file required The image of the interviewer (png,peg,jpg,png).
+     * @bodyParam image file The image of the interviewer (png,peg,jpg,png).
      */
     public function store(InterviewerRequest $request)
     {
@@ -94,12 +94,21 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update an interviewer by Id.
      *
+     * @bodyParam fullname string required The full name of the interviewer.
+     * @bodyParam email email required The email of the interviewer.
+     * @bodyParam phone phone required The phone number of the interviewer.
+     * @bodyParam address string The address of the interviewer.
+     * @bodyParam technicalSkill string required The technical skill of the interviewer.
+     * @bodyParam image file The image of the interviewer (png,peg,jpg,png).
      */
-    public function update(Request $request, Interviewer $interviewer)
+    public function update(InterviewerRequest $request, $idInterviewer)
     {
-        //
+        $interviewerActive = Interviewer::findOrFail($idInterviewer);
+        $profileImageName = $this->interviewerService->handleUploadedImage($request->file("image"),$interviewerActive->image);
+        $interviewerActive->update($request->except("image") + ["image" => $profileImageName]);
+        return response()->json(['message' => "Updated an interviewer successfully!"],200);
     }
 
     /**
