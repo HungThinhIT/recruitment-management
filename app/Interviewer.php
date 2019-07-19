@@ -8,6 +8,7 @@ class Interviewer extends Model
 {
     protected $table = 'interviewers';
     protected $primaryKey = 'id';
+    protected $fillable = ["fullname", "address", "phone", "email", "image", "technicalSkill"];
 
     public function scopeSearchByKeyword($query, $request){
         if($request->has('keyword') && $request->input("keyword") != ""){
