@@ -127,9 +127,10 @@ class RoleController extends Controller
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
-        $role = Role::where('name',"Admin")->get();
-        if ($role!=null)
+        $role = Role::whereIn('id',$role_arr)->pluck('name');
+        if ($role->contains("Admin"))
             return response()->json(['message'=>'The role Admin can not be deleted!']);
+
         $exists = Role::whereIn('id', $role_arr)->pluck('id');
         $notExists = collect($role_arr)->diff($exists);
         $idsNotFound = "";
