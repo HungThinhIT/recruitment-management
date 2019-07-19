@@ -29,7 +29,7 @@ class UserController extends Controller
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
-    {        
+    {
         try{
             if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
             {
@@ -47,7 +47,7 @@ class UserController extends Controller
                                 ->with(["roles:name"])
                                 ->paginate(10)
                     );
-            }     
+            }
             else if ($request->keyword !=null)
             {
                 $data = $request->keyword;
@@ -61,7 +61,7 @@ class UserController extends Controller
                                     $query->where('name', 'like', '%'.$data.'%');
                                 })
                                 ->with(["roles:name"])
-                                ->paginate(10));    
+                                ->paginate(10));
             }
             else if ($request->property !=null && $request->orderby !=null )
             {
@@ -195,8 +195,8 @@ class UserController extends Controller
     public function destroy(CreateUserRequest $request)
     {
         $user_arr = request("userId");
-        $user = User::where('name',"Admin")->get();
-        if ($user!=null)
+        $user = User::whereIn('id',$user_arr)->pluck('name');
+        if ($user->contains("admin"))
             return response()->json(['message'=>'The user admin can not be deleted!']);
         $exists = User::whereIn('id', $user_arr)->pluck('id');
         $notExists = collect($user_arr)->diff($exists);

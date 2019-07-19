@@ -21,7 +21,7 @@ class RoleController extends Controller
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
-    {        
+    {
         try{
             if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
             {
@@ -31,7 +31,7 @@ class RoleController extends Controller
                                 ->orderBy($data["property"], $data["orderby"])
                                 ->paginate(10)
                     );
-            }     
+            }
             else if ($request->keyword !=null)
             {
                 $data = $request->keyword;
@@ -127,9 +127,10 @@ class RoleController extends Controller
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
-        $role = Role::where('name',"Admin")->get();
-        if ($role!=null)
+        $role = Role::whereIn('id',$role_arr)->pluck('name');
+        if ($role->contains("Admin"))
             return response()->json(['message'=>'The role Admin can not be deleted!']);
+
         $exists = Role::whereIn('id', $role_arr)->pluck('id');
         $notExists = collect($role_arr)->diff($exists);
         $idsNotFound = "";
