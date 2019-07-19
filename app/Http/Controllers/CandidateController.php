@@ -137,6 +137,7 @@ class CandidateController extends Controller
     public function show($candidateID)
     {
         $candidate = Candidate::with(["interviews","jobs"])->findOrFail($candidateID);
+        //solve technical skill data
         $technical_arr = explode(",",$candidate->technicalSkill);
         $technicalSkill =  new Collection();
         foreach ($technical_arr as $key => $technical) {
@@ -147,6 +148,27 @@ class CandidateController extends Controller
             ]);
         }
         $candidate->technicalSkill = $technicalSkill;
+        //solve status data
+        switch ($candidate->status) {
+            case '1':
+                $status = "Pending";
+                break;
+            case '2':
+                $status = "Deny";
+                break;
+            case '3':
+                $status = "Approve Application";
+            break;
+            case '4':
+                $status = "Passed";
+            break;
+            case '5':
+                $status = "Failed";
+            break;
+            default:
+                break;
+        }
+        $candidate->status = $status;
         return response()->json($candidate);
     }
 
