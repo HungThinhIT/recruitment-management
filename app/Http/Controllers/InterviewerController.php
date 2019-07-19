@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Interviewer;
 use Illuminate\Http\Request;
+use App\Http\Requests\InterviewerRequest;
 
 /**
  * @group Interviewer management
@@ -11,6 +12,13 @@ use Illuminate\Http\Request;
  */
 class InterviewerController extends Controller
 {
+    protected $interviewerService;
+
+    public function __construct()
+    {
+        $this->interviewerService = new InterviewerService();
+    }
+
     /**
      * Display a listing of the resource.
      * @bodyParam keyword string keyword want to search (search by fullname, email, address, phone, technicalSkill of interviewer).
@@ -51,12 +59,19 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Create an interviewer
+     * @bodyParam fullname string required The full name of the interviewer.
+     * @bodyParam email email required The email of the interviewer.
+     * @bodyParam phone phone required The phone number of the interviewer.
+     * @bodyParam address string The address of the interviewer.
+     * @bodyParam technicalSkill string required The technical skill of the interviewer.
+     * @bodyParam image file required The image of the interviewer (png,peg,jpg,png).
      */
-    public function store(Request $request)
+    public function store(InterviewerRequest $request)
     {
-        //
+        $profileImageName = $this->interviewerService->handleUploadedImage($request->file("image"),null);
+        Interviewer::create($request->except('image') + ["image" => $profileImageName]);
+        return response()->json(['message' => "Create an interviewer successfully!"],200);
     }
 
     /**
@@ -94,5 +109,30 @@ class InterviewerController extends Controller
     public function destroy(Interviewer $interviewer)
     {
         //
+    }
+}
+
+class InterviewerService{
+
+    public function handleUploadedImage($image,$oldImageName)
+    {
+        if (!is_null($image)) {
+
+            if($oldImageName == null){
+                $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
+                $image->move(public_path('upload/interviewer/avatars'),$imageProfileName);
+                return $imageProfileName;
+            }
+            //Delete old image except default image
+            if($oldImageName != "avt_interviewer_default.png"){
+                unlink('upload/interviewer/avatars/'.$oldImageName);
+                $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
+                $image->move(public_path('upload/interviewer/avatars'),$imageProfileName);
+                return $imageProfileName;
+            }
+        }
+        else{
+            return "avt_interviewer_default.png";
+        }
     }
 }
