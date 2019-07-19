@@ -102,10 +102,9 @@ class RoleController extends Controller
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
-        foreach ($role_arr as $key => $value) {
-            if (Role::findOrFail($value)->name == "Admin")
-                return response()->json(['message'=>'The role Admin can not be deleted!']);
-        }
+        $role = Role::where('name',"Admin")->get();
+        if ($role!=null)
+            return response()->json(['message'=>'The role Admin can not be deleted!']);
         $exists = Role::whereIn('id', $role_arr)->pluck('id');
         $notExists = collect($role_arr)->diff($exists);
         $idsNotFound = "";
