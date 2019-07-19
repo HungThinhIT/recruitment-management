@@ -60,12 +60,13 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display an interviewer by Id.
      *
      */
-    public function show(Interviewer $interviewer)
+    public function show($interviewerId)
     {
-        //
+        $interviewer = Interviewer::findOrFail($interviewerId);
+        return response()->json($interviewer,200);
     }
 
     /**
