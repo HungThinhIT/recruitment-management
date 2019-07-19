@@ -12,6 +12,12 @@ use App\Http\Requests\CandidateRequest;
  */
 class CandidateController extends Controller
 {
+    protected $candidateServices;
+    public function __construct()
+    {
+        $this->candidateServices = new CandidateServices;
+    }
+
     /**
      * Display a listing of the candidate.
      * @bodyParam keyword string keyword want to search.
@@ -81,14 +87,47 @@ class CandidateController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a candidate.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam fullname string required The full name of the candidate.
+     * @bodyParam email string required The email of the candidate.
+     * @bodyParam phone string required The phone of the candidate.
+     * @bodyParam address string required The address of the candidate.
+     * @bodyParam description string The description of the candidate.
+     * @bodyParam technicalSkill string  The technicalSkill of the candidate. Example: NodeJs-2, PHP-1
+     * @bodyParam CV file required The resume of the candidate.
      */
-    public function store(Request $request)
+    public function store(CandidateRequest $request)
     {
-        //
+        //check by email if candidate is existed
+        $candidate = Candidate::where('email','=',$request["email"])->first();
+        if ($candidate!=null)
+        {
+            //update old candidate
+            //delete old CV and upload new CV
+            unlink('upload/CV/'.$candidate->CV);
+             $fileName = $this->candidateServices->handleUploadNewCV($request->file('CV'));
+            if ($fileName == NULL){
+                return response()->json(['message' => "Upload failed, file not exist"],422);
+            }
+            $candidate->update($request->except("CV","created_at","updated_at")
+                            +["CV"=> $fileName]
+                            +["status"=>1]);
+            return response()->json(['message'=>'Updated a candidate successfully'],200);
+        }
+        //if candidate is not existed in database
+        else
+        {
+            //upload CV
+            $fileName = $this->candidateServices->handleUploadNewCV($request->file('CV'));
+            if($fileName == NULL){
+                return response()->json(['message' => "Upload failed, file not exist"],422);
+            }
+            Candidate::create($request->except("CV","created_at","updated_at")
+                            +["CV"=> $fileName]
+                            +["status"=>1]);
+            return response()->json(['message'=>'Created a candidate successfully'],200);
+        }       
     }
 
     
@@ -98,6 +137,7 @@ class CandidateController extends Controller
     public function show($candidateID)
     {
         $candidate = Candidate::with(["interviews","jobs"])->findOrFail($candidateID);
+        //solve technical skill data
         $technical_arr = explode(",",$candidate->technicalSkill);
         $technicalSkill =  new Collection();
         foreach ($technical_arr as $key => $technical) {
@@ -108,6 +148,27 @@ class CandidateController extends Controller
             ]);
         }
         $candidate->technicalSkill = $technicalSkill;
+        //solve status data
+        switch ($candidate->status) {
+            case '1':
+                $status = "Pending";
+                break;
+            case '2':
+                $status = "Deny";
+                break;
+            case '3':
+                $status = "Approve Application";
+            break;
+            case '4':
+                $status = "Passed";
+            break;
+            case '5':
+                $status = "Failed";
+            break;
+            default:
+                break;
+        }
+        $candidate->status = $status;
         return response()->json($candidate);
     }
 
@@ -156,4 +217,18 @@ class CandidateController extends Controller
            'message'=>'Deleted the candidate successfully']);
     }
 
+}
+class CandidateServices
+{
+    public function handleUploadNewCV($file)
+    {
+        if (!is_null($file)) {
+            $fileName = 'CV_'.now()->year.'_'.str_random(5).'-enclave_'.$file->getClientOriginalName();
+            $file->move(public_path('upload/CV'),$fileName);
+            return $fileName;
+        }
+        else{
+            return NULL;
+        }
+    }
 }

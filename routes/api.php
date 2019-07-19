@@ -35,6 +35,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
+    /*
+    * Store candidate's information .
+    */
+    Route::post("candidate","CandidateController@store");
+
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
@@ -100,9 +105,8 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Candidate routes
         */
-        Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
+        Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        //Route::post("candidate","CandidateController@store")->middleware("can:candidate.create");
         Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
