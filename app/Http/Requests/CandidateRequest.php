@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleRequest extends FormRequest
+class CandidateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,22 +24,15 @@ class ArticleRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-                {return [];}
-            case 'PUT':{return[];}
+            case 'PUT':
             case 'POST':
             {
                 return [
-                    'title'   =>'required|max:255',
-                    'content' =>'required',
-                    'image'   =>'max:255',
-                    'jobId'   =>'required|integer|exists:jobs,id',
-                    'catId'   =>'required|integer|exists:categories,id',
                 ];
             }
             case 'DELETE': {
                 return [
-                    "articleId" => "required|array"
+                    "candidateId" => "required|array"
                 ];
             }
                 break;

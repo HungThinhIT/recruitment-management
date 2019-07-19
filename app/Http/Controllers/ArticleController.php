@@ -5,18 +5,78 @@ namespace App\Http\Controllers;
 use App\Article;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @group Article management
  */
 class ArticleController extends Controller
 {
     /**
-     * Display a listing of the article for admin/user.
-     * 10 rows/request
+     * Display a listing of the article.
+     * @bodyParam keyword string keyword want to search (search by title, content, name of job, name of category, fullname of user).
+     * @bodyParam property string Field in table you want to sort (title, content, name of job, name of category, name of user, isPublic). Example: title
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Article::with(["user","job","category"])->paginate(10));
+        try{
+            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("keyword","property","orderby");
+                return response()->json(
+                        Article::where('title', 'like', '%'.$data["keyword"].'%')
+                                ->orwhere('content', 'like', '%'.$data["keyword"].'%')
+                                ->orWhereHas('user', function (Builder $query) use ($data){
+                                    $query->where('fullname', 'like', '%'.$data["keyword"].'%');
+                                })
+                                ->orWhereHas('category', function (Builder $query) use ($data){
+                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
+                                })
+                                ->orWhereHas('job', function (Builder $query) use ($data){
+                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
+                                })
+                                ->orderBy($data["property"], $data["orderby"])
+                                ->with(["user","job","category"])
+                                ->paginate(10)
+                    );
+            }     
+            else if ($request->keyword !=null)
+            {
+                $data = $request->keyword;
+                return response()->json(
+                        Article::where('title', 'like', '%'.$data.'%')
+                                ->orwhere('content', 'like', '%'.$data.'%')
+                                ->orWhereHas('user', function (Builder $query) use ($data){
+                                    $query->where('fullname', 'like', '%'.$data.'%');
+                                })
+                                ->orWhereHas('category', function (Builder $query) use ($data){
+                                    $query->where('name', 'like', '%'.$data.'%');
+                                })
+                                ->orWhereHas('job', function (Builder $query) use ($data){
+                                    $query->where('name', 'like', '%'.$data.'%');
+                                })
+                                ->with(["user","job","category"])
+                                ->paginate(10));    
+            }
+            else if ($request->property !=null && $request->orderby !=null )
+            {
+                $data = $request->only("property","orderby");
+                return response()->json(Article::orderBy($data["property"], $data["orderby"])
+                                ->with(["user","job","category"])
+                                ->paginate(10));
+            }
+            else{
+                return response()->json(Article::with(["user","job","category"])
+                                ->paginate(10));
+            }
+        }
+        catch(\Illuminate\Database\QueryException $queryEx){
+            return response()->json(['message' => $data["property"]." field is not existed"],422);
+        }
+        catch(\InvalidArgumentException $ex){
+            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
+        }
     }
 
     /**
