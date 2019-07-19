@@ -62,6 +62,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('role','RoleController@store')->middleware('can:Role.create');
         Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
         Route::delete('role','RoleController@destroy')->middleware('can:Role.delete');
+        Route::get('role/{id}/edit','RoleController@edit')->middleware('can:Role.edit');
 
         /*
         * Permission routes
@@ -80,7 +81,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::post("ljob","JobController@index")->middleware("can:job.view");
+        Route::get("list-job","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");

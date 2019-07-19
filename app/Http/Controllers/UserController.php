@@ -195,6 +195,9 @@ class UserController extends Controller
     public function destroy(CreateUserRequest $request)
     {
         $user_arr = request("userId");
+        $user = User::where('name',"Admin")->get();
+        if ($user!=null)
+            return response()->json(['message'=>'The user admin can not be deleted!']);
         $exists = User::whereIn('id', $user_arr)->pluck('id');
         $notExists = collect($user_arr)->diff($exists);
         $idsNotFound = "";
