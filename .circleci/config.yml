@@ -28,13 +28,13 @@ jobs:
             name: Deploy to product-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                ssh -tt hungthinh@168.63.251.210 ' cd ../api.enclavei3.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout master && sudo git pull origin master && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && sudo chmod 777 public/upload/CV  && sudo chmod 777 public/upload/images/avatars && sudo chmod 777 public/upload/interviewer/avatar && exit && exit'
+                ssh -tt hungthinh@168.63.251.210 ' cd ../api.enclavei3.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout master && sudo git pull origin master && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && sudo chmod 777 public/upload/CV  && sudo chmod 777 public/upload/images/avatars && sudo chmod 777 public/upload/interviewer/avatars && exit && exit'
               fi
         - run:
             name: Deploy to dev-server from Github
             command: |
               if [ "${CIRCLE_BRANCH}" == "dev" ]; then
-                ssh -tt hungthinh@13.76.3.251 'cd ../api.enclavei3dev.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout dev && sudo git pull origin dev && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && sudo chmod 777 public/upload/CV  && sudo chmod 777 public/upload/images/avatars && sudo chmod 777 public/upload/interviewer/avatar && exit && exit'
+                ssh -tt hungthinh@13.76.3.251 'cd ../api.enclavei3dev.tk/public_html/recruitment-management/ && sudo git reset --hard HEAD^ && sudo git fetch origin && sudo git checkout dev && sudo git pull origin dev && sudo composer install && sudo php artisan passport:install && sudo php artisan apidoc:generate && sudo chmod 777 public/upload/CV  && sudo chmod 777 public/upload/images/avatars && sudo chmod 777 public/upload/interviewer/avatars && exit && exit'
               fi
         #- run:
             #name: Reset apache
