@@ -23,6 +23,7 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        
         return [
             'fullname' => 'required|max:255',
             'email'    => 'required|email|max:50|unique:users,email,'.$this->user()->id,'id',
