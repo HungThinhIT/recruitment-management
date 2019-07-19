@@ -91,6 +91,11 @@ Route::group(['middleware' => ['cors']], function () {
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
 
         /*
+        * Interviewer routes
+        */
+        Route::post("list-interviewer","InterviewerController@index")->middleware("can:interviewer.view");
+        
+        /*      
         * Candidate routes
         */
         Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
