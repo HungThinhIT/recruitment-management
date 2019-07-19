@@ -112,12 +112,27 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove a interviewer/many interviewers by ID.
      *
+     * @bodyParam interviewerId array required The id/list id of interviewer. Example: [1,2,3,4,5]
      */
-    public function destroy(Interviewer $interviewer)
+    public function destroy(InterviewerRequest $request)
     {
-        //
+        $interviewerId = $request->input("interviewerId");
+        $exists = Job::whereIn('id', $interviewerId)->pluck('id');
+        $notExists = collect($interviewerId)->diff($exists);
+        //Get list id not found from array to var.
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Job::whereIn('id', $interviewerId)->delete();
+        return response()->json([
+           'message'=>'Deleted interviewer successfully'],200);
     }
 }
 

@@ -39,7 +39,7 @@ class InterviewerRequest extends FormRequest
             }
             case 'DELETE': {
                 return [
-                    //
+                    "interviewerId"   => "required|array",
                 ];
             }
                 break;
