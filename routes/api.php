@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 //TEST Route - Signup route only for test.
 Route::group(['middleware' => ['cors']], function () {
     Route::post('login', 'AuthController@logIn');
-  
+
     Route::group(['prefix' => 'password'], function () {
         Route::post('forgot', 'PasswordResetController@forgotPasswordRequest');
         Route::get('verify/{token}', 'PasswordResetController@verifyToken');
@@ -94,8 +94,9 @@ Route::group(['middleware' => ['cors']], function () {
         * Interviewer routes
         */
         Route::post("list-interviewer","InterviewerController@index")->middleware("can:interviewer.view");
-        
-        /*      
+        Route::get("interviewer/{id}","InterviewerController@show")->middleware("can:interviewer.view");
+
+        /*
         * Candidate routes
         */
         Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
