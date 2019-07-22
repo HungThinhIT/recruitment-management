@@ -32,7 +32,7 @@ Route::group(['middleware' => ['cors']], function () {
     /*
     * Article routes for Enclave Recruitment web.
     */
-    Route::get("article-web","ArticleController@showListArticleForCandidatePage");
+    Route::post("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
     /*
