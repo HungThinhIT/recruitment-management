@@ -111,7 +111,8 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
     });
