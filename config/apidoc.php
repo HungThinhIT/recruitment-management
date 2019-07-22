@@ -18,7 +18,7 @@ return [
      * By default, this will be the value of config('app.url').
      */
     //'base_url' => config('app.url'),
-    'base_url' => 'https://api.enclavei3dev.tk',
+    'base_url' => 'https://api.enclavei3.tk',
 
     /*
      * Generate a Postman collection in addition to HTML docs.

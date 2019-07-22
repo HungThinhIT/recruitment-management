@@ -21,7 +21,7 @@ class RoleController extends Controller
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
-    {        
+    {
         try{
             if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
             {
@@ -31,7 +31,7 @@ class RoleController extends Controller
                                 ->orderBy($data["property"], $data["orderby"])
                                 ->paginate(10)
                     );
-            }     
+            }
             else if ($request->keyword !=null)
             {
                 $data = $request->keyword;
@@ -92,12 +92,13 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the message for editing the role Admin.
      *
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        if (Role::findOrFail($id)->name =="Admin")
+            return response()->json(['message'=>'The role Admin can not be updated!']);
     }
 
     /**
@@ -108,10 +109,13 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id)
     {
-        Role::findOrFail($id)->update($request->only("name"));
-        Role::findOrFail($id)->permissions()->sync(request("permissions"));
-        return response()->json([
-           'message'=>'Updated role successfully']);
+         $role = Role::findOrFail($id);
+        //if the role is admin, it can not be updated
+        if ($role->name =="Admin")
+            return response()->json(['message'=>'The role Admin can not be updated!']);
+        $role->update($request->only("name"));
+        $role->permissions()->sync(request("permissions"));
+        return response()->json(['message'=>'Updated role successfully']);
     }
 
     /**
@@ -119,9 +123,14 @@ class RoleController extends Controller
      *
      * @bodyParam roleId array required list id of role. Example: [1,2,3,4,5]
      */
+    //If the role is admin, it can not be deleted
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
+        $role = Role::whereIn('id',$role_arr)->pluck('name');
+        if ($role->contains("Admin"))
+            return response()->json(['message'=>'The role Admin can not be deleted!']);
+
         $exists = Role::whereIn('id', $role_arr)->pluck('id');
         $notExists = collect($role_arr)->diff($exists);
         $idsNotFound = "";

@@ -35,6 +35,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
+    /*
+    * Store candidate's information .
+    */
+    Route::post("candidate","CandidateController@store");
+
     Route::group(['middleware' => 'auth:api'], function() {
         /*
         * Auth routes
@@ -57,6 +62,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post('role','RoleController@store')->middleware('can:Role.create');
         Route::put('role/{id}','RoleController@update')->middleware('can:Role.edit');
         Route::delete('role','RoleController@destroy')->middleware('can:Role.delete');
+        Route::get('role/{id}/edit','RoleController@edit')->middleware('can:Role.edit');
 
         /*
         * Permission routes
@@ -75,7 +81,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::post("ljob","JobController@index")->middleware("can:job.view");
+        Route::get("list-job","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
@@ -98,13 +104,13 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("interviewer","InterviewerController@store")->middleware("can:interviewer.create");
         Route::put("interviewer/{id}","InterviewerController@update")->middleware("can:interviewer.edit");
         Route::post("interviewer-avatar","InterviewerController@updateNewAvatar")->middleware("can:interviewer.edit");
+        Route::delete("interviewer","InterviewerController@destroy")->middleware("can:interviewer.delete");
 
         /*
         * Candidate routes
         */
-        Route::post("candidate","CandidateController@index")->middleware("can:candidate.view");
+        Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        //Route::post("candidate","CandidateController@store")->middleware("can:candidate.create");
         Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
