@@ -97,6 +97,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get("interviewer/{id}","InterviewerController@show")->middleware("can:interviewer.view");
         Route::post("interviewer","InterviewerController@store")->middleware("can:interviewer.create");
         Route::post("interviewer/{id}","InterviewerController@update")->middleware("can:interviewer.edit");
+        Route::delete("interviewer","InterviewerController@destroy")->middleware("can:interviewer.delete");
 
         /*
         * Candidate routes

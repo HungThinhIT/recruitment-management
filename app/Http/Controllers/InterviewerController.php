@@ -22,8 +22,8 @@ class InterviewerController extends Controller
     /**
      * Display a listing of the resource.
      * @bodyParam keyword string keyword want to search (search by fullname, email, address, phone, technicalSkill of interviewer).
-     * @bodyParam property string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
-     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam field string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
+     * @bodyParam sort string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
     {
@@ -112,14 +112,26 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Remove a interviewer/many interviewers by ID.
+     * Remove interviewer by ID/All.
      *
      * @bodyParam interviewerId array required The id/list id of interviewer. Example: [1,2,3,4,5]
+     * @bodyParam status string The status for delete all records(status=all). Example: all
      */
     public function destroy(InterviewerRequest $request)
     {
+        if($request->has("status")){
+            if($request->input("status") == "all"){
+                Interviewer::truncate();
+                return response()->json([
+                    'message'=>'Deleted all interviewers successfully.'],200);
+            }
+            else{
+                return response()->json([
+                    'message'=>'The status data is invalid.'],422);
+            }
+        }
         $interviewerId = $request->input("interviewerId");
-        $exists = Job::whereIn('id', $interviewerId)->pluck('id');
+        $exists = Interviewer::whereIn('id', $interviewerId)->pluck('id');
         $notExists = collect($interviewerId)->diff($exists);
         //Get list id not found from array to var.
         $idsNotFound = "";
@@ -130,9 +142,9 @@ class InterviewerController extends Controller
             return response()->json([
                 'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
         }
-        Job::whereIn('id', $interviewerId)->delete();
+        Interviewer::whereIn('id', $interviewerId)->delete();
         return response()->json([
-           'message'=>'Deleted interviewer successfully'],200);
+           'message'=>'Deleted interviewer successfully.'],200);
     }
 }
 

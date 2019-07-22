@@ -37,9 +37,11 @@ class InterviewerRequest extends FormRequest
                     "image"           => "mimes:jpeg,jpg,png|max:5000",
                 ];
             }
-            case 'DELETE': {
+            case 'DELETE':
+            {
                 return [
-                    "interviewerId"   => "required|array",
+                    "interviewerId"   => "required_without:status|array",
+                    "status"          => "required_without:interviewerId|string",
                 ];
             }
                 break;
