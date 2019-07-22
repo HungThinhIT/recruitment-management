@@ -70,7 +70,6 @@ class Article extends Model
                                     $q  ->where('experience','>', 5);
                                     break;
                                 default:
-                                    # code...
                                     break;
                             }                           
                             })
