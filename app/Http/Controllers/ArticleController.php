@@ -82,18 +82,6 @@ class ArticleController extends Controller
     /**
      * Display a listing of the article recruitment for guests.
      * 10 rows/request
-     */
-    /*public function showListArticleForCandidatePage()
-    {
-        // return the article in category Recruitment (catId=1)
-        return response()->json(
-            Article::with(["job"])
-            ->where('catId',1)
-            ->paginate(10));
-    }*/
-    /**
-     * Display a listing of the article recruitment for guests.
-     * 10 rows/request
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
      * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Internship
      * @bodyParam location string The position of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
@@ -110,6 +98,7 @@ class ArticleController extends Controller
                                     ->OfLocation($request->input('location'),$orderby)
                                     ->OfPosition($request->input('position'),$orderby)
                                     ->OfExperience($request->input('experience'),$orderby)
+                                    ->OfCategory('Recruitment',$orderby)
                                     ->where('isPublic',1)
                                     ->paginate(10);
             return response()->json($articles);                       

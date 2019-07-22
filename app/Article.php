@@ -52,6 +52,14 @@ class Article extends Model
                             })
                             ->orderBy("created_at", $orderby);
     }
+    public function scopeOfCategory($query,$category,$orderby)
+    {
+        if ($category) 
+            return $query->whereHas('category', function (Builder $q) use ($category){
+                            $q  ->where('name', $category);
+                            })
+                            ->orderBy("created_at", $orderby);
+    }
     public function scopeOfExperience($query,$experience,$orderby)
     {   
         if ($experience) 
