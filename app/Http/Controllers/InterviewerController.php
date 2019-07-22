@@ -69,8 +69,8 @@ class InterviewerController extends Controller
      */
     public function store(InterviewerRequest $request)
     {
-        $profileImageName = $this->interviewerService->handleUploadedImage($request->file("image"),null);
-        Interviewer::create($request->except('image') + ["image" => $profileImageName]);
+        $profileImageName = $this->interviewerService->handleNewUploadedImage($request->file("image"));
+        Interviewer::create($request->except('image',"created_at","updated_at") + ["image" => $profileImageName]);
         return response()->json(['message' => "Create an interviewer successfully!"],200);
     }
 
@@ -106,9 +106,26 @@ class InterviewerController extends Controller
     public function update(InterviewerRequest $request, $idInterviewer)
     {
         $interviewerActive = Interviewer::findOrFail($idInterviewer);
-        $profileImageName = $this->interviewerService->handleUploadedImage($request->file("image"),$interviewerActive->image);
-        $interviewerActive->update($request->except("image") + ["image" => $profileImageName]);
+        $profileImageName = $this->interviewerService->handleUpdatedImage($request->file("image"),$interviewerActive->image);
+        $interviewerActive->update($request->except("created_at","updated_at"));
         return response()->json(['message' => "Updated an interviewer successfully!"],200);
+    }
+
+    /**
+     * Update an interviewer by Id.
+     *
+     * @bodyParam interviewerId numeric required The id of the interviewer.
+     * @bodyParam image file required The image of the interviewer (png,peg,jpg,png).
+     */
+    public function updateNewAvatar(Request $request){
+        $this->validate($request,
+            [   'interviewerId' => "required","exists:interviewers,id",
+                'image' => 'mimes:jpeg,jpg,png|required|max:5000']);
+
+        $interviewerActive = Interviewer::findOrFail($request->input("interviewerId"));
+        $profileImageName = $this->interviewerService->handleUpdatedImage($request->file("image"),$interviewerActive->image);
+        $interviewerActive->update($request->except("created_at","updated_at") + ["image" => $profileImageName]);
+        return response()->json(['message' => "Updated avatar for ".$interviewerActive->fullname." successfully!"],200);
     }
 
     /**
@@ -123,25 +140,25 @@ class InterviewerController extends Controller
 
 class InterviewerService{
 
-    public function handleUploadedImage($image,$oldImageName)
+    public function handleNewUploadedImage($image)
     {
         if (!is_null($image)) {
-
-            if($oldImageName == null){
-                $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
-                $image->move(public_path('upload/interviewer/avatars'),$imageProfileName);
-                return $imageProfileName;
-            }
-            //Delete old image except default image
-            if($oldImageName != "avt_interviewer_default.png"){
-                unlink('upload/interviewer/avatars/'.$oldImageName);
-                $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
-                $image->move(public_path('upload/interviewer/avatars'),$imageProfileName);
-                return $imageProfileName;
-            }
+            $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('upload/interviewer/avatars'),$imageProfileName);
+            return $imageProfileName;
         }
         else{
             return "avt_interviewer_default.png";
+        }
+    }
+
+    public function handleUpdatedImage($image,$oldImageName)
+    {
+        if (!is_null($image)) {
+            unlink('upload/interviewer/avatars/' . $oldImageName);
+            $imageProfileName = 'avatar_' . str_random(12) . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('upload/interviewer/avatars'), $imageProfileName);
+            return $imageProfileName;
         }
     }
 }
