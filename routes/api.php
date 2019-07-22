@@ -115,6 +115,12 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
+        /*
+         * Category routes
+         */
+        Route::post("category","CategoryController@index");
+
+
     });
 });
 
