@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
-use Illuminate\Database\Eloquent\Builder;
+
 
 /**
  * @group Article management
@@ -20,63 +20,12 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        try{
-            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        Article::where('title', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('content', 'like', '%'.$data["keyword"].'%')
-                                ->orWhereHas('user', function (Builder $query) use ($data){
-                                    $query->where('fullname', 'like', '%'.$data["keyword"].'%');
-                                })
-                                ->orWhereHas('category', function (Builder $query) use ($data){
-                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
-                                })
-                                ->orWhereHas('job', function (Builder $query) use ($data){
-                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
-                                })
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->with(["user","job","category"])
-                                ->paginate(10)
-                    );
-            }     
-            else if ($request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(
-                        Article::where('title', 'like', '%'.$data.'%')
-                                ->orwhere('content', 'like', '%'.$data.'%')
-                                ->orWhereHas('user', function (Builder $query) use ($data){
-                                    $query->where('fullname', 'like', '%'.$data.'%');
-                                })
-                                ->orWhereHas('category', function (Builder $query) use ($data){
-                                    $query->where('name', 'like', '%'.$data.'%');
-                                })
-                                ->orWhereHas('job', function (Builder $query) use ($data){
-                                    $query->where('name', 'like', '%'.$data.'%');
-                                })
-                                ->with(["user","job","category"])
-                                ->paginate(10));    
-            }
-            else if ($request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(Article::orderBy($data["property"], $data["orderby"])
-                                ->with(["user","job","category"])
-                                ->paginate(10));
-            }
-            else{
-                return response()->json(Article::with(["user","job","category"])
-                                ->paginate(10));
-            }
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $articles = Article::with(["user","job","category"])
+                        ->SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($articles); 
     }
 
     /**
@@ -131,7 +80,9 @@ class ArticleController extends Controller
      */
     public function show($idArticle)
     {
-        return response()->json(Article::with(["user","job","category"])->findOrFail($idArticle));
+        $article = Article::with(["user","job","category"])->findOrFail($idArticle);
+        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        return response()->json($article);
     }
 
     /**
