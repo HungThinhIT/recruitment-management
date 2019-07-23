@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Collection;
-
+use App\Services\CandidateService;
 use App\Candidate;
 use Illuminate\Http\Request;
 use App\Http\Requests\CandidateRequest;
@@ -12,9 +12,11 @@ use App\Http\Requests\CandidateRequest;
  */
 class CandidateController extends Controller
 {
+    protected $candidateService;
     protected $candidateServices;
-    public function __construct()
+    public function __construct(CandidateService $candidateService)
     {
+        $this->candidateService = $candidateService;
         $this->candidateServices = new CandidateServices;
     }
 
@@ -153,6 +155,24 @@ class CandidateController extends Controller
         //
     }
 
+    /**
+     * Update status of candidate.
+     *
+     * @bodyParam candidateId numeric required The Id of candidate.
+     * @bodyParam status string required The email of the candidate.
+     */
+    public function updateStatus(Request $request){
+        $this->validate($request,[
+            "candidateId" => "required|exists:candidates,id",
+            "status" => "required|string"
+        ]);
+
+        $numberStatus = $this->candidateService->convertStringStatusToNumber($request->input("status"));
+        if($numberStatus == NULL)
+            return response()->json(["message" => "Invalid status!"],422);
+        Candidate::findOrFail($request->input("candidateId"))->update(["status" => $numberStatus]);
+        return response()->json(["message" => "Updated status of candidate successfully!"],200);
+    }
     /**
      * Delete the candidate by Id.
      * @bodyParam candidateId array required The id/list id of candidate. Example: [1,2,3,4,5]

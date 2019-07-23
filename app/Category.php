@@ -12,4 +12,11 @@ class Category extends Model
     {
         return $this->hasMany('App\Article','catId','id');
     }
+
+    public function scopeSearch($query, $request){
+        if($request->input("keyword")){
+            $query->where('name','LIKE','%'.$request->input("keyword").'%');
+        }
+        return $query;
+    }
 }

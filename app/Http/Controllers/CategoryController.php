@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Candidate;
 use App\Category;
 use Illuminate\Http\Request;
-
+/**
+ * @group Category management
+ *
+ */
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the category.
      *
-     * @return \Illuminate\Http\Response
+     * @bodyParam keyword string keyword want to search (search by name). Example: name
+     * @bodyParam field string Field in table you want to sort (name). Example: name
+     * @bodyParam orderBy string The order sort (ASC/DESC). Example: desc
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $categoryActive = Category::query()->search($request)
+            ->orderBy($request->input("field"),$request->input("orderBy"))
+            ->paginate(10);
+        return response()->json($categoryActive);
     }
 
     /**

@@ -31,14 +31,29 @@ class ArticleController extends Controller
     /**
      * Display a listing of the article recruitment for guests.
      * 10 rows/request
+     * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
+     * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Internship
+     * @bodyParam location string The position of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
+     * @bodyParam experience numeric The number experience of job.1- 1 year;2- 2 years;3- 5 years;4: more than 5 years. If select "all", this param is empty. Example: 2
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
-    public function showListArticleForCandidatePage()
+    public function showListArticleForCandidatePage(Request $request)
     {
-        // return the article in category Recruitment (catId=1)
-        return response()->json(
-            Article::with(["job"])
-            ->where('catId',1)
-            ->paginate(10));
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        if ($request->has('keyword','position','location','experience'))
+        {
+            $articles = Article::with(["job"])
+                                    ->SearchByKeyWord($request->input('keyword'),$orderby)
+                                    ->OfLocation($request->input('location'),$orderby)
+                                    ->OfPosition($request->input('position'),$orderby)
+                                    ->OfExperience($request->input('experience'),$orderby)
+                                    ->OfCategory('Recruitment',$orderby)
+                                    ->where('isPublic',1)
+                                    ->paginate(10);
+            return response()->json($articles);                       
+        }
+        else
+            return response()->json(['message'=> "You must add key: keyword, position, experience and location"]);        
     }
     /**
      * Show the form for creating a new resource.
