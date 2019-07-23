@@ -22,7 +22,7 @@ class Article extends Model
     {
         return $this->belongsTo('App\Job','jobId');
     }
-    public function scopeSearchByKeyWord($query, $keyword)
+    public function scopeSearchByKeyWordForAdmin($query, $keyword)
     {   
         if ($keyword) 
             return $query->where('title', 'like', '%'.$keyword.'%')

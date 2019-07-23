@@ -22,7 +22,7 @@ class ArticleController extends Controller
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
         $articles = Article::with(["user","job","category"])
-                        ->SearchByKeyWord($request->input('keyword'))
+                        ->scopeSearchByKeyWordForAdmin($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
                         ->paginate(10);
         return response()->json($articles); 
