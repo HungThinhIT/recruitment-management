@@ -36,6 +36,12 @@ class Article extends Model
                             })                    
                         ->orderBy("created_at", $orderby);    
     }
+
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
+    }
     public function scopeOfPosition($query,$position,$orderby)
     {
         if ($position) 
