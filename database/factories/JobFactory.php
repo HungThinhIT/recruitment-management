@@ -11,6 +11,7 @@ $factory->define(Job::class, function (Faker $faker) {
         'description' 	=> $faker->text,
         'address' 		=> $faker->address,
         'position' 		=> 'Tester',
+        'category'      => 'Engineer',
         'salary'   		=> '500$ - 600$',
         'status'		=> 'Full-time',
         'experience'	=> '2-3 years',
