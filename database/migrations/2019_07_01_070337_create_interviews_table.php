@@ -19,6 +19,7 @@ class CreateInterviewsTable extends Migration
             $table->timestamp('timeStart');
             $table->string('address');
             $table->string('interviewerId');
+            $table->unsignedInteger('status')->default(1);
             $table->timestamps();
         });
     }
