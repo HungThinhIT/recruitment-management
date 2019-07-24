@@ -146,11 +146,19 @@ class UserController extends Controller
     /**
      * Delete the user
      *
-     * @bodyParam userId array required list id of user. Example: [1,2,3,4,5]
+     * @bodyParam userId array required list id of user. If you want to delete all, the value of userId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(CreateUserRequest $request)
-    {
+    {        
         $user_arr = request("userId");
+        //if delete all
+        if (in_array('all', $user_arr))
+        {
+                User::where('name','<>','admin')->delete();
+                return response()->json([
+                    'message'=>'Deleted all users successfully.'],200);
+        }
+        
         $user = User::whereIn('id',$user_arr)->pluck('name');
         if ($user->contains("admin"))
             return response()->json(['message'=>'The user admin can not be deleted!']);

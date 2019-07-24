@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Collection;
+use DB;
 use App\Services\CandidateService;
 use App\Candidate;
 use Illuminate\Http\Request;
@@ -175,11 +176,18 @@ class CandidateController extends Controller
     }
     /**
      * Delete the candidate by Id.
-     * @bodyParam candidateId array required The id/list id of candidate. Example: [1,2,3,4,5]
+     * @bodyParam candidateId array required The id/list id of candidate. If you want to delete all, the value of candidateId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(CandidateRequest $request)
     {
         $candidateIds = request("candidateId");
+        //if delete all
+        if (in_array('all', $candidateIds))
+        {
+                DB::table('candidates')->delete();
+                return response()->json([
+                    'message'=>'Deleted all candidates successfully.'],200);
+        }
         $exists = Candidate::whereIn('id', $candidateIds)->pluck('id');
         $notExists = collect($candidateIds)->diff($exists);
         $idsNotFound = "";

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
+use DB;
 use App\Http\Requests\ArticleRequest;
 
 
@@ -122,11 +123,18 @@ class ArticleController extends Controller
 
     /**
      * Delete the article by Id.
-     * @bodyParam articleId array required The id/list id of job. Example: [1,2,3,4,5]
+     * @bodyParam articleId array required The id/list id of job. If you want to delete all, the value of articleId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(ArticleRequest $request)
     {
         $articleIds = request("articleId");
+        //if delete all
+        if (in_array('all', $articleIds))
+        {
+                DB::table('articles')->delete();
+                return response()->json([
+                    'message'=>'Deleted all articles successfully.'],200);
+        }
         $exists = Article::whereIn('id', $articleIds)->pluck('id');
         $notExists = collect($articleIds)->diff($exists);
         $idsNotFound = "";

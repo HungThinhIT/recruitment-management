@@ -96,12 +96,19 @@ class RoleController extends Controller
     /**
      * Delete the role
      *
-     * @bodyParam roleId array required list id of role. Example: [1,2,3,4,5]
+     * @bodyParam roleId array required list id of role. If you want to delete all, the value of roleId = ["all"]. Example: [1,2,3,4,5]
      */
     //If the role is admin, it can not be deleted
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
+        //if delete all
+        if (in_array('all', $role_arr))
+        {
+                Role::where('name','<>','Admin')->delete();
+                return response()->json([
+                    'message'=>'Deleted all roles successfully.'],200);
+        }
         $role = Role::whereIn('id',$role_arr)->pluck('name');
         if ($role->contains("Admin"))
             return response()->json(['message'=>'The role Admin can not be deleted!']);
