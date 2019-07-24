@@ -16,4 +16,18 @@ class Candidate extends Model
     {
         return $this->belongsToMany('App\Interview', 'candidate_interview', 'candidateId', 'interviewId');
     }
+    public function scopeSearchByKeyWord($query, $keyword)
+    {   
+        if ($keyword) 
+            return $query->where('fullname', 'like', '%'.$keyword.'%')
+                                ->orWhere('email', 'like', '%'.$keyword.'%')
+                                ->orWhere('phone', 'like', '%'.$keyword.'%')
+                                ->orWhere('address', 'like', '%'.$keyword.'%')
+                                ->orWhere('technicalSkill', 'like', '%'.$keyword.'%');    
+    }
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
+    }
 }
