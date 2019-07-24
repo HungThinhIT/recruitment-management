@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\JobRequest;
 
@@ -84,6 +85,7 @@ class JobController extends Controller
      * @bodyParam salary string required The salary of job.
      * @bodyParam status string required The status of job.
      * @bodyParam experience string required The experience of job.
+     * @bodyParam category string required The category of job (Internship/Engineer). Example: Engineer
      * @bodyParam amount integer required The amount of job.
      * @bodyParam publishedOn datetime required The publishedOn date of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
      * @bodyParam deadline datetime required The deadline of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
@@ -129,6 +131,7 @@ class JobController extends Controller
      * @bodyParam salary string required The salary of job.
      * @bodyParam status string required The status of job.
      * @bodyParam experience string required The experience of job.
+     * @bodyParam category string required The category of job (Internship/Engineer). Example: Engineer
      * @bodyParam amount string required The amount of job.
      * @bodyParam publishedOn datetime required The publishedOn date of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
      * @bodyParam deadline datetime required The deadline of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
@@ -142,11 +145,18 @@ class JobController extends Controller
     /**
      * Remove a job/many jobs by ID.
      *
-     * @bodyParam jobID array required The id/list id of job. Example: [1,2,3,4,5]
+     * @bodyParam jobId array required The id/list id of job. If you want to delete all, the value of jobId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(JobRequest $request)
     {
-        $jobIds = $request->jobId;
+        $jobIds = request("jobId");
+        //if delete all
+        if (in_array('all', $jobIds))
+        {
+                DB::table('jobs')->delete();
+                return response()->json([
+                    'message'=>'Deleted all jobs successfully.'],200);
+        }
         $exists = Job::whereIn('id', $jobIds)->pluck('id');
         $notExists = collect($jobIds)->diff($exists);
 
