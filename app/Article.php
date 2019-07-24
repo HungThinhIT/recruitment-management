@@ -36,11 +36,11 @@ class Article extends Model
                             })                    
                         ->orderBy("created_at", $orderby);    
     }
-    public function scopeOfPosition($query,$position,$orderby)
+    public function scopeOfPosition($query,$category,$orderby)
     {
-        if ($position) 
-            return $query->whereHas('job', function (Builder $q) use ($position){
-                            $q  ->where('position', $position);
+        if ($category) 
+            return $query->whereHas('job', function (Builder $q) use ($category){
+                            $q  ->where('category', $category);
                             })
                             ->orderBy("created_at", $orderby);
     }
