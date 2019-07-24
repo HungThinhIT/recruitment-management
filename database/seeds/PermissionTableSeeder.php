@@ -97,6 +97,18 @@ class PermissionTableSeeder extends Seeder
         ],
         [
             'name'=>'Statistics'
+        ],
+        [
+            'name'=>'Category-list'
+        ],
+        [
+            'name'=>'Category-create'
+        ],
+        [
+            'name'=>'Category-edit'
+        ],
+        [
+            'name'=>'Category-delete'
         ]
         ]);     
 }

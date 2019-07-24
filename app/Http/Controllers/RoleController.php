@@ -22,37 +22,12 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        try{
-            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        Role::where('name', 'like', '%'.$data["keyword"].'%')
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->paginate(10)
-                    );
-            }
-            else if ($request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(Role::where('name', 'like', '%'.$data.'%')->paginate(10));
-            }
-            else if ($request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(Role::orderBy($data["property"], $data["orderby"])->paginate(10));
-            }
-            else{
-                return response()->json(Role::paginate(10));
-            }
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $roles = Role::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($roles);
+    }
 
     /**
      * Show the form for creating a new resource.

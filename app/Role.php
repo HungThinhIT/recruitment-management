@@ -39,5 +39,15 @@ class Role extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    //scope
+    public function scopeSearchByKeyWord($query, $keyword)
+    {   
+        if ($keyword) 
+            return $query->where('name', 'LIKE', '%'.$keyword.'%');    
+    }
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
+    }
 }
