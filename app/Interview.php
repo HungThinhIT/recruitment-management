@@ -14,8 +14,4 @@ class Interview extends Model
         return $filters->apply($query);
     }
 
-    public function candidates()
-    {
-        return $this->belongsToMany("App\Candidate","candidate_interview", "interviewId", "candidateId");
-    }
 }
