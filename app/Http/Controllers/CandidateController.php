@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Collection;
 use DB;
+use App\Services\CandidateService;
 use App\Candidate;
 use Illuminate\Http\Request;
 use App\Http\Requests\CandidateRequest;
@@ -12,9 +13,11 @@ use App\Http\Requests\CandidateRequest;
  */
 class CandidateController extends Controller
 {
+    protected $candidateService;
     protected $candidateServices;
-    public function __construct()
+    public function __construct(CandidateService $candidateService)
     {
+        $this->candidateService = $candidateService;
         $this->candidateServices = new CandidateServices;
     }
 
@@ -26,54 +29,12 @@ class CandidateController extends Controller
      */
     public function index(Request $request)
     {   
-        try{
-            if ($request->has("keyword","property","orderby")&& $request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        Candidate::where('fullname', 'like', '%'.$data["keyword"].'%')
-                                ->orWhere('email', 'like', '%'.$data["keyword"].'%')
-                                ->orWhere('phone', 'like', '%'.$data["keyword"].'%')
-                                ->orWhere('address', 'like', '%'.$data["keyword"].'%')
-                                ->orWhere('technicalSkill', 'like', '%'.$data["keyword"].'%')
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->with(["jobs","interviews"])
-                                ->paginate(10)
-                    );
-            }     
-            else if ($request->has("keyword")&& $request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(
-                        Candidate::where('fullname', 'like', '%'.$data.'%')
-                                ->orWhere('email', 'like', '%'.$data.'%')
-                                ->orWhere('phone', 'like', '%'.$data.'%')
-                                ->orWhere('address', 'like', '%'.$data.'%')
-                                ->orWhere('technicalSkill', 'like', '%'.$data.'%')
-                                ->with(["jobs","interviews"])
-                                ->paginate(10)
-                    );
-            }
-            else if ($request->has("property","orderby")&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(
-                    Candidate::orderBy($data["property"], $data["orderby"])
-                                ->with(["jobs","interviews"])
-                                ->paginate(10)
-                );
-            }
-            else{
-                return response()->json(Candidate::with(["jobs","interviews"])->paginate(10));
-            }
-
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $candidates = Candidate::with(["jobs","interviews"])
+                        ->SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($candidates);
     }
         
     /**
@@ -195,6 +156,24 @@ class CandidateController extends Controller
         //
     }
 
+    /**
+     * Update status of candidate.
+     *
+     * @bodyParam candidateId numeric required The Id of candidate.
+     * @bodyParam status string required The email of the candidate.
+     */
+    public function updateStatus(Request $request){
+        $this->validate($request,[
+            "candidateId" => "required|exists:candidates,id",
+            "status" => "required|string"
+        ]);
+
+        $numberStatus = $this->candidateService->convertStringStatusToNumber($request->input("status"));
+        if($numberStatus == NULL)
+            return response()->json(["message" => "Invalid status!"],422);
+        Candidate::findOrFail($request->input("candidateId"))->update(["status" => $numberStatus]);
+        return response()->json(["message" => "Updated status of candidate successfully!"],200);
+    }
     /**
      * Delete the candidate by Id.
      * @bodyParam candidateId array required The id/list id of candidate. If you want to delete all, the value of candidateId = ["all"]. Example: [1,2,3,4,5]
