@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interview;
 use App\Interviewer;
 use Illuminate\Http\Request;
+use App\Http\Requests\InterviewRequest;
 use App\InterviewFilter;
 /**
  * @group Interview management
@@ -14,7 +15,18 @@ class InterviewController extends Controller
 {
     /**
      * Display a listing of the interview.
-     * 10 rows/page.
+     * 10 rows/page. <br>
+     * Address code{ <br>
+     *  2-1 => "Floor 2 - 453-455 Hoang Dieu Str" | <br>
+     *  3-1 => "Floor 3 - 453-455 Hoang Dieu Str" | <br>
+     *  4-1 => "Floor 4 - 453-455 Hoang Dieu Str" | <br>
+     *  5-1 => "Floor 5 - 453-455 Hoang Dieu Str" | <br>
+     * <br>
+     *  2-2 => "Floor 2 - 117 Nguyen Huu Tho Str" | <br>
+     *  3-2 => "Floor 3 - 117 Nguyen Huu Tho Str" | <br>
+     *  4-2 => "Floor 4 - 117 Nguyen Huu Tho Str" | <br>
+     *  5-2 => "Floor 5 - 117 Nguyen Huu Tho Str" <br>}
+     *
      * @bodyParam name string Interview's name want to search.
      * @bodyParam address string Interview's address want to filter(2-1,2-2,...). Example: 2-1
      * @bodyParam status numeric The status of interview [Pending(1)/Opening(2)/Closed(3)]. Example: 1
@@ -52,14 +64,35 @@ class InterviewController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an interview.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Address code{ <br>
+     *  2-1 => "Floor 2 - 453-455 Hoang Dieu Str" | <br>
+     *  3-1 => "Floor 3 - 453-455 Hoang Dieu Str" | <br>
+     *  4-1 => "Floor 4 - 453-455 Hoang Dieu Str" | <br>
+     *  5-1 => "Floor 5 - 453-455 Hoang Dieu Str" | <br>
+     * <br>
+     *  2-2 => "Floor 2 - 117 Nguyen Huu Tho Str" | <br>
+     *  3-2 => "Floor 3 - 117 Nguyen Huu Tho Str" | <br>
+     *  4-2 => "Floor 4 - 117 Nguyen Huu Tho Str" | <br>
+     *  5-2 => "Floor 5 - 117 Nguyen Huu Tho Str" <br>}
+     *
+     * @bodyParam name string  required The name of interview. Example: Internship summer 2019
+     * @bodyParam address string The required address of interview(Ex: 2-1). Example: 2-1
+     * @bodyParam timeStart datetime required The time of interview(Ex: "2019-07-25 10:30:20" - yyyy-mm-dd H:i"s). Example: 2019-07-25 10:30:20
+     * @bodyParam interviewId array The interviewer of interview(Ex: [1,2,3] -> The array id of interviewer). Example: [1,2,3]
      */
-    public function store(Request $request)
+
+    public function store(InterviewRequest $request)
     {
-        //
+        if($request->has("address")){
+            $addressValid = $this->convertNumberAddressToString($request->input("address"));
+            if(!$addressValid)
+                return response()->json(['message' => "Address field is invalid!"],422);
+        }
+            Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
+                + ["interviewerId" => implode(",",$request->input("interviewerId"))]);
+        return response()->json(["message" => "Created ".$request->input("name") ."Successfully!"],200);
     }
 
     /**
@@ -141,7 +174,6 @@ class InterviewController extends Controller
     }
 
     private function convertInterviewerIdToName($interviewIds){
-        $interviewIds = str_replace(array('[',']'),'', $interviewIds );
         $interviewIds = explode(",",$interviewIds);
         $interviewerNames = Interviewer::WhereIn("id", $interviewIds)->pluck("fullname");
         return $interviewerNames;

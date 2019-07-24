@@ -115,7 +115,11 @@ Route::group(['middleware' => ['cors']], function () {
         /*
          * Interview routes
          */
-        Route::post("interview","InterviewController@index")->middleware("can:interview.view");
+        Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
+        Route::post("interview","InterviewController@store")->middleware("can:interview.create");
+
+
+
     });
 });
 
