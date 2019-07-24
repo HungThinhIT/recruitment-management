@@ -102,14 +102,29 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("list-interviewer","InterviewerController@index")->middleware("can:interviewer.view");
         Route::get("interviewer/{id}","InterviewerController@show")->middleware("can:interviewer.view");
         Route::post("interviewer","InterviewerController@store")->middleware("can:interviewer.create");
+        Route::put("interviewer/{id}","InterviewerController@update")->middleware("can:interviewer.edit");
+        Route::post("interviewer-avatar","InterviewerController@updateNewAvatar")->middleware("can:interviewer.edit");
+        Route::delete("interviewer","InterviewerController@destroy")->middleware("can:interviewer.delete");
 
         /*
         * Candidate routes
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
+
+        /*
+         * Interview routes
+         */
+        Route::post("interview","InterviewController@index")->middleware("can:interview.view");
+      
+        /*
+         * Category routes
+         */
+        Route::post("category","CategoryController@index");
+
 
     });
 });

@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Candidate' => 'App\Policies\CandidatePolicy',
         'App\Interviewer' => 'App\Policies\InterviewerPolicy',
         'App\Job' => 'App\Policies\JobPolicy',
+        'App\Category' => 'App\Policies\CategoryPolicy',
     ];
 
     /**
@@ -103,5 +104,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("job.view",JobPolicy::class."@view");
         Gate::define("job.edit",JobPolicy::class."@update");
         Gate::define("job.delete",JobPolicy::class."@delete");
+
+        /*
+        * Category Gate.
+        */
+        Gate::define("category.create",CategoryPolicy::class."@create");
+        Gate::define("category.view",CategoryPolicy::class."@view");
+        Gate::define("category.edit",CategoryPolicy::class."@update");
+        Gate::define("category.delete",CategoryPolicy::class."@delete");
     }
 }

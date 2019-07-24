@@ -31,10 +31,16 @@ class Article extends Model
                             $q    ->where('name', 'like', '%'.$keyword.'%')
                             ->orwhere('address', 'like', '%'.$keyword.'%')
                             ->orwhere('position', 'like', '%'.$keyword.'%')
+                            ->orwhere('category', 'like', '%'.$keyword.'%')
                             ->orwhere('experience', 'like', '%'.$keyword.'%')
                             ->orwhere('status', 'like', '%'.$keyword.'%');
                             })                    
                         ->orderBy("created_at", $orderby);    
+    }
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
     }
     public function scopeOfPosition($query,$category,$orderby)
     {
