@@ -32,7 +32,7 @@ class InterviewRequest extends FormRequest
                         "name"          => "required|string|max:255",
                         "timeStart"     => ["required","date","max:255","regex:/[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) ([01][0-9]|2[0-3]):[0-5]\d/"],
                         "address"       => "required|string|max:255",
-                        "interviewerId"   => "array",
+                        "interviewerId"   => "required|array",
                         ];
                 }
             case 'DELETE': {
