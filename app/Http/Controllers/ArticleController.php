@@ -32,8 +32,8 @@ class ArticleController extends Controller
      * Display a listing of the article recruitment for guests.
      * 10 rows/request
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
-     * @bodyParam category string The position of job, if select "all", this param is empty.  Example: Internship
-     * @bodyParam location string The position of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
+     * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Tester
+     * @bodyParam location string The location of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function showListArticleForCandidatePage(Request $request)
@@ -42,7 +42,7 @@ class ArticleController extends Controller
         $articles = Article::with(["job"])
                                     ->SearchByKeyWord($request->input('keyword'),$orderby)
                                     ->OfLocation($request->input('location'),$orderby)
-                                    ->OfPosition($request->input('category'),$orderby)
+                                    ->OfPosition($request->input('position'),$orderby)
                                     ->OfCategory('Recruitment',$orderby)
                                     ->where('isPublic',1)
                                     ->paginate(10);
