@@ -80,6 +80,7 @@ class InterviewController extends Controller
      * @bodyParam name string  required The name of interview. Example: Internship summer 2019
      * @bodyParam address string The required address of interview(Ex: 2-1). Example: 2-1
      * @bodyParam timeStart datetime required The time of interview(Ex: "2019-07-25 10:30:20" - yyyy-mm-dd H:i"s). Example: 2019-07-25 10:30:20
+     * @bodyParam candidateId array The candidate of interview (Ex: [1,2,3]). Example: [1,2,3]
      * @bodyParam interviewId array required The interviewer of interview(Ex: [1,2,3] -> The array id of interviewer). Example: [1,2,3]
      */
 
@@ -90,9 +91,24 @@ class InterviewController extends Controller
             if(!$addressValid)
                 return response()->json(['message' => "Address field is invalid!"],422);
         }
-            Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
-                + ["interviewerId" => implode(",",$request->input("interviewerId"))]);
-        return response()->json(["message" => "Created ".$request->input("name") ."Successfully!"],200);
+        $timeSelected = $request->input("timeStart");
+        //Check if any candidates had an interview other, It will return error with that name candidate and 422 status code
+        if($request->has("candidateId")){
+            $candidatesBusy = $this->checkCandidatesIsNotAvailable($request->input("candidateId"), $timeSelected);
+            if($candidatesBusy != NULL){
+                return response()->json(["message" => $candidatesBusy." had an interview at the same time"],422);
+            }
+        }
+        //Check if any interviewer had an interview, It will return error with 422 status code
+        $isInterviewerBusy = $this->checkInterviewersIsNotAvailable($request->input("interviewerId"), $timeSelected);
+        if($isInterviewerBusy) {
+            return response()->json(["message" => "Some interviewer had an interview at the same time"],422);
+        }
+
+        Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
+            + ["interviewerId" => implode(",",$request->input("interviewerId"))])
+            ->candidates()->attach($request->input("candidateId"));
+        return response()->json(["message" => "Created ".$request->input("name") ." successfully!"],200);
     }
 
     /**
