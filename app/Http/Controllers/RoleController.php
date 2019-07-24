@@ -22,37 +22,12 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        try{
-            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        Role::where('name', 'like', '%'.$data["keyword"].'%')
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->paginate(10)
-                    );
-            }
-            else if ($request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(Role::where('name', 'like', '%'.$data.'%')->paginate(10));
-            }
-            else if ($request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(Role::orderBy($data["property"], $data["orderby"])->paginate(10));
-            }
-            else{
-                return response()->json(Role::paginate(10));
-            }
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $roles = Role::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($roles);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -121,12 +96,19 @@ class RoleController extends Controller
     /**
      * Delete the role
      *
-     * @bodyParam roleId array required list id of role. Example: [1,2,3,4,5]
+     * @bodyParam roleId array required list id of role. If you want to delete all, the value of roleId = ["all"]. Example: [1,2,3,4,5]
      */
     //If the role is admin, it can not be deleted
     public function destroy(RoleRequest $request)
     {
         $role_arr = request("roleId");
+        //if delete all
+        if (in_array('all', $role_arr))
+        {
+                Role::where('name','<>','Admin')->delete();
+                return response()->json([
+                    'message'=>'Deleted all roles successfully.'],200);
+        }
         $role = Role::whereIn('id',$role_arr)->pluck('name');
         if ($role->contains("Admin"))
             return response()->json(['message'=>'The role Admin can not be deleted!']);
