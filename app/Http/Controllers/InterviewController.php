@@ -96,9 +96,11 @@ class InterviewController extends Controller
         }
         $timeSelected = $request->input("timeStart");
         //Check if any candidates had an interview other, It will return error with that name candidate and 422 status code
-        $candidatesBusy = $this->checkCandidatesIsNotAvailable($request->input("candidateId"), $timeSelected);
-        if($candidatesBusy != NULL){
-            return response()->json(["message" => $candidatesBusy." had an interview at the same time"],422);
+        if($request->has("candidateId")){
+            $candidatesBusy = $this->checkCandidatesIsNotAvailable($request->input("candidateId"), $timeSelected);
+            if($candidatesBusy != NULL){
+                return response()->json(["message" => $candidatesBusy." had an interview at the same time"],422);
+            }
         }
         //Check if any interviewer had an interview, It will return error with 422 status code
         $isInterviewerBusy = $this->checkInterviewersIsNotAvailable($request->input("interviewerId"), $timeSelected);
