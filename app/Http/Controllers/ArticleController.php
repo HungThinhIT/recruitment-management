@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
+use DB;
 use App\Http\Requests\ArticleRequest;
 
 
@@ -32,29 +33,23 @@ class ArticleController extends Controller
      * Display a listing of the article recruitment for guests.
      * 10 rows/request
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
-     * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Internship
-     * @bodyParam location string The position of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
-     * @bodyParam experience numeric The number experience of job.1- 1 year;2- 2 years;3- 5 years;4: more than 5 years. If select "all", this param is empty. Example: 2
+     * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Tester
+     * @bodyParam location string The location of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function showListArticleForCandidatePage(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        if ($request->has('keyword','position','location','experience'))
-        {
-            $articles = Article::with(["job"])
+        $articles = Article::with(["job"])
                                     ->SearchByKeyWord($request->input('keyword'),$orderby)
                                     ->OfLocation($request->input('location'),$orderby)
                                     ->OfPosition($request->input('position'),$orderby)
-                                    ->OfExperience($request->input('experience'),$orderby)
                                     ->OfCategory('Recruitment',$orderby)
                                     ->where('isPublic',1)
                                     ->paginate(10);
-            return response()->json($articles);                       
-        }
-        else
-            return response()->json(['message'=> "You must add key: keyword, position, experience and location"]);        
+            return response()->json($articles);                              
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -86,7 +81,9 @@ class ArticleController extends Controller
      */
     public function showArticleForCandidatePage($idArticle)
     {
-        return response()->json(Article::findOrFail($idArticle));
+        $article = Article::with(["job"])->findOrFail($idArticle);
+        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        return response()->json($article);
     }
 
     /**
@@ -128,11 +125,18 @@ class ArticleController extends Controller
 
     /**
      * Delete the article by Id.
-     * @bodyParam articleId array required The id/list id of job. Example: [1,2,3,4,5]
+     * @bodyParam articleId array required The id/list id of job. If you want to delete all, the value of articleId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(ArticleRequest $request)
     {
         $articleIds = request("articleId");
+        //if delete all
+        if (in_array('all', $articleIds))
+        {
+                DB::table('articles')->delete();
+                return response()->json([
+                    'message'=>'Deleted all articles successfully.'],200);
+        }
         $exists = Article::whereIn('id', $articleIds)->pluck('id');
         $notExists = collect($articleIds)->diff($exists);
         $idsNotFound = "";

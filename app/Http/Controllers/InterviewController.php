@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Interview;
 use App\Interviewer;
-use App\Candidate;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
 use App\InterviewFilter;
-use Carbon\Carbon;
 /**
  * @group Interview management
  *
@@ -45,7 +42,7 @@ class InterviewController extends Controller
                 return response()->json(['message' => "Address field is invalid!"],422);
         }
 
-        $interviewActive = Interview::filter($filter)->with(["candidates:fullname"])->paginate(10);
+        $interviewActive = Interview::filter($filter)->paginate(10);
 
         $interviewActive->map(function($interview) {
                 $interview->status = $this->convertStatusCodeToString($interview->status);
@@ -159,10 +156,6 @@ class InterviewController extends Controller
         //
     }
 
-    /*
-     * LIST SUPPORT METHOD
-     */
-
     private function convertNumberAddressToString($numberAddresses)
     {
         $address = NULL;
@@ -196,15 +189,13 @@ class InterviewController extends Controller
         }
     }
 
-    private function convertInterviewerIdToName($interviewIds)
-    {
+    private function convertInterviewerIdToName($interviewIds){
         $interviewIds = explode(",",$interviewIds);
         $interviewerNames = Interviewer::WhereIn("id", $interviewIds)->pluck("fullname");
         return $interviewerNames;
     }
 
-    private function convertStatusCodeToString($statusCode)
-    {
+    private function convertStatusCodeToString($statusCode){
         /*
          * Status_code = 1 => Pending
          * Status_code = 2 => Opening
@@ -226,31 +217,4 @@ class InterviewController extends Controller
                 break;
         }
     }
-
-    private function checkCandidatesIsNotAvailable($candidateIds, $timeSelected)
-    {
-      $candidates = Candidate::WhereIn("id",$candidateIds)
-              ->WhereHas("interviews",function (Builder $builder) use ($timeSelected){
-                  $builder->whereTime("timeStart","=",Carbon::parse($timeSelected));
-              })->get();
-      $candidateBusyName = "";
-      foreach ($candidates as $key => $candidate) {
-          $candidateBusyName .= $candidate->fullname.", ";
-      }
-      if($candidateBusyName != "")
-          return rtrim($candidateBusyName,", ");
-      else
-          return NULL;
-    }
-
-    private function checkInterviewersIsNotAvailable($interviewerIds, $timeSelected)
-    {
-        $isInterviewerBusy = Interview::WhereIn("interviewerId",$interviewerIds)
-            ->whereTime("timeStart", "=",Carbon::parse($timeSelected))->exists();
-        if($isInterviewerBusy == true)
-            return true;
-        else
-            return false;
-    }
-
 }

@@ -8,7 +8,7 @@ class Job extends Model
 {
     protected $table = 'jobs';
     protected $primaryKey = 'id';
-    protected $fillable = ["name", "description", "address", "position", "salary", "status", "experience", "amount", "publishedOn", "deadline"];
+    protected $fillable = ["name", "description", "address", "position", "salary", "status", "experience","category", "amount", "publishedOn", "deadline"];
     public $timestamps = true;
 
     public function articles()
