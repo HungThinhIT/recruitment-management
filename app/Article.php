@@ -42,11 +42,11 @@ class Article extends Model
         if ($field) 
             return $query->orderBy($field, $orderBy);    
     }
-    public function scopeOfPosition($query,$category,$orderby)
+    public function scopeOfPosition($query,$position,$orderby)
     {
-        if ($category) 
-            return $query->whereHas('job', function (Builder $q) use ($category){
-                            $q  ->where('category', $category);
+        if ($position) 
+            return $query->whereHas('job', function (Builder $q) use ($position){
+                            $q  ->where('position', $position);
                             })
                             ->orderBy("created_at", $orderby);
     }
