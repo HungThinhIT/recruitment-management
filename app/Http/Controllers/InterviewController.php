@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Interview;
 use App\Interviewer;
+use App\Candidate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
 use App\InterviewFilter;
+use Carbon\Carbon;
 /**
  * @group Interview management
  *
@@ -42,7 +45,7 @@ class InterviewController extends Controller
                 return response()->json(['message' => "Address field is invalid!"],422);
         }
 
-        $interviewActive = Interview::filter($filter)->paginate(10);
+        $interviewActive = Interview::filter($filter)->with(["candidates:fullname"])->paginate(10);
 
         $interviewActive->map(function($interview) {
                 $interview->status = $this->convertStatusCodeToString($interview->status);
@@ -90,9 +93,21 @@ class InterviewController extends Controller
             if(!$addressValid)
                 return response()->json(['message' => "Address field is invalid!"],422);
         }
-            Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
+        $timeSelected = $request->input("timeStart");
+        //Check if any candidates had an interview other, It will return error with that name candidate and 422 status code
+        $candidatesBusy = $this->checkCandidatesIsNotAvailable($request->input("candidateId"), $timeSelected);
+        if($candidatesBusy != NULL){
+            return response()->json(["message" => $candidatesBusy." had an interview at the same time"],422);
+        }
+        //Check if any interviewer had an interview, It will return error with 422 status code
+        $isInterviewerBusy = $this->checkInterviewersIsNotAvailable($request->input("interviewerId"), $timeSelected);
+        if($isInterviewerBusy) {
+            return response()->json(["message" => "Some interviewer had an interview at the same time"],422);
+        }
+
+        Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
                 + ["interviewerId" => implode(",",$request->input("interviewerId"))]);
-        return response()->json(["message" => "Created ".$request->input("name") ."Successfully!"],200);
+        return response()->json(["message" => "Created ".$request->input("name") ." successfully!"],200);
     }
 
     /**
@@ -140,6 +155,10 @@ class InterviewController extends Controller
         //
     }
 
+    /*
+     * LIST SUPPORT METHOD
+     */
+
     private function convertNumberAddressToString($numberAddresses)
     {
         $address = NULL;
@@ -173,13 +192,15 @@ class InterviewController extends Controller
         }
     }
 
-    private function convertInterviewerIdToName($interviewIds){
+    private function convertInterviewerIdToName($interviewIds)
+    {
         $interviewIds = explode(",",$interviewIds);
         $interviewerNames = Interviewer::WhereIn("id", $interviewIds)->pluck("fullname");
         return $interviewerNames;
     }
 
-    private function convertStatusCodeToString($statusCode){
+    private function convertStatusCodeToString($statusCode)
+    {
         /*
          * Status_code = 1 => Pending
          * Status_code = 2 => Opening
@@ -201,4 +222,31 @@ class InterviewController extends Controller
                 break;
         }
     }
+
+    private function checkCandidatesIsNotAvailable($candidateIds, $timeSelected)
+    {
+      $candidates = Candidate::WhereIn("id",$candidateIds)
+              ->WhereHas("interviews",function (Builder $builder) use ($timeSelected){
+                  $builder->whereTime("timeStart","=",Carbon::parse($timeSelected));
+              })->get();
+      $candidateBusyName = "";
+      foreach ($candidates as $key => $candidate) {
+          $candidateBusyName .= $candidate->fullname.", ";
+      }
+      if($candidateBusyName != "")
+          return rtrim($candidateBusyName,", ");
+      else
+          return NULL;
+    }
+
+    private function checkInterviewersIsNotAvailable($interviewerIds, $timeSelected)
+    {
+        $isInterviewerBusy = Interview::WhereIn("interviewerId",$interviewerIds)
+            ->whereTime("timeStart", "=",Carbon::parse($timeSelected))->exists();
+        if($isInterviewerBusy == true)
+            return true;
+        else
+            return false;
+    }
+
 }
