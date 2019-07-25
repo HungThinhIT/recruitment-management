@@ -117,7 +117,9 @@ class InterviewController extends Controller
      */
     public function show($interviewId)
     {
-        $interview = Interview::with(["candidates"])->findOrFail($interviewId);
+        $interview = Interview::with(["candidates","interviewers"])->findOrFail($interviewId);
+        $interview->status = $this->convertStatusCodeToString($interview->status);
+        $interview->address = $this->convertNumberAddressToString($interview->address);
         return response()->json($interview);
     }
 
