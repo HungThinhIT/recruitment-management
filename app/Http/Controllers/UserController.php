@@ -7,7 +7,7 @@ use App\User;
 use App\Role;
 use Hash;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
+
 /**
  * @group User management
  *
@@ -30,56 +30,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        try{
-            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        User::where('name', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('fullname', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('email', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('phone', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('address', 'like', '%'.$data["keyword"].'%')
-                                ->orWhereHas('roles', function (Builder $query) use ($data){
-                                    $query->where('name', 'like', '%'.$data["keyword"].'%');
-                                })
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->with(["roles:name"])
-                                ->paginate(10)
-                    );
-            }
-            else if ($request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(
-                        User::where('name', 'like', '%'.$data.'%')
-                                ->orwhere('fullname', 'like', '%'.$data.'%')
-                                ->orwhere('email', 'like', '%'.$data.'%')
-                                ->orwhere('phone', 'like', '%'.$data.'%')
-                                ->orwhere('address', 'like', '%'.$data.'%')
-                                ->orWhereHas('roles', function (Builder $query) use ($data) {
-                                    $query->where('name', 'like', '%'.$data.'%');
-                                })
-                                ->with(["roles:name"])
-                                ->paginate(10));
-            }
-            else if ($request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(User::orderBy($data["property"], $data["orderby"])
-                                ->with(["roles:name"])
-                                ->paginate(10));
-            }
-            else{
-                return response()->json(User::with(["roles:name"])->paginate(10));
-            }
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $users = User::with(["roles"])
+                        ->SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($users);
     }
 
     public function create()
@@ -190,11 +146,19 @@ class UserController extends Controller
     /**
      * Delete the user
      *
-     * @bodyParam userId array required list id of user. Example: [1,2,3,4,5]
+     * @bodyParam userId array required list id of user. If you want to delete all, the value of userId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(CreateUserRequest $request)
-    {
+    {        
         $user_arr = request("userId");
+        //if delete all
+        if (in_array('all', $user_arr))
+        {
+                User::where('name','<>','admin')->delete();
+                return response()->json([
+                    'message'=>'Deleted all users successfully.'],200);
+        }
+        
         $user = User::whereIn('id',$user_arr)->pluck('name');
         if ($user->contains("admin"))
             return response()->json(['message'=>'The user admin can not be deleted!']);

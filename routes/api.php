@@ -32,7 +32,7 @@ Route::group(['middleware' => ['cors']], function () {
     /*
     * Article routes for Enclave Recruitment web.
     */
-    Route::get("article-web","ArticleController@showListArticleForCandidatePage");
+    Route::post("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
 
     /*
@@ -81,7 +81,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Job routes
         */
-        Route::get("list-job","JobController@index")->middleware("can:job.view");
+        Route::post("list-job","JobController@index")->middleware("can:job.view");
         Route::get("job/{id}","JobController@show")->middleware("can:job.view");
         Route::post("job","JobController@store")->middleware("can:job.create");
         Route::put("job/{id}","JobController@update")->middleware("can:job.edit");
@@ -102,19 +102,30 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("list-interviewer","InterviewerController@index")->middleware("can:interviewer.view");
         Route::get("interviewer/{id}","InterviewerController@show")->middleware("can:interviewer.view");
         Route::post("interviewer","InterviewerController@store")->middleware("can:interviewer.create");
+        Route::put("interviewer/{id}","InterviewerController@update")->middleware("can:interviewer.edit");
+        Route::post("interviewer-avatar","InterviewerController@updateNewAvatar")->middleware("can:interviewer.edit");
+        Route::delete("interviewer","InterviewerController@destroy")->middleware("can:interviewer.delete");
 
         /*
         * Candidate routes
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::put("candidate/{id}","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
+        Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
-        /*
-        * Interview routes
-        */
+         /*
+         * Interview routes
+         */
+        Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
+        Route::post("interview","InterviewController@store")->middleware("can:interview.create");
         Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
+      
+        /*
+         * Category routes
+         */
+        Route::post("category","CategoryController@index");
 
     });
 });

@@ -26,6 +26,15 @@ class InterviewerRequest extends FormRequest
         switch ($this->method()) {
             case 'GET':
             case 'PUT':
+            {
+                return [
+                    "fullname"        => "required|regex:/^(?![\s.]+$)[a-zA-Z\s.]*$/|max:50",
+                    "email"           => "required|email|max:255|unique:interviewers,email,".(int)$this->route()->id,
+                    "phone"           => "required||max:255|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|unique:interviewers,phone,".(int)$this->route()->id,
+                    "address"         => "max:255",
+                    "technicalSkill"  => "required|max:255",
+                ];
+            }
             case 'POST':
             {
                 return [
@@ -35,12 +44,13 @@ class InterviewerRequest extends FormRequest
                     "address"         => "max:255",
                     "technicalSkill"  => "required|max:255",
                     "image"           => "mimes:jpeg,jpg,png|max:5000",
-
                 ];
             }
-            case 'DELETE': {
+            case 'DELETE':
+            {
                 return [
-                    //
+                    "interviewerId"   => "required_without:status|array",
+                    "status"          => "required_without:interviewerId|string",
                 ];
             }
                 break;
