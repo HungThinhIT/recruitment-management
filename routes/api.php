@@ -120,6 +120,7 @@ Route::group(['middleware' => ['cors']], function () {
          */
         Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
         Route::post("interview","InterviewController@store")->middleware("can:interview.create");
+        Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
       
         /*
          * Category routes

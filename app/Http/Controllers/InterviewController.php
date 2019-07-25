@@ -112,14 +112,13 @@ class InterviewController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display an interview by Id
      *
-     * @param  \App\Interview  $interview
-     * @return \Illuminate\Http\Response
      */
-    public function show(Interview $interview)
+    public function show($interviewId)
     {
-        //
+        $interview = Interview::with(["candidates"])->findOrFail($interviewId);
+        return response()->json($interview);
     }
 
     /**
