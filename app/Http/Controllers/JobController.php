@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\JobRequest;
 
@@ -14,59 +15,17 @@ class JobController extends Controller
 {
     /**
      * Display a listing of the job.
-     * @bodyParam keyword string keyword want to search (search by name, description, position,address, salary, status,experience,amount).
-     * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, status,experience,amount,publishOn,deadline). Example: name
+     * @bodyParam keyword string keyword want to search (search by name, description, position, address, salary, status, amount).
+     * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, experience, status,amount,publishOn,deadline). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function index(Request $request)
     {
-        try{
-            if ($request->keyword !=null&& $request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("keyword","property","orderby");
-                return response()->json(
-                        Job::where('name', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('description', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('position', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('salary', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('address', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('status', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('experience', 'like', '%'.$data["keyword"].'%')
-                                ->orwhere('amount', '=', $data["keyword"])
-                                ->orderBy($data["property"], $data["orderby"])
-                                ->paginate(10)
-                    );
-            }     
-            else if ($request->keyword !=null)
-            {
-                $data = $request->keyword;
-                return response()->json(
-                        Job::where('name', 'like', '%'.$data.'%')
-                                ->orwhere('description', 'like', '%'.$data.'%')
-                                ->orwhere('position', 'like', '%'.$data.'%')
-                                ->orwhere('salary', 'like', '%'.$data.'%')
-                                ->orwhere('address', 'like', '%'.$data.'%')
-                                ->orwhere('status', 'like', '%'.$data.'%')
-                                ->orwhere('experience', 'like', '%'.$data.'%')
-                                ->orwhere('amount', '=', $data)
-                                ->paginate(10));    
-            }
-            else if ($request->property !=null && $request->orderby !=null )
-            {
-                $data = $request->only("property","orderby");
-                return response()->json(Job::orderBy($data["property"], $data["orderby"])
-                                ->paginate(10));
-            }
-            else{
-                return response()->json(Job::paginate(10));
-            }
-        }
-        catch(\Illuminate\Database\QueryException $queryEx){
-            return response()->json(['message' => $data["property"]." field is not existed"],422);
-        }
-        catch(\InvalidArgumentException $ex){
-            return response()->json(['message' => $data["orderby"]." field is invalid"],422);
-        }
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $jobs = Job::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
+        return response()->json($jobs);                               
     }
 
     public function create()
@@ -83,7 +42,8 @@ class JobController extends Controller
      * @bodyParam position string required The position of job.
      * @bodyParam salary string required The salary of job.
      * @bodyParam status string required The status of job.
-     * @bodyParam experience string required The experience of job.
+     * @bodyParam category string required The category of job (Internship/Engineer). Example: Engineer
+     * @bodyParam experience numeric required The experience of job. 1- 1 year;2- 2 years;3- 3 years;4: 4 years;5: 5 years; 6: more than 5 years. Example: 2
      * @bodyParam amount integer required The amount of job.
      * @bodyParam publishedOn datetime required The publishedOn date of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
      * @bodyParam deadline datetime required The deadline of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
@@ -111,7 +71,9 @@ class JobController extends Controller
      */
     public function show(Job $job, $idJob)
     {
-        return response()->json(Job::with(['articles','candidates'])->findOrFail($idJob),200);
+        $job = Job::with(['articles','candidates'])->findOrFail($idJob);
+        $job->experience = $job->convertExperiencetoString($job->experience);
+        return response()->json($job,200);
     }
 
     public function edit(Job $job)
@@ -128,7 +90,8 @@ class JobController extends Controller
      * @bodyParam position string required The position of job.
      * @bodyParam salary string required The salary of job.
      * @bodyParam status string required The status of job.
-     * @bodyParam experience string required The experience of job.
+     * @bodyParam category string required The category of job (Internship/Engineer). Example: Engineer
+     * @bodyParam experience numeric required The experience of job. 1- 1 year;2- 2 years;3- 3 years;4: 4 years;5: 5 years; 6: more than 5 years. Example: 2
      * @bodyParam amount string required The amount of job.
      * @bodyParam publishedOn datetime required The publishedOn date of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
      * @bodyParam deadline datetime required The deadline of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
@@ -142,11 +105,18 @@ class JobController extends Controller
     /**
      * Remove a job/many jobs by ID.
      *
-     * @bodyParam jobID array required The id/list id of job. Example: [1,2,3,4,5]
+     * @bodyParam jobId array required The id/list id of job. If you want to delete all, the value of jobId = ["all"]. Example: [1,2,3,4,5]
      */
     public function destroy(JobRequest $request)
     {
-        $jobIds = $request->jobId;
+        $jobIds = request("jobId");
+        //if delete all
+        if (in_array('all', $jobIds))
+        {
+                DB::table('jobs')->delete();
+                return response()->json([
+                    'message'=>'Deleted all jobs successfully.'],200);
+        }
         $exists = Job::whereIn('id', $jobIds)->pluck('id');
         $notExists = collect($jobIds)->diff($exists);
 

@@ -17,8 +17,9 @@ class CreateInterviewsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamp('timeStart');
+            $table->timestamp('timeEnd')->nullable();
             $table->string('address');
-            $table->string('interviewerId');
+            $table->unsignedInteger('status')->default(1);
             $table->timestamps();
         });
     }

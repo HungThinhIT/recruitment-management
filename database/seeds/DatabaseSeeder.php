@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
          $this->call(CandidateInterviewTableSeeder::class);
          $this->call(JobCandidateTableSeeder::class);
          $this->call(UserRoleTableSeeder::class);
+         $this->call(InterviewInterviewerTable::class);
     }
 }

@@ -7,9 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Interview::class, function (Faker $faker) {
     return [
-        'name'=>$faker->name,
-        'timeStart'=>$faker->dateTimeThisMonth($min = 'now'), 
-        'address'=>$faker->address,
-        'interviewerId'=>App\Interviewer::all()->random()->id
+        'name'		=>$faker->name,
+        'timeStart'	=>$faker->dateTimeThisMonth($min = 'now'), 
+        'timeEnd'	=>$faker->dateTimeThisMonth($min = 'now'), 
+        'address'	=>$faker->address
         ];
 });

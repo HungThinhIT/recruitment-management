@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -59,5 +60,23 @@ class User extends Authenticatable
             if($role->hasAccess($permissions)) return true;
         }
         return false;
+    }
+    //scope
+    public function scopeSearchByKeyWord($query, $keyword)
+    {   
+        if ($keyword) 
+            return $query->where('name', 'like', '%'.$keyword.'%')
+                                ->orwhere('fullname', 'like', '%'.$keyword.'%')
+                                ->orwhere('email', 'like', '%'.$keyword.'%')
+                                ->orwhere('phone', 'like', '%'.$keyword.'%')
+                                ->orwhere('address', 'like', '%'.$keyword.'%')
+                                ->orWhereHas('roles', function (Builder $q) use ($keyword){
+                                    $q->where('name', 'like', '%'.$keyword.'%');
+                                });    
+    }
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
     }
 }
