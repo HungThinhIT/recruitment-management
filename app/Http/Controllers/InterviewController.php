@@ -6,6 +6,7 @@ use App\Interview;
 use App\Interviewer;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
+use DB;
 use App\InterviewFilter;
 /**
  * @group Interview management
@@ -147,14 +148,32 @@ class InterviewController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Interview  $interview
-     * @return \Illuminate\Http\Response
+     * Delete the interview
+     * @bodyParam interviewId array required The id/list id of interview. If you want to delete all, the value of interviewId = ["all"]. Example: [1,2,3,4,5]
      */
-    public function destroy(Interview $interview)
+    public function destroy(InterviewRequest $request)
     {
-        //
+        $interviewIds = request("interviewId");
+        //if delete all
+        if (in_array('all', $interviewIds))
+        {
+                DB::table('interviews')->delete();
+                return response()->json([
+                    'message'=>'Deleted all interviews successfully.'],200);
+        }
+        $exists = Interview::whereIn('id', $interviewIds)->pluck('id');
+        $notExists = collect($interviewIds)->diff($exists);
+        $idsNotFound = "";
+        foreach ($notExists as $key => $value) {
+            $idsNotFound .= $value.",";
+        }
+        if($notExists->isNotEmpty()){
+            return response()->json([
+                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+        }
+        Interview::destroy($exists);
+        return response()->json([
+           'message'=>'Deleted the interviews successfully']);
     }
 
     private function convertNumberAddressToString($numberAddresses)

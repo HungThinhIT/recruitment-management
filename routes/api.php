@@ -115,19 +115,18 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
-        /*
+         /*
          * Interview routes
          */
         Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
         Route::post("interview","InterviewController@store")->middleware("can:interview.create");
         Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
+        Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
       
         /*
          * Category routes
          */
         Route::post("category","CategoryController@index");
-
-
 
     });
 });
