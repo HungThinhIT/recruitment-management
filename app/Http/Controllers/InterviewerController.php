@@ -80,7 +80,7 @@ class InterviewerController extends Controller
      */
     public function show($interviewerId)
     {
-        $interviewer = Interviewer::findOrFail($interviewerId);
+        $interviewer = Interviewer::findOrFail($interviewerId)->with(["interviews"]);
         return response()->json($interviewer,200);
     }
 
