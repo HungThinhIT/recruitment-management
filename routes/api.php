@@ -118,8 +118,6 @@ Route::group(['middleware' => ['cors']], function () {
          /*
          * Interview routes
          */
-        Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
-        Route::post("interview","InterviewController@store")->middleware("can:interview.create");
         Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
         Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
       
@@ -127,7 +125,6 @@ Route::group(['middleware' => ['cors']], function () {
          * Category routes
          */
         Route::post("category","CategoryController@index");
-
     });
 });
 

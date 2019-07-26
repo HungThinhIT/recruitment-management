@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Interview;
-use App\Interviewer;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
 use DB;
@@ -35,23 +34,9 @@ class InterviewController extends Controller
      * @bodyParam sort_address string The param if you want to sort by address = asc/desc (Ex:sort_address="desc"). Example: desc
      * @bodyParam sort_timestart string The param if you want to sort by timestart = asc/desc (Ex:sort_timestart="desc"). Example: desc
      */
-    public function index(Request $request, InterviewFilter $filter)
+    public function index()
     {
-        if($request->has("address")){
-            $addressValid = $this->convertNumberAddressToString($request->input("address"));
-            if(!$addressValid)
-                return response()->json(['message' => "Address field is invalid!"],422);
-        }
-
-        $interviewActive = Interview::filter($filter)->paginate(10);
-
-        $interviewActive->map(function($interview) {
-                $interview->status = $this->convertStatusCodeToString($interview->status);
-                $interview->address = $this->convertNumberAddressToString($interview->address);
-                $interview->interviewerId = $this->convertInterviewerIdToName($interview->interviewerId);
-                return $interview;
-        });
-        return response()->json($interviewActive);
+        // BLOCKED - TASK
     }
 
     /**
@@ -87,29 +72,7 @@ class InterviewController extends Controller
 
     public function store(InterviewRequest $request)
     {
-        if($request->has("address")){
-            $addressValid = $this->convertNumberAddressToString($request->input("address"));
-            if(!$addressValid)
-                return response()->json(['message' => "Address field is invalid!"],422);
-        }
-        $timeSelected = $request->input("timeStart");
-        //Check if any candidates had an interview other, It will return error with that name candidate and 422 status code
-        if($request->has("candidateId")){
-            $candidatesBusy = $this->checkCandidatesIsNotAvailable($request->input("candidateId"), $timeSelected);
-            if($candidatesBusy != NULL){
-                return response()->json(["message" => $candidatesBusy." had an interview at the same time"],422);
-            }
-        }
-        //Check if any interviewer had an interview, It will return error with 422 status code
-        $isInterviewerBusy = $this->checkInterviewersIsNotAvailable($request->input("interviewerId"), $timeSelected);
-        if($isInterviewerBusy) {
-            return response()->json(["message" => "Some interviewer had an interview at the same time"],422);
-        }
-
-        Interview::create($request->except(["interviewerId", "status", "created_at", "updated_at"])
-            + ["interviewerId" => implode(",",$request->input("interviewerId"))])
-            ->candidates()->attach($request->input("candidateId"));
-        return response()->json(["message" => "Created ".$request->input("name") ." successfully!"],200);
+        // BLOCKED - TASK
     }
 
     /**
@@ -175,7 +138,7 @@ class InterviewController extends Controller
         return response()->json([
            'message'=>'Deleted the interviews successfully']);
     }
-
+  
     private function convertNumberAddressToString($numberAddresses)
     {
         $address = NULL;
