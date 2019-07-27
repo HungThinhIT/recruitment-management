@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interview;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
 use DB;
@@ -28,15 +29,18 @@ class InterviewController extends Controller
      *  5-2 => "Floor 5 - 117 Nguyen Huu Tho Str" <br>}
      *
      * @bodyParam name string Interview's name want to search.
-     * @bodyParam address string Interview's address want to filter(2-1,2-2,...). Example: 2-1
-     * @bodyParam status numeric The status of interview [Pending(1)/Opening(2)/Closed(3)]. Example: 1
+     * @bodyParam address string Interview's address want to filter(2-1,2-2,..., Default="all"),. Example: 2-1
+     * @bodyParam status numeric The status of interview [Default="all", Pending(1)/Opening(2)/Closed(3)]. Example: 1
      * @bodyParam sort_name string The param if you want to sort by name = asc/desc (Ex:sort_name="desc"). Example: desc
      * @bodyParam sort_address string The param if you want to sort by address = asc/desc (Ex:sort_address="desc"). Example: desc
+     * @bodyParam sort_status string The param if you want to sort by status = asc/desc (Ex:sort_status="desc"). Example: desc
      * @bodyParam sort_timestart string The param if you want to sort by timestart = asc/desc (Ex:sort_timestart="desc"). Example: desc
      */
-    public function index()
+    public function index(Request $request, InterviewFilter $filter)
     {
-        // BLOCKED - TASK
+        $interviewActive = Interview::filter($filter)->with(["candidates:fullname,email,phone"])->paginate(10);
+        $interviewCustomed = $this->customResponseData($interviewActive);
+        return response()->json($interviewCustomed);
     }
 
     /**
@@ -138,7 +142,22 @@ class InterviewController extends Controller
         return response()->json([
            'message'=>'Deleted the interviews successfully']);
     }
-  
+
+    /*
+     * Support method
+     * */
+    private function customResponseData($interviewActive)
+    {
+        $interviewActive->map(function ($interview){
+            $interview->timeStart = date("H:i d-m-Y", strtotime($interview->timeStart));
+            $interview->timeEnd = date("H:i d-m-Y", strtotime($interview->timeEnd));
+            $interview->address = $this->convertNumberAddressToString($interview->address);
+            $interview->status = $this->convertStatusCodeToString($interview->status);
+            return $interview;
+        });
+        return $interviewActive;
+    }
+
     private function convertNumberAddressToString($numberAddresses)
     {
         $address = NULL;

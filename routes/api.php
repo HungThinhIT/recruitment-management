@@ -118,9 +118,10 @@ Route::group(['middleware' => ['cors']], function () {
          /*
          * Interview routes
          */
+        Route::post("list-interview","InterviewController@index")->middleware("can:interview.create");
         Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
         Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
-      
+
         /*
          * Category routes
          */
