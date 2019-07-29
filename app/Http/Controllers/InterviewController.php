@@ -84,11 +84,12 @@ class InterviewController extends Controller
         $isAddressValid = $this->convertNumberAddressToString($request->input("address"));
         if($isAddressValid == NULL)
             return response()->json(["message" => "Address field is invalid"],422);
-        $interview = Interview::create($request->except("status","interviewerId","candidateId","created_at","updated_at"));
+        $interview = Interview::create($request->except("status","interviewerId","candidateId","created_at","updated_at") + ["status" => 1]);
         $interview->candidates()->attach($request->input("candidateId"));
         $interview->interviewers()->attach($request->input("interviewerId"));
         return response()->json([
-            'message'=>'Created an interview successfully!'],200);
+            'message'=>'Created an interview successfully!',
+        'id' => $interview->id],200);
     }
 
     /**
@@ -115,15 +116,43 @@ class InterviewController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the interview by Id.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Interview  $interview
-     * @return \Illuminate\Http\Response
+     * Address code{ <br>
+     *  2-1 => "Floor 2 - 453-455 Hoang Dieu Str" | <br>
+     *  3-1 => "Floor 3 - 453-455 Hoang Dieu Str" | <br>
+     *  4-1 => "Floor 4 - 453-455 Hoang Dieu Str" | <br>
+     *  5-1 => "Floor 5 - 453-455 Hoang Dieu Str" | <br>
+     * <br>
+     *  2-2 => "Floor 2 - 117 Nguyen Huu Tho Str" | <br>
+     *  3-2 => "Floor 3 - 117 Nguyen Huu Tho Str" | <br>
+     *  4-2 => "Floor 4 - 117 Nguyen Huu Tho Str" | <br>
+     *  5-2 => "Floor 5 - 117 Nguyen Huu Tho Str" <br>}
+     * <br>
+     * status code{ <br>
+     * 1 => Pending<br>
+     * 2 => Opening<br>
+     * 3 => Closed<br>
+     * }
+     *
+     * @bodyParam name string  required The name of interview. Example: Internship summer 2019
+     * @bodyParam address string The required address of interview(Ex: 2-1). Example: 2-1
+     * @bodyParam timeStart datetime required The time of interview(Ex: "2019-07-25 10:30:20" - yyyy-mm-dd H:i"s). Example: 2019-07-25 10:30:20
+     * @bodyParam status numeric The status of interview(Ex: 3 -> Closed). Example: 2
+     * @bodyParam interviewId array required The interviewer of interview(Ex: [1,2,3] -> The array id of interviewer). Example: [1,2,3]
+     * @bodyParam candidateId array The candidate of interview (Ex: [1,2,3]). Example: [1,2,3]
      */
-    public function update(Request $request, Interview $interview)
+    public function update(InterviewRequest $request, $interviewId)
     {
-        //
+        $isAddressValid = $this->convertNumberAddressToString($request->input("address"));
+        if($isAddressValid == NULL)
+            return response()->json(["message" => "Address field is invalid"],422);
+        $interview = Interview::findOrFail($interviewId);
+        $interview->update($request->except("interviewerId","candidateId","created_at","updated_at"));
+        $interview->candidates()->sync($request->input("candidateId"));
+        $interview->interviewers()->sync($request->input("interviewerId"));
+        return response()->json([
+            'message'=>'Update an interview successfully!'],200);
     }
 
     /**
