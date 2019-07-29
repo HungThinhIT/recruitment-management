@@ -40,8 +40,8 @@ class InterviewerRequest extends FormRequest
             case 'DELETE':
             {
                 return [
-                    "interviewerId"   => "required_without:status|array",
-                    "status"          => "required_without:interviewerId|string",
+                    "interviewerId"   => "required:status|array",
+                    "status"          => "required:interviewerId|string",
                 ];
             }
                 break;

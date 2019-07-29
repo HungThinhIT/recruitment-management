@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interviewer;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewerRequest;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @group Interviewer management
@@ -114,37 +115,48 @@ class InterviewerController extends Controller
     /**
      * Remove interviewer by ID/All.
      *
+     * If you want to delete all, { <br>
+     * interviewerId : [0]
+     * status: "all" <br>}<br>
+     * And else, { <br>
+     * interviewerId : [1,2,3,...]
+     * status: "none" <br>}<br>
+     *
      * @bodyParam interviewerId array required The id/list id of interviewer. Example: [1,2,3,4,5]
-     * @bodyParam status string The status for delete all records(status=all). Example: all
+     * @bodyParam status string The status for delete all records(status=all/none). Example: none
      */
     public function destroy(InterviewerRequest $request)
     {
-        if($request->has("status")){
-            if($request->input("status") == "all"){
-                Interviewer::truncate();
+        $interviewerId = $request->input("interviewerId");
+        if($request->has("status") && $request->has("interviewerId")){
+            if($request->input("status") == "all" && $interviewerId[0] == 0){
+                DB::table('interviewers')->delete();
                 return response()->json([
                     'message'=>'Deleted all interviewers successfully.'],200);
             }
+            if($interviewerId[0] != 0 && $request->input("status") == "none"){
+                $interviewerId = $request->input("interviewerId");
+                $exists = Interviewer::whereIn('id', $interviewerId)->pluck('id');
+                $notExists = collect($interviewerId)->diff($exists);
+                //Get list id not found from array to var.
+                $idsNotFound = "";
+                foreach ($notExists as $key => $value) {
+                    $idsNotFound .= $value.",";
+                }
+                if($notExists->isNotEmpty()){
+                    return response()->json([
+                        'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
+                }
+                Interviewer::whereIn('id', $interviewerId)->delete();
+                return response()->json([
+                    'message'=>'Deleted interviewer successfully.'],200);
+            }
             else{
                 return response()->json([
-                    'message'=>'The status data is invalid.'],422);
+                    'message'=>'The data is invalid.'],422);
             }
         }
-        $interviewerId = $request->input("interviewerId");
-        $exists = Interviewer::whereIn('id', $interviewerId)->pluck('id');
-        $notExists = collect($interviewerId)->diff($exists);
-        //Get list id not found from array to var.
-        $idsNotFound = "";
-        foreach ($notExists as $key => $value) {
-            $idsNotFound .= $value.",";
-        }
-        if($notExists->isNotEmpty()){
-            return response()->json([
-                'message'=>'Not found id: '.substr($idsNotFound,0,strlen($idsNotFound)-1)],404);
-        }
-        Interviewer::whereIn('id', $interviewerId)->delete();
-        return response()->json([
-           'message'=>'Deleted interviewer successfully.'],200);
+
     }
 }
 
