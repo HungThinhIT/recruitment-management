@@ -38,7 +38,7 @@ class InterviewController extends Controller
      */
     public function index(Request $request, InterviewFilter $filter)
     {
-        $interviewActive = Interview::filter($filter)->with(["candidates:fullname,email,phone"])->paginate(10);
+        $interviewActive = Interview::filter($filter)->with(["candidates:fullname,email,phone","interviewers"])->paginate(10);
         $interviewCustomed = $this->customResponseData($interviewActive);
         return response()->json($interviewCustomed);
     }
