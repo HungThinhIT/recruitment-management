@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Candidate;
 use App\Interview;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewRequest;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use App\InterviewFilter;
+
 /**
  * @group Interview management
  *
  */
 class InterviewController extends Controller
 {
+
     /**
      * Display a listing of the interview.
      * 10 rows/page. <br>
@@ -70,13 +75,20 @@ class InterviewController extends Controller
      * @bodyParam name string  required The name of interview. Example: Internship summer 2019
      * @bodyParam address string The required address of interview(Ex: 2-1). Example: 2-1
      * @bodyParam timeStart datetime required The time of interview(Ex: "2019-07-25 10:30:20" - yyyy-mm-dd H:i"s). Example: 2019-07-25 10:30:20
-     * @bodyParam candidateId array The candidate of interview (Ex: [1,2,3]). Example: [1,2,3]
      * @bodyParam interviewId array required The interviewer of interview(Ex: [1,2,3] -> The array id of interviewer). Example: [1,2,3]
+     * @bodyParam candidateId array The candidate of interview (Ex: [1,2,3]). Example: [1,2,3]
      */
 
     public function store(InterviewRequest $request)
     {
-        // BLOCKED - TASK
+        $isAddressValid = $this->convertNumberAddressToString($request->input("address"));
+        if($isAddressValid == NULL)
+            return response()->json(["message" => "Address field is invalid"],422);
+        $interview = Interview::create($request->except("status","interviewerId","candidateId","created_at","updated_at"));
+        $interview->candidates()->attach($request->input("candidateId"));
+        $interview->interviewers()->attach($request->input("interviewerId"));
+        return response()->json([
+            'message'=>'Created an interview successfully!'],200);
     }
 
     /**
