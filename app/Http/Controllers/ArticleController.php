@@ -71,9 +71,9 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        Article::create($request->except("created_at","updated_at") + ["userId" => $request->user()->id]);
+        $article = Article::create($request->except("created_at","updated_at") + ["userId" => $request->user()->id]);
         return response()->json([
-            'message'=>'Created an article successfully']);
+            'message'=>'Created an article successfully',"id"=>$article->id]);
     }
     /**
      * Display an Article by Id for Candidate page.

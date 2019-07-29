@@ -27,6 +27,16 @@ class InterviewRequest extends FormRequest
         switch ($this->method()) {
             case 'GET':
             case 'PUT':
+            {
+                return [
+                    "name"            => "required|string|max:255",
+                    "timeStart"       => ["required","after:".Carbon::now(),"date","max:255","regex:/[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) ([01][0-9]|2[0-3]):[0-5]\d/"],
+                    "timeEnd"         => ["required","after:timeStart","date","max:255","regex:/[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]) ([01][0-9]|2[0-3]):[0-5]\d/"],
+                    "address"         => "required|string|max:255",
+                    "status"          => "numeric|min:1|max:3",
+                    "interviewerId"   => "required|array",
+                ];
+            }
             case 'POST':
             {
                 return [
