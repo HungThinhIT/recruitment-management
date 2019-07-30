@@ -14,7 +14,7 @@ class FormatArticleController extends Controller
     /**
      * Display a listing of the format article.
      *
-     * @bodyParam numberRecord string The record number you want to get per page(numberRecord > 0) Default: 10.
+     * @bodyParam numberRecord string The record number you want to get per page(numberRecord > 0) Default is return all.
      */
     public function index(Request $request)
     {
@@ -25,7 +25,7 @@ class FormatArticleController extends Controller
             $formatArticles = FormatArticle::paginate($request->input("numberRecord"));
         }
         else{
-            $formatArticles = FormatArticle::paginate(10);
+            $formatArticles = FormatArticle::all();
         }
         return response()->json($formatArticles);
 
