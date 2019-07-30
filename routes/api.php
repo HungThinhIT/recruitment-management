@@ -132,6 +132,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("format-article","FormatArticleController@store");
         Route::put("format-article/{id}","FormatArticleController@update");
         Route::delete("format-article","FormatArticleController@destroy");
+        Route::get("format-article/{id}","FormatArticleController@show");
     });
 });
 

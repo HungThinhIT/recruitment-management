@@ -36,7 +36,6 @@ class FormatArticleController extends Controller
      * @bodyParam title string required The title of format.
      * @bodyParam content string required The content of format.
      */
-
     public function store(FormatArticleRequest $request)
     {
         $formatArticle = FormatArticle::create($request->all());
@@ -44,14 +43,12 @@ class FormatArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show a format article by id.
      */
-    public function show($id)
+    public function show($formatId)
     {
-        //
+        $formatActive = FormatArticle::findOrFail($formatId);
+        return response()->json($formatActive);
     }
 
     /**
