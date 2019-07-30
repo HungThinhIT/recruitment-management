@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interviewer;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewerRequest;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @group Interviewer management
