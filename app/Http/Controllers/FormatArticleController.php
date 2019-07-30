@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FormatArticleRequest;
 use Illuminate\Http\Request;
 use App\FormatArticle;
-
+/**
+ * @group Format article management
+ *
+ */
 class FormatArticleController extends Controller
 {
     /**
@@ -29,9 +32,11 @@ class FormatArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
+     * Create a format article.
+     * @bodyParam title string required The title of format.
+     * @bodyParam content string required The content of format.
      */
+
     public function store(FormatArticleRequest $request)
     {
         $formatArticle = FormatArticle::create($request->all());
@@ -61,9 +66,11 @@ class FormatArticleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Update a format article by Id.
+     * @bodyParam title string required The title of format.
+     * @bodyParam content string required The content of format.
      */
+
     public function update(FormatArticleRequest $request, $idFormatArticle)
     {
         FormatArticle::findOrFail($idFormatArticle)->update($request->all());
@@ -71,13 +78,52 @@ class FormatArticleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a format article/many/all. <br>
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * If you want to delete all, { <br>
+     * formatId : [0]
+     * status: "all" <br>}<br>
+     * And else, { <br>
+     * formatId : [1,2,3,...]
+     * status: "none" <br>}<br>
+     *
+     *
+     * @bodyParam formatId string required The title of format.
+     * @bodyParam status string required The title of format.
      */
-    public function destroy($id)
+    public function destroy(FormatArticleRequest $request)
     {
-        //
+        $formatId = $request->input("formatId");
+        if($request->has("status") && $request->has("formatId")){
+            if($request->input("status") == "all" && $formatId[0] == 0){
+                FormatArticle::truncate();
+                return response()->json([
+                    'message'=>'Deleted all format article successfully.'],200);
+            }
+            if($formatId[0] != 0 && $request->input("status") == "none"){
+                $exists = FormatArticle::whereIn('id', $formatId)->pluck('id');
+                $notExists = collect($formatId)->diff($exists);
+                //Get list id not found from array to var.
+                $idsNotFound = "";
+                foreach ($notExists as $key => $value) {
+                    $idsNotFound .= $value.",";
+                }
+                if($notExists->isNotEmpty()){
+                    return response()->json([
+                        'message'=>'Not found id: '.rtrim($idsNotFound,",")]);
+                }
+                FormatArticle::whereIn('id', $formatId)->delete();
+                return response()->json([
+                    'message'=>'Deleted interviewer successfully.'],200);
+            }
+            else{
+                return response()->json([
+                    'message'=>'The data is invalid.'],422);
+            }
+        }
+        else{
+            return response()->json([
+                'message'=>'The [formatId] and [status] is invalid.'],422);
+        }
     }
 }
