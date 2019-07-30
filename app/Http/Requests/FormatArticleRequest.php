@@ -24,20 +24,21 @@ class FormatArticleRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-            case 'POST' || 'PUT':
+            case 'POST':
+            case 'PUT':
                 {
                     return [
                         "title" => "required|max:255",
                         "content" => "required"
                     ];
                 }
-            case 'DELETE':
+            case 'DELETE' :
                 {
                     return [
+                        "formatId" => "required|array",
+                        "status"   => "required|string"
                     ];
                 }
-                break;
             default:
                 break;
         }
