@@ -12,13 +12,23 @@ use App\FormatArticle;
 class FormatArticleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the format article.
      *
-     * @return \Illuminate\Http\Response
+     * @bodyParam numberRecord string The record number you want to get per page(numberRecord > 0) Default: 10.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->validate($request, ["numberRecord" => "numeric|min:1"]);
+
+        $formatArticles = NULL;
+        if($request->has("numberRecord") && $request->input("numberRecord") > 0 ){
+            $formatArticles = FormatArticle::paginate($request->input("numberRecord"));
+        }
+        else{
+            $formatArticles = FormatArticle::paginate(10);
+        }
+        return response()->json($formatArticles);
+
     }
 
     /**
