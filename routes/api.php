@@ -125,6 +125,11 @@ Route::group(['middleware' => ['cors']], function () {
          * Category routes
          */
         Route::post("category","CategoryController@index");
+
+        /*
+         * Format article routes
+         */
+        Route::post("format-article","FormatArticleController@store");
     });
 });
 
