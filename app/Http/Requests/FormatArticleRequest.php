@@ -25,8 +25,7 @@ class FormatArticleRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'GET':
-            case 'PUT':
-            case 'POST':
+            case 'POST' || 'PUT':
                 {
                     return [
                         "title" => "required|max:255",
