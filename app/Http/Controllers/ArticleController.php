@@ -13,6 +13,12 @@ use App\Http\Requests\ArticleRequest;
  */
 class ArticleController extends Controller
 {
+    protected $articleServices;
+
+    public function __construct()
+    {
+        $this->articleServices = new ArticleServices;
+    }
     /**
      * Display a listing of the article.
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, name of category, fullname of user).
@@ -34,7 +40,9 @@ class ArticleController extends Controller
      * 10 rows/request
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
      * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Tester
+     * @bodyParam category string The category of article (Recruitment/Others). Example: Recruitment
      * @bodyParam location string The location of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
+     * @bodyParam status string The status of job, if select "all", this param is empty. Example: Full-time
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function showListArticleForCandidatePage(Request $request)
@@ -44,7 +52,8 @@ class ArticleController extends Controller
                                     ->SearchByKeyWord($request->input('keyword'),$orderby)
                                     ->OfLocation($request->input('location'),$orderby)
                                     ->OfPosition($request->input('position'),$orderby)
-                                    ->OfCategory('Recruitment',$orderby)
+                                    ->OfStatus($request->input('status'),$orderby)
+                                    ->OfCategory($request->input('category'),$orderby)
                                     ->where('isPublic',1)
                                     ->paginate(10);
             return response()->json($articles);                              
@@ -64,16 +73,28 @@ class ArticleController extends Controller
      * Create an article.
      *
      * @bodyParam title string required The title of the article.
-     * @bodyParam image string  The image of the article.
-     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam image file The image of the article.
+     * @bodyParam jobId numeric The jobId of the article.
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
+     * @bodyParam isPublic boolean required Publish/not publish (1/0). Example: 0
      */
     public function store(ArticleRequest $request)
     {
-        Article::create($request->except("created_at","updated_at") + ["userId" => $request->user()->id]);
+        //upload image    
+        if ($request->file("image"))    
+        {
+            $imageName = $this->articleServices->handleUploadedImage($request->file('image'));
+            if(!$imageName)
+                return response()->json(['message' => "Upload failed, image is not exist"],422);
+        }
+        else $imageName='';
+        $article = Article::create($request->except("image","created_at","updated_at") 
+                                    + ["userId" => $request->user()->id]
+                                    + ["image"  =>$imageName]);
         return response()->json([
-            'message'=>'Created an article successfully']);
+            'message'=>'Created an article successfully',
+            'article'=>$article]);
     }
     /**
      * Display an Article by Id for Candidate page.
@@ -112,15 +133,27 @@ class ArticleController extends Controller
      * Update the article by Id.
      *
      * @bodyParam title string required The title of the article.
-     * @bodyParam image string  The image of the article.
-     * @bodyParam jobId numeric required The jobId of the article.
+     * @bodyParam image file The image of the article.
+     * @bodyParam jobId numeric The jobId of the article.
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
+     * @bodyParam isPublic boolean required Publish/not publish (1/0). Example: 1
      */
     public function update(ArticleRequest $request, $idArticle)
     {
-        Article::findOrFail($idArticle)->update($request->except("created_at","updated_at"));
-        return response()->json(['message'=>'Updated the article successfully'],200);
+        $article = Article::findOrFail($idArticle);
+        $imageName = $article->image;
+        if ($request->file("image"))
+        {
+            unlink('upload/images/articles/'.$article->image);
+            $imageName = $this->articleServices->handleUploadedImage($request->file('image'));
+            if(!$imageName) 
+                return response()->json(['message' => "Upload failed, image is not exist"],422);
+        }
+        $article->update($request->except("image","created_at","updated_at")
+                            + ["image"  =>$imageName]);
+        return response()->json(['message'=>'Updated the article successfully',
+                                'article'=>$article],200);
     }
 
     /**
@@ -150,5 +183,37 @@ class ArticleController extends Controller
         Article::destroy($exists);
         return response()->json([
            'message'=>'Deleted the article successfully']);
+    }
+
+    /**
+     * Get list articles related to the current article (same job,same category).
+     * @bodyParam count numeric The total item you want to get.
+     */
+    public function showArticleRelatedForCandidatePage($idArticle,Request $request)
+    {
+        $count = $request->input('count')? $request->input('count'): 10;
+        $currentArticle = Article::findOrFail($idArticle);
+        $articles = Article::with(["job"])  ->where('id','!=',$idArticle)
+                                ->where('isPublic',1)                                        
+                                ->where('jobId',$currentArticle->jobId)
+                                ->orwhere('catId',$currentArticle->catId)
+                                ->orderby('created_at','desc')
+                                ->limit($count)
+                                ->get();
+        return response()->json($articles);
+    }
+}
+class ArticleServices
+{
+    public function handleUploadedImage($image)
+    {
+        if (!is_null($image)) {
+            $imageName = 'article_'.str_random(12).'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('upload/images/articles'),$imageName);
+            return $imageName;
+        }
+        else{
+            return NULL;
+        }
     }
 }

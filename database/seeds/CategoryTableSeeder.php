@@ -123,7 +123,7 @@ class CategoryTableSeeder extends Seeder
 </html>'
         ],
         [
-			'name'=>'Program',
+			'name'=>'Others',
             'formatArticle'=>'<p></p>'
         ]]);    
     }
