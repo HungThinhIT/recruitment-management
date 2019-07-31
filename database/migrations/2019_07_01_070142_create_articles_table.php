@@ -17,7 +17,7 @@ class CreateArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title',255);
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('jobId');
+            $table->unsignedBigInteger('jobId')->nullable();
             $table->longText('content');
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('catId');
