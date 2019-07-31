@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interviewer;
 use Illuminate\Http\Request;
 use App\Http\Requests\InterviewerRequest;
+use Illuminate\Support\Collection;
 
 /**
  * @group Interviewer management
@@ -70,8 +71,19 @@ class InterviewerController extends Controller
     public function store(InterviewerRequest $request)
     {
         $profileImageName = $this->interviewerService->handleNewUploadedImage($request->file("image"));
-        Interviewer::create($request->except('image',"created_at","updated_at") + ["image" => $profileImageName]);
-        return response()->json(['message' => "Create an interviewer successfully!"],200);
+        $interviewer = Interviewer::create($request->except('image',"created_at","updated_at") + ["image" => $profileImageName]);
+        $technical_arr = explode(",",$interviewer->technicalSkill);
+        $technicalSkill =  new Collection();
+        foreach ($technical_arr as $key => $technical) {
+            $tech = explode("-",$technical);
+            $technicalSkill ->push([
+                "name"=>$tech[0],
+                "year"=>$tech[1]
+            ]);
+        }
+        $interviewer->technicalSkill = $technicalSkill;
+        return response()->json(['message' => "Create an interviewer successfully!",
+                                'interviewer'=>$interviewer],200);
     }
 
     /**
@@ -80,7 +92,17 @@ class InterviewerController extends Controller
      */
     public function show($interviewerId)
     {
-        $interviewer = Interviewer::findOrFail($interviewerId)->with(["interviews"]);
+        $interviewer = Interviewer::with(["interviews"])->findOrFail($interviewerId);
+        $technical_arr = explode(",",$interviewer->technicalSkill);
+        $technicalSkill =  new Collection();
+        foreach ($technical_arr as $key => $technical) {
+            $tech = explode("-",$technical);
+            $technicalSkill ->push([
+                "name"=>$tech[0],
+                "year"=>$tech[1]
+            ]);
+        }
+        $interviewer->technicalSkill = $technicalSkill;
         return response()->json($interviewer,200);
     }
 
