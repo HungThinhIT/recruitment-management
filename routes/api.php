@@ -79,6 +79,12 @@ Route::group(['middleware' => ['cors']], function () {
         Route::delete("user","UserController@destroy")->middleware("can:user.delete");
 
         /*
+        * Notifications route
+        */
+        Route::get('notifications', 'NotificationController@notifications');
+        Route::get('notifications/{id}', 'NotificationController@show');
+
+        /*
         * Job routes
         */
         Route::post("list-job","JobController@index")->middleware("can:job.view");
@@ -111,7 +117,6 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
         Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
