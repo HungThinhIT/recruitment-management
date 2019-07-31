@@ -100,7 +100,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("list-article","ArticleController@index")->middleware("can:article.view");
         Route::get("article/{id}","ArticleController@show")->middleware("can:article.view");
         Route::post("article","ArticleController@store")->middleware("can:article.create");
-        Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
+        Route::post("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
 
         /*
