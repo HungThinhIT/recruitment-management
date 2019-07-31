@@ -34,6 +34,7 @@ Route::group(['middleware' => ['cors']], function () {
     */
     Route::post("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
+    Route::post("article-related/{id}","ArticleController@showArticleRelatedForCandidatePage");
 
     /*
     * Store candidate's information .
