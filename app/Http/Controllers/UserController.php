@@ -176,7 +176,6 @@ class UserController extends Controller
         return response()->json([
            'message'=>'Deleted users successfully']);
     }
-
 }
 
 class UserServices
