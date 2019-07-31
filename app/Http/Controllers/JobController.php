@@ -51,8 +51,10 @@ class JobController extends Controller
 
     public function store(JobRequest $request)
     {
-        Job::create($request->except("created_at","updated_at"));
-        return response()->json(['message'=>'Created a job successfully'],200);
+        $job = Job::create($request->except("created_at","updated_at"));
+        $job->experience = $job->convertExperiencetoString($job->experience);
+        return response()->json(['message'=>'Created a job successfully',
+                                'job'=>$job],200);
     }
 
     /**
