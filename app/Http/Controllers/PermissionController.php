@@ -14,11 +14,15 @@ class PermissionController extends Controller
 {
     /**
      * Display a listing of the permission
-     * 10 rows/request.
+     * @bodyParam paginate numeric The count of item you want to paginate.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Permission::paginate(10));
+        $this->validate($request,['paginate' => 'numeric']);
+        $count = $request->input("paginate")?$request->input("paginate"):0;
+        if ($count!=0)
+            return response()->json(Permission::paginate($count));
+        else return response()->json(Permission::all());
     }
 
     /**
