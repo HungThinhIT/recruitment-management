@@ -18,13 +18,23 @@ class JobController extends Controller
      * @bodyParam keyword string keyword want to search (search by name, description, position, address, salary, status, amount).
      * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, experience, status,amount,publishOn,deadline). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam all string If all=1, return all jobs, else return paginate 10 jobs/page.
      */
     public function index(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $jobs = Job::SearchByKeyWord($request->input('keyword'))
+        if ($request->input("all") == 1)
+        {
+            $jobs = Job::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->get();
+        }
+        else
+        {
+            $jobs = Job::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
                         ->paginate(10);
+        }       
         return response()->json($jobs);                               
     }
 

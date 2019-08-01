@@ -85,7 +85,10 @@ class ArticleController extends Controller
     public function showArticleForCandidatePage($idArticle)
     {
         $article = Article::with(["job"])->findOrFail($idArticle);
-        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        if ($article->jobId)
+        {
+            $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        } 
         return response()->json($article);
     }
 
@@ -96,7 +99,10 @@ class ArticleController extends Controller
     public function show($idArticle)
     {
         $article = Article::with(["user","job","category"])->findOrFail($idArticle);
-        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        if ($article->jobId)
+        {
+            $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        }       
         return response()->json($article);
     }
 

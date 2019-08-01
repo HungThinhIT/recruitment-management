@@ -22,31 +22,26 @@ class InterviewerController extends Controller
     /**
      * Display a listing of the resource.
      * @bodyParam keyword string keyword want to search (search by fullname, email, address, phone, technicalSkill of interviewer).
-     * @bodyParam field string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
-     * @bodyParam sort string The order sort (ASC/DESC). Example: asc
+     * @bodyParam property string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
+     * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam all string If all=1, return all, else return paginate 10 interviewers/page.
      */
     public function index(Request $request)
     {
-        $data = $request->only("sort","field","keyword");
-        if($request->input("sort") != null && $request->input("field") != null && $request->input("keyword") != null)
+        $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        if ($request->input("all") == 1)
         {
-            $interviewers = Interviewer::query()->searchAndSort($request)->paginate(10);
-            return response()->json($interviewers);
-        }
-        else if($request->input("keyword") != null)
-        {
-            $interviewersWithKeyword = Interviewer::query()->searchByKeyword($request)->paginate(10);
-            return response()->json($interviewersWithKeyword);
-        }
-        else if($request->input("field") != null && $request->input("sort") != null)
-        {
-            $interviewer = Interviewer::orderBy($data["field"],$data["sort"])->paginate(10);
-            return response()->json($interviewer);
+            $interviewers = Interviewer::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->get();
         }
         else
         {
-            return response()->json(Interviewer::paginate(10));
+            $interviewers = Interviewer::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate(10);
         }
+        return response()->json($interviewers);  
     }
 
     /**
