@@ -26,27 +26,14 @@ class CandidateController extends Controller
      * @bodyParam keyword string keyword want to search.
      * @bodyParam property string Field in table you want to sort(fullname,email,phone,address,cv,status,created_at,updated_at). Example: fullname
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
-     * @bodyParam paginate numeric The count of item you want to paginate.
      */
     public function index(Request $request)
     {   
-        $this->validate($request,['paginate' => 'numeric']);
-        $count = $request->input("paginate")?$request->input("paginate"):0;
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        if ($count!=0)
-        {
-            $candidates = Candidate::with(["jobs","interviews"])
+        $candidates = Candidate::with(["jobs","interviews"])
                         ->SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate($count);
-        }
-        else 
-        {
-           $candidates = Candidate::with(["jobs","interviews"])
-                        ->SearchByKeyWord($request->input('keyword'))
-                        ->sort($request->input('property'),$orderby)
-                        ->get();
-        }
+                        ->paginate(10);
         return response()->json($candidates);
     }
         
