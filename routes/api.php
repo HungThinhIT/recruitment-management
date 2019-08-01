@@ -68,7 +68,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Permission routes
         */
-        Route::get('permission','PermissionController@index');
+        Route::post('permission','PermissionController@index');
 
         /*
         * User routes

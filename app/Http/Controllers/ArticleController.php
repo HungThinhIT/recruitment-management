@@ -24,14 +24,27 @@ class ArticleController extends Controller
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, name of category, fullname of user).
      * @bodyParam property string Field in table you want to sort (title, content, name of job, name of category, name of user, isPublic). Example: title
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam paginate numeric The count of item you want to paginate.
      */
     public function index(Request $request)
     {
+        $this->validate($request,['paginate' => 'numeric']);
+        $count = $request->input("paginate")?$request->input("paginate"):0;
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $articles = Article::with(["user","job","category"])
+        if ($count!=0)
+        {
+            $articles = Article::with(["user","job","category"])
                         ->SearchByKeyWord($request->input('keyword'),$orderby)
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($count);
+        }
+        else 
+        {
+           $articles = Article::with(["user","job","category"])
+                        ->SearchByKeyWord($request->input('keyword'),$orderby)
+                        ->sort($request->input('property'),$orderby)
+                        ->get();
+        }
         return response()->json($articles); 
     }
 

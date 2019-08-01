@@ -17,12 +17,24 @@ class CategoryController extends Controller
      * @bodyParam keyword string keyword want to search (search by name). Example: name
      * @bodyParam field string Field in table you want to sort (name). Example: name
      * @bodyParam orderBy string The order sort (ASC/DESC). Example: desc
+     * @bodyParam paginate numeric The count of item you want to paginate.
      */
     public function index(Request $request)
     {
-        $categoryActive = Category::query()->search($request)
+        $this->validate($request,['paginate' => 'numeric']);
+        $count = $request->input("paginate")?$request->input("paginate"):0;
+        if ($count ==0)
+        {
+            $categoryActive = Category::query()->search($request)
             ->orderBy($request->input("field"),$request->input("orderBy"))
-            ->paginate(10);
+            ->get();
+        }
+        else
+        {
+            $categoryActive = Category::query()->search($request)
+            ->orderBy($request->input("field"),$request->input("orderBy"))
+            ->paginate($count);
+        }      
         return response()->json($categoryActive);
     }
 

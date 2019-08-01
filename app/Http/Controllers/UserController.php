@@ -27,14 +27,27 @@ class UserController extends Controller
      * @bodyParam keyword string keyword want to search (search by username, fullname, phone,address, email, name of role).
      * @bodyParam property string Field in table you want to sort(username, fullname, phone,address, email). Example: username
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam paginate numeric The count of item you want to paginate.
      */
     public function index(Request $request)
     {
+        $this->validate($request,['paginate' => 'numeric']);
+        $count = $request->input("paginate")?$request->input("paginate"):0;
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $users = User::with(["roles"])
+        if ($count!=0)
+        {
+            $users = User::with(["roles"])
                         ->SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($count);
+        }
+        else 
+        {
+           $users = User::with(["roles"])
+                        ->SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->get();
+        }
         return response()->json($users);
     }
 
