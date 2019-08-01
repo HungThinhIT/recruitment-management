@@ -14,28 +14,19 @@ class Interviewer extends Model
         return $this->belongsToMany('App\Interview', 'interview_interviewer', 'interviewerId', 'interviewId');
     }
 
-    public function scopeSearchByKeyword($query, $request){
-        if($request->has('keyword') && $request->input("keyword") != ""){
-            $query->where('fullname','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('email','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('phone','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('address','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('technicalSkill','LIKE','%'.$request->input("keyword").'%');
-        }
-        return $query;
+    //scope
+    public function scopeSearchByKeyWord($query, $keyword)
+    {   
+        if ($keyword) 
+            return $query->where('fullname','LIKE','%'.$keyword.'%')
+                        ->orWhere('email','LIKE','%'.$keyword.'%')
+                        ->orWhere('phone','LIKE','%'.$keyword.'%')
+                        ->orWhere('address','LIKE','%'.$keyword.'%')
+                        ->orWhere('technicalSkill','LIKE','%'.$keyword.'%');    
     }
-
-    public function scopeSearchAndSort($query, $request){
-        if($request->has('keyword') && $request->input("keyword") != ""
-        && $request->has('sort') && $request->has('field')
-        ){
-            $query->where('fullname','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('email','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('phone','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('address','LIKE','%'.$request->input("keyword").'%')
-            ->orWhere('technicalSkill','LIKE','%'.$request->input("keyword").'%')
-            ->orderBy($request->input("field"), $request->input("sort"));
-        }
-        return $query;
+    public function scopeSort($query, $field, $orderBy)
+    {   
+        if ($field) 
+            return $query->orderBy($field, $orderBy);    
     }
 }

@@ -19,13 +19,23 @@ class RoleController extends Controller
      * @bodyParam keyword string keyword want to search (search by name).
      * @bodyParam property string Field in table you want to sort(name, description). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam all string If all=1, return all roles, else return paginate 10 roles/page.
      */
     public function index(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $roles = Role::SearchByKeyWord($request->input('keyword'))
+        if ($request->input("all") == 1)
+        {
+            $roles = Role::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->get();
+        }
+        else
+        {
+            $roles = Role::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
                         ->paginate(10);
+        } 
         return response()->json($roles);
     }
 
