@@ -52,14 +52,13 @@ class RoleController extends Controller
     /**
      * Create a role.
      *
-     * @bodyParam name string required name of role.
-     * @bodyParam permissions array required list id of permission for the role. Example: [1,2]
+     * @bodyParam name string required Name of role.
+     * @bodyParam description string Description of role.
+     * @bodyParam permissions array required List id of permission for the role. Example: [1,2]
      */
     public function store(RoleRequest $request)
     {
-        $role = new Role();
-        $role->name = request('name');
-        $role->save();
+        $role = Role::create($request->except("created_at","updated_at"));
         $role->permissions()->attach(request('permissions'));
         $role->permissions;
         return response()->json([
