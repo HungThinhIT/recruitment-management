@@ -33,7 +33,7 @@ class ArticleRequest extends FormRequest
                     'title'   =>'required|max:255',
                     'content' =>'required',
                     'image'   =>'mimes:jpeg,jpg,JPG,png',
-                    'jobId'   =>'exists:jobs,id',
+                    'jobId'   =>'integer|exists:jobs,id',
                     'catId'   =>'required|integer|exists:categories,id',
                     'isPublic'=>'required|boolean'
                 ];

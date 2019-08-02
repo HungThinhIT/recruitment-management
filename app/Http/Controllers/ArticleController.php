@@ -157,7 +157,8 @@ class ArticleController extends Controller
                 return response()->json(['message' => "Upload failed, image is not exist"],422);
         }
         $article->update($request->except("image","created_at","updated_at")
-                            + ["image"  =>$imageName]);
+                            + ["image"  =>$imageName]
+                            + ["jobId"=> $request->input("jobId")]);
         return response()->json(['message'=>'Updated the article successfully',
                                 'article'=>$article],200);
     }
