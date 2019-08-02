@@ -61,8 +61,10 @@ class RoleController extends Controller
         $role->name = request('name');
         $role->save();
         $role->permissions()->attach(request('permissions'));
+        $role->permissions;
         return response()->json([
-            'message'=>'Created a role successfully']);
+            'message'=>'Created a role successfully',
+            'role'=>$role]);
     }
 
     /**
