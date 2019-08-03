@@ -20,6 +20,7 @@ class RoleController extends Controller
      * @bodyParam property string Field in table you want to sort(name, description). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      * @bodyParam all string If all=1, return all roles, else return paginate 10 roles/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {
@@ -32,9 +33,10 @@ class RoleController extends Controller
         }
         else
         {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
             $roles = Role::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($perpage);
         } 
         return response()->json($roles);
     }
