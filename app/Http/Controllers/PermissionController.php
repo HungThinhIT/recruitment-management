@@ -14,11 +14,20 @@ class PermissionController extends Controller
 {
     /**
      * Display a listing of the permission
+     * @Param integer $perpage 
      * 10 rows/request.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Permission::paginate(10));
+        if ($request->input("all") == 1)
+        {
+            return response()->json(Permission::all());             
+        }
+        else
+        {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
+            return response()->json(Permission::paginate($perpage));
+        }
     }
 
     /**
