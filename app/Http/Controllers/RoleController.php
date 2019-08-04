@@ -101,9 +101,11 @@ class RoleController extends Controller
         //if the role is admin, it can not be updated
         if ($role->name =="Admin")
             return response()->json(['message'=>'The role Admin can not be updated!']);
-        $role->update($request->only("name"));
+        $role ->update($request->except("created_at","updated_at"));
         $role->permissions()->sync(request("permissions"));
-        return response()->json(['message'=>'Updated role successfully']);
+        $role->permissions;
+        return response()->json(['message'=>'Updated role successfully',
+                                'role'=>$role]);
     }
 
     /**
