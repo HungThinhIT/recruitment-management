@@ -8,7 +8,7 @@ class Interviewer extends Model
 {
     protected $table = 'interviewers';
     protected $primaryKey = 'id';
-    protected $fillable = ["fullname", "address", "phone", "email", "image", "technicalSkill"];
+    protected $fillable = ["fullname", "address", "phone", "email","image", "technicalSkill"];
     public function interviews()
     {
         return $this->belongsToMany('App\Interview', 'interview_interviewer', 'interviewerId', 'interviewId');

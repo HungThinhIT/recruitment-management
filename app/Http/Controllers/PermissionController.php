@@ -16,6 +16,7 @@ class PermissionController extends Controller
      * Display a listing of the permission
      * @Param integer $perpage 
      * 10 rows/request.
+     * @bodyParam all string If all=1, return all Permissions, else return paginate 10 Permissions/page.
      */
     public function index(Request $request)
     {

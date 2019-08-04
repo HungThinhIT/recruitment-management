@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Article extends Model
 {
     protected $table = 'articles';
-    protected $fillable= ["title", "content", "image", "jobId", "catId", "userId"];
+    protected $fillable= ["title", "content", "image", "jobId", "catId", "userId","isPublic"];
 	public function user()
     {
         return $this->belongsTo('App\User','userId');
