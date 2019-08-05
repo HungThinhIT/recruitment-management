@@ -25,6 +25,7 @@ class AuthRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'GET':
+                {return [];}
             case 'POST':
             {
                 return [

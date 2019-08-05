@@ -145,6 +145,16 @@ Route::group(['middleware' => ['cors']], function () {
         Route::delete("format-article","FormatArticleController@destroy")->middleware("can:format.management");
         Route::get("format-article/{id}","FormatArticleController@show");
         Route::get("format-article","FormatArticleController@index");
+
+
+        /*
+         * Sessions for front-end's authorize
+         */
+
+        Route::group(['prefix' => 'session'], function ()
+        {
+            Route::get('user-information', 'SessionController@informationUser');
+        });
     });
 });
 
