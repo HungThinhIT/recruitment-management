@@ -79,7 +79,7 @@ class CandidateController extends Controller
         {
             //update old candidate
             //delete old CV and upload new CV
-            unlink('upload/CV/'.$candidate->filecv);
+            unlink('upload/CV/'.$candidate->CV);
              $fileName = $this->candidateServices->handleUploadNewCV($request->file('file'));
             if ($fileName == NULL){
                 return response()->json(['message' => "Upload failed, file not exist"],422);
