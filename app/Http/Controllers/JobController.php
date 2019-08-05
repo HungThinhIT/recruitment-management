@@ -19,6 +19,7 @@ class JobController extends Controller
      * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, experience, status,amount,publishOn,deadline). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      * @bodyParam all string If all=1, return all jobs, else return paginate 10 jobs/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {
@@ -31,9 +32,10 @@ class JobController extends Controller
         }
         else
         {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
             $jobs = Job::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($perpage);
         }       
         return response()->json($jobs);                               
     }

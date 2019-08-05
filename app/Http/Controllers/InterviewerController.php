@@ -27,6 +27,7 @@ class InterviewerController extends Controller
      * @bodyParam property string Field in table you want to sort (fullname, email, address, phone, technicalSkill). Example: fullname
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      * @bodyParam all string If all=1, return all, else return paginate 10 interviewers/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {
@@ -39,9 +40,10 @@ class InterviewerController extends Controller
         }
         else
         {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
             $interviewers = Interviewer::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($perpage);
         }
         return response()->json($interviewers);  
     }

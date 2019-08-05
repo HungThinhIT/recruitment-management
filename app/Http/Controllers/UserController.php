@@ -31,10 +31,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $perpage = $request->input('perpage')? $request->input('perpage'): 10;
         $users = User::with(["roles"])
                         ->SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->paginate($perpage);
         return response()->json($users);
     }
 
