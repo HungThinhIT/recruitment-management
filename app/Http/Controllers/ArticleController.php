@@ -24,14 +24,27 @@ class ArticleController extends Controller
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, name of category, fullname of user).
      * @bodyParam property string Field in table you want to sort (title, content, name of job, name of category, name of user, isPublic). Example: title
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam all string If all=1, return all articles, else return paginate 10 articles/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $articles = Article::with(["user","job","category"])
+        if ($request->input("all") == 1)
+        {
+            $articles = Article::with(["user","job","category"])
                         ->SearchByKeyWord($request->input('keyword'),$orderby)
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->get();
+        }
+        else
+        {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
+            $articles = Article::with(["user","job","category"])
+                        ->SearchByKeyWord($request->input('keyword'),$orderby)
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate($perpage);
+        }        
         return response()->json($articles); 
     }
 
@@ -48,6 +61,7 @@ class ArticleController extends Controller
     public function showListArticleForCandidatePage(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
+        $perpage = $request->input('perpage')? $request->input('perpage'): 10;
         $articles = Article::with(["job"])
                                     ->SearchByKeyWord($request->input('keyword'),$orderby)
                                     ->OfLocation($request->input('location'),$orderby)
@@ -55,7 +69,7 @@ class ArticleController extends Controller
                                     ->OfStatus($request->input('status'),$orderby)
                                     ->OfCategory($request->input('category'),$orderby)
                                     ->where('isPublic',1)
-                                    ->paginate(10);
+                                    ->paginate($perpage);
             return response()->json($articles);                              
     }
 
@@ -144,9 +158,9 @@ class ArticleController extends Controller
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
      */
-    public function update(ArticleRequest $request, $idArticle)
+    public function update(ArticleRequest $request, Article $article)
     {
-        $article = Article::findOrFail($idArticle);
+        $article = Article::findOrFail($article->id);
         $imageName = $article->image;
         if ($request->file("image"))
         {
@@ -168,6 +182,7 @@ class ArticleController extends Controller
      */
     public function destroy(ArticleRequest $request)
     {
+//        exit();
         $articleIds = request("articleId");
         //if delete all
         if (in_array('all', $articleIds))
