@@ -67,15 +67,17 @@ class InterviewerController extends Controller
     public function store(InterviewerRequest $request)
     {
         //validate type file
-        $file = $request->file("image");
-        $extensions = $file->getClientOriginalExtension();
-        if($extensions != 'png'
-            and $extensions != 'jpeg'
-            and $extensions != 'jpg'
-        ) {
-            return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+        if ($request->file("image"))
+        {
+            $file = $request->file("image");
+            $extensions = $file->getClientOriginalExtension();
+            if($extensions != 'png'
+                and $extensions != 'jpeg'
+                and $extensions != 'jpg'
+            ) {
+                return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+            }
         }
-
         $profileImageName = $this->interviewerService->handleNewUploadedImage($request->file("image"));
         $interviewer = Interviewer::create($request->except('image',"created_at","updated_at") + ["image" => $profileImageName]);
         $technical_arr = explode(",",$interviewer->technicalSkill);
