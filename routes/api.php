@@ -79,6 +79,12 @@ Route::group(['middleware' => ['cors']], function () {
         Route::delete("user","UserController@destroy")->middleware("can:user.delete");
 
         /*
+        * Notifications route
+        */
+        Route::get('notifications', 'NotificationController@notifications');
+        Route::get('notifications/{id}', 'NotificationController@show');
+
+        /*
         * Job routes
         */
         Route::post("list-job","JobController@index")->middleware("can:job.view");
@@ -112,20 +118,32 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
         Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
          /*
          * Interview routes
          */
+        Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
+        Route::post("interview","InterviewController@store")->middleware("can:interview.create");
         Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
         Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
-      
+        Route::put("interview/{id}","InterviewController@update")->middleware("can:interview.edit");
+
+
         /*
          * Category routes
          */
         Route::post("category","CategoryController@index");
+
+        /*
+         * Format article routes
+         */
+        Route::post("format-article","FormatArticleController@store");
+        Route::put("format-article/{id}","FormatArticleController@update");
+        Route::delete("format-article","FormatArticleController@destroy");
+        Route::get("format-article/{id}","FormatArticleController@show");
+        Route::get("format-article","FormatArticleController@index");
     });
 });
 
