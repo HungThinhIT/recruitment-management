@@ -35,7 +35,7 @@ class ArticleRequest extends FormRequest
                     'image'   =>'mimes:jpeg,jpg,JPG,png',
                     'jobId'   =>'integer|exists:jobs,id',
                     'catId'   =>'required|integer|exists:categories,id',
-                    'isPublic'=>'required|boolean'
+                    'isPublic'=>'boolean'
                 ];
             }
             case 'DELETE': {
