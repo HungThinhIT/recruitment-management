@@ -113,7 +113,17 @@ class UserController extends Controller
      */
     public function changeAvatar(Request $request){
         $this->validate($request,
-        ['image' => 'mimes:jpeg,jpg,png|required|max:5000']);
+        ['image' => 'required|max:7500']);
+
+        //validate type file
+        $file = $request->file("image");
+        $extensions = $file->getClientOriginalExtension();
+        if($extensions != 'png'
+            and $extensions != 'jpeg'
+            and $extensions != 'jpg'
+        ) {
+            return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+        }
 
         $user = User::findOrFail($request->user()->id);
 

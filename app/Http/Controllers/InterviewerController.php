@@ -69,6 +69,16 @@ class InterviewerController extends Controller
      */
     public function store(InterviewerRequest $request)
     {
+        //validate type file
+        $file = $request->file("image");
+        $extensions = $file->getClientOriginalExtension();
+        if($extensions != 'png'
+            and $extensions != 'jpeg'
+            and $extensions != 'jpg'
+        ) {
+            return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+        }
+
         $profileImageName = $this->interviewerService->handleNewUploadedImage($request->file("image"));
         Interviewer::create($request->except('image',"created_at","updated_at") + ["image" => $profileImageName]);
         return response()->json(['message' => "Create an interviewer successfully!"],200);
@@ -119,7 +129,17 @@ class InterviewerController extends Controller
     public function updateNewAvatar(Request $request){
         $this->validate($request,
             [   'interviewerId' => "required","exists:interviewers,id",
-                'image' => 'mimes:jpeg,jpg,png|required|max:5000']);
+                'image' => 'required|max:7500']);
+
+        //validate type file
+        $file = $request->file("image");
+        $extensions = $file->getClientOriginalExtension();
+        if($extensions != 'png'
+            and $extensions != 'jpeg'
+            and $extensions != 'jpg'
+        ) {
+            return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+        }
 
         $interviewerActive = Interviewer::findOrFail($request->input("interviewerId"));
         $profileImageName = $this->interviewerService->handleUpdatedImage($request->file("image"),$interviewerActive->image);
