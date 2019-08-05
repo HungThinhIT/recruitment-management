@@ -144,9 +144,9 @@ class ArticleController extends Controller
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
      */
-    public function update(ArticleRequest $request, $idArticle)
+    public function update(ArticleRequest $request, Article $article)
     {
-        $article = Article::findOrFail($idArticle);
+        $article = Article::findOrFail($article->id);
         $imageName = $article->image;
         if ($request->file("image"))
         {
@@ -168,6 +168,7 @@ class ArticleController extends Controller
      */
     public function destroy(ArticleRequest $request)
     {
+//        exit();
         $articleIds = request("articleId");
         //if delete all
         if (in_array('all', $articleIds))
