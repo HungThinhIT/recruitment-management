@@ -102,6 +102,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::post("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
+        Route::get("publish-article/{id}","ArticleController@publish");
 
         /*
         * Interviewer routes

@@ -193,6 +193,20 @@ class ArticleController extends Controller
     }
 
     /**
+     * Publish/Unpublish the article by Id.
+     * If the article is published =>Unpublish
+     * If the article is unpublished =>Publish
+     *
+     */
+    public function publish($id)
+    {
+        $article = Article::findOrFail($id);    
+        $article->update(["isPublic"  =>!$article->isPublic]);   
+        return response()->json([
+         'message'=>'Update the article successfully',
+        'article'=>$article]);
+    }
+  
      * Get list articles related to the current article (same job,same category).
      * @bodyParam count numeric The total item you want to get.
      */
