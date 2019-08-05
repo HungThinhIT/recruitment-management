@@ -181,6 +181,21 @@ class ArticleController extends Controller
         return response()->json([
            'message'=>'Deleted the article successfully']);
     }
+
+    /**
+     * Publish/Unpublish the article by Id.
+     * If the article is published =>Unpublish
+     * If the article is unpublished =>Publish
+     *
+     */
+    public function publish($id)
+    {
+        $article = Article::findOrFail($id);    
+        $article->update(["isPublic"  =>!$article->isPublic]);   
+        return response()->json([
+         'message'=>'Update the article successfully',
+        'article'=>$article]);
+    }
 }
 class ArticleServices
 {
