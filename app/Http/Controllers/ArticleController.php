@@ -40,7 +40,9 @@ class ArticleController extends Controller
      * 10 rows/request
      * @bodyParam keyword string keyword want to search (search by title, content, name of job, address of job, position of job, experience and status of job).
      * @bodyParam position string The position of job, if select "all", this param is empty.  Example: Tester
+     * @bodyParam category string The category of article (Recruitment/Others). Example: Recruitment
      * @bodyParam location string The location of job, if select "all", this param is empty. Example: Office 1 (453-455 Hoang Dieu)
+     * @bodyParam status string The status of job, if select "all", this param is empty. Example: Full-time
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
      */
     public function showListArticleForCandidatePage(Request $request)
@@ -50,7 +52,8 @@ class ArticleController extends Controller
                                     ->SearchByKeyWord($request->input('keyword'),$orderby)
                                     ->OfLocation($request->input('location'),$orderby)
                                     ->OfPosition($request->input('position'),$orderby)
-                                    ->OfCategory('Recruitment',$orderby)
+                                    ->OfStatus($request->input('status'),$orderby)
+                                    ->OfCategory($request->input('category'),$orderby)
                                     ->where('isPublic',1)
                                     ->paginate(10);
             return response()->json($articles);                              
@@ -100,7 +103,10 @@ class ArticleController extends Controller
     public function showArticleForCandidatePage($idArticle)
     {
         $article = Article::with(["job"])->findOrFail($idArticle);
-        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        if ($article->jobId)
+        {
+            $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        } 
         return response()->json($article);
     }
 
@@ -111,7 +117,10 @@ class ArticleController extends Controller
     public function show($idArticle)
     {
         $article = Article::with(["user","job","category"])->findOrFail($idArticle);
-        $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        if ($article->jobId)
+        {
+            $article->job->experience = $article->job -> convertExperiencetoString($article->job->experience);
+        }       
         return response()->json($article);
     }
 
@@ -148,7 +157,8 @@ class ArticleController extends Controller
                 return response()->json(['message' => "Upload failed, image is not exist"],422);
         }
         $article->update($request->except("image","created_at","updated_at")
-                            + ["image"  =>$imageName]);
+                            + ["image"  =>$imageName]
+                            + ["jobId"=> $request->input("jobId")]);
         return response()->json(['message'=>'Updated the article successfully',
                                 'article'=>$article],200);
     }
@@ -195,6 +205,23 @@ class ArticleController extends Controller
         return response()->json([
          'message'=>'Update the article successfully',
         'article'=>$article]);
+    }
+  
+     * Get list articles related to the current article (same job,same category).
+     * @bodyParam count numeric The total item you want to get.
+     */
+    public function showArticleRelatedForCandidatePage($idArticle,Request $request)
+    {
+        $count = $request->input('count')? $request->input('count'): 10;
+        $currentArticle = Article::findOrFail($idArticle);
+        $articles = Article::with(["job"])  ->where('id','!=',$idArticle)
+                                ->where('isPublic',1)                                        
+                                ->where('jobId',$currentArticle->jobId)
+                                ->orwhere('catId',$currentArticle->catId)
+                                ->orderby('created_at','desc')
+                                ->limit($count)
+                                ->get();
+        return response()->json($articles);
     }
 }
 class ArticleServices

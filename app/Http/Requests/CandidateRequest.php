@@ -28,12 +28,12 @@ class CandidateRequest extends FormRequest
             case 'POST':
             {
                 return[
-                    'fullname'      =>'required|max:255',
-                    'email'         =>'required|email|max:255',
-                    'phone'         =>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-                    'address'       =>'required|max:255',
-                    'technicalSkill'=>'max:255',
-                    'CV'            =>'mimes:pdf,doc,docx,jpeg,jpg,png|required|max:5000'
+                    'fullname'        =>'required|max:255',
+                    'email'           =>'required|email|max:255',
+                    'phone'           =>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                    'address'         =>'required|max:255',
+                    'technicalSkill'  =>'max:255',
+                    'file'            =>'required|max:7500'
                 ];                
             }
             case 'DELETE': {

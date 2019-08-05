@@ -60,8 +60,10 @@ class UserController extends Controller
         $data["password"] = Hash::make($data["password"]);
         $user = User::create($data);
         $user->roles()->attach(request('roles'));
+        $user->roles;
         return response()->json([
-            'message'=>'Created an user successfully']);
+            'message'   =>'Created an user successfully',
+            'user'      =>$user]);
     }
 
     /**
@@ -70,6 +72,7 @@ class UserController extends Controller
     public function showCurrentInfoUser(Request $request)
     {
         $request->user()->roles;
+        $request->user()->articles;
         return response()->json($request->user());
     }
 
@@ -79,8 +82,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        $user->roles;
+        $user = User::with(["roles","articles"])->findOrFail($id);
         return response()->json($user);
     }
 
@@ -113,7 +115,17 @@ class UserController extends Controller
      */
     public function changeAvatar(Request $request){
         $this->validate($request,
-        ['image' => 'mimes:jpeg,jpg,png|required|max:5000']);
+        ['image' => 'required|max:7500']);
+
+        //validate type file
+        $file = $request->file("image");
+        $extensions = $file->getClientOriginalExtension();
+        if($extensions != 'png'
+            and $extensions != 'jpeg'
+            and $extensions != 'jpg'
+        ) {
+            return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
+        }
 
         $user = User::findOrFail($request->user()->id);
 

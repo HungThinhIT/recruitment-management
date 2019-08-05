@@ -58,6 +58,14 @@ class Article extends Model
                             })
                             ->orderBy("created_at", $orderby);
     }
+    public function scopeOfStatus($query,$status,$orderby)
+    {
+        if ($status) 
+            return $query->whereHas('job', function (Builder $q) use ($status){
+                            $q  ->where('status', $status);
+                            })
+                            ->orderBy("created_at", $orderby);
+    }
     public function scopeOfCategory($query,$category,$orderby)
     {
         if ($category) 
