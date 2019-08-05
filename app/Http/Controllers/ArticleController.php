@@ -207,7 +207,7 @@ class ArticleController extends Controller
         'article'=>$article]);
     }
   
-     * Get list articles related to the current article (same job,same category).
+     /* Get list articles related to the current article (same job,same category).
      * @bodyParam count numeric The total item you want to get.
      */
     public function showArticleRelatedForCandidatePage($idArticle,Request $request)

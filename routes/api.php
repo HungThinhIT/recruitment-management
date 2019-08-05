@@ -102,7 +102,7 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("article","ArticleController@store")->middleware("can:article.create");
         Route::post("article/{id}","ArticleController@update")->middleware("can:article.edit");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
-        Route::get("publish-article/{id}","ArticleController@publish");
+        Route::get("publish-article/{id}","ArticleController@publish")->middleware("can:article-publish.edit");
 
         /*
         * Interviewer routes
@@ -140,9 +140,9 @@ Route::group(['middleware' => ['cors']], function () {
         /*
          * Format article routes
          */
-        Route::post("format-article","FormatArticleController@store");
-        Route::put("format-article/{id}","FormatArticleController@update");
-        Route::delete("format-article","FormatArticleController@destroy");
+        Route::post("format-article","FormatArticleController@store")->middleware("can:format.management");
+        Route::put("format-article/{id}","FormatArticleController@update")->middleware("can:format.management");
+        Route::delete("format-article","FormatArticleController@destroy")->middleware("can:format.management");
         Route::get("format-article/{id}","FormatArticleController@show");
         Route::get("format-article","FormatArticleController@index");
     });

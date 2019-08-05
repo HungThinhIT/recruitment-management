@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\FormatArticle;
+use App\Policies\FormatArticlePolicy;
+use App\Policies\PublishArticlePolicy;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -28,8 +31,10 @@ class AuthServiceProvider extends ServiceProvider
         'App\Article' => 'App\Policies\ArticlePolicy',
         'App\Candidate' => 'App\Policies\CandidatePolicy',
         'App\Interviewer' => 'App\Policies\InterviewerPolicy',
+        'App\Interview' => 'App\Policies\InterviewPolicy',
         'App\Job' => 'App\Policies\JobPolicy',
         'App\Category' => 'App\Policies\CategoryPolicy',
+        'App\FormatArticle' => 'App\Policies\FormatArticlePolicy',
     ];
 
     /**
@@ -72,6 +77,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("article.view",ArticlePolicy::class."@view");
         Gate::define("article.edit",ArticlePolicy::class."@update");
         Gate::define("article.delete",ArticlePolicy::class."@delete");
+        Gate::define("article-publish.edit",PublishArticlePolicy::class."@update");
 
         /*
         * Candidate Gate.
@@ -112,5 +118,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("category.view",CategoryPolicy::class."@view");
         Gate::define("category.edit",CategoryPolicy::class."@update");
         Gate::define("category.delete",CategoryPolicy::class."@delete");
+
+        /*
+        * Category Gate.
+        */
+        Gate::define("format.management",FormatArticlePolicy::class."@create");
+        Gate::define("format.management",FormatArticlePolicy::class."@view");
+        Gate::define("format.management",FormatArticlePolicy::class."@update");
+        Gate::define("format.management",FormatArticlePolicy::class."@delete");
     }
 }
