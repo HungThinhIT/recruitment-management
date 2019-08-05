@@ -77,7 +77,7 @@ class ArticleController extends Controller
      * @bodyParam jobId numeric The jobId of the article.
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
-     * @bodyParam isPublic boolean required Publish/not publish (1/0). Example: 0
+     * @bodyParam isPublic boolean Publish/not publish (1/0). Example: 0
      */
     public function store(ArticleRequest $request)
     {
@@ -143,7 +143,6 @@ class ArticleController extends Controller
      * @bodyParam jobId numeric The jobId of the article.
      * @bodyParam content string required The content of the article.
      * @bodyParam catId numeric required The catId of the article.
-     * @bodyParam isPublic boolean required Publish/not publish (1/0). Example: 1
      */
     public function update(ArticleRequest $request, $idArticle)
     {
