@@ -2,7 +2,15 @@
 
 namespace App\Providers;
 
+use App\Article;
+use App\User;
 use App\FormatArticle;
+use App\Role;
+use App\Candidate;
+use App\Interviewer;
+use App\Interview;
+use App\Job;
+use App\Category;
 use App\Policies\FormatArticlePolicy;
 use App\Policies\PublishArticlePolicy;
 use Laravel\Passport\Passport;
@@ -15,7 +23,7 @@ use App\Policies\CandidatePolicy;
 use App\Policies\InterviewerPolicy;
 use App\Policies\InterviewPolicy;
 use App\Policies\JobPolicy;
-
+use App\Policies\CategoryPolicy;
 
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,15 +34,15 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\User' => 'App\Policies\UserPolicy',
-        'App\Role' => 'App\Policies\RolePolicy',
-        'App\Article' => 'App\Policies\ArticlePolicy',
-        'App\Candidate' => 'App\Policies\CandidatePolicy',
-        'App\Interviewer' => 'App\Policies\InterviewerPolicy',
-        'App\Interview' => 'App\Policies\InterviewPolicy',
-        'App\Job' => 'App\Policies\JobPolicy',
-        'App\Category' => 'App\Policies\CategoryPolicy',
-        'App\FormatArticle' => 'App\Policies\FormatArticlePolicy',
+        User::class => UserPolicy::class,
+        Role::class => RolePolicy::class,
+        Article::class => ArticlePolicy::class,
+        Candidate::class => CandidatePolicy::class,
+        Interviewer::class => InterviewerPolicy::class,
+        Interview::class => InterviewPolicy::class,
+        Job::class => JobPolicy::class,
+        Category::class => CategoryPolicy::class,
+        FormatArticle::class => FormatArticlePolicy::class,
     ];
 
     /**
@@ -47,6 +55,14 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         $this->defineGateAuthorize();
 
+//        Gate::define('article.edit', function (User $user,Article $article) {
+//            if($user->id == $article->userId){
+//                return true;
+//            }
+//            if($user->hasAccess("Article-edit")){
+//                return true;
+//            }
+//        });
 
         Passport::routes();
         //Modify TokenExpireIn time Here.

@@ -47,13 +47,15 @@ class ArticlePolicy
     /**
      * Determine whether the user can update the article.
      *
-     * @param  \App\User  $user
-     * @param  \App\Article  $article
-     * @return mixed
      */
-    public function update(User $user)
+    public function update(User $user, Article $article)
     {
-        return $user->hasAccess(["Article-edit"]);
+        if ($user->id === $article->userId) {
+            return true;
+        }
+        if($user->hasAccess(["Article-edit"])){
+            return true;
+        }
     }
 
     /**
