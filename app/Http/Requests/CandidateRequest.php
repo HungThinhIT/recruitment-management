@@ -33,7 +33,7 @@ class CandidateRequest extends FormRequest
                     'phone'           =>'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
                     'address'         =>'required|max:255',
                     'technicalSkill'  =>'max:255',
-                    'file'            =>'required|max:7500'
+                    'file'            =>'max:7500'
                 ];                
             }
             case 'DELETE': {
