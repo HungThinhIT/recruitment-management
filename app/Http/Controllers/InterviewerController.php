@@ -170,8 +170,7 @@ class InterviewerController extends Controller
     }
 
     /**
-     * Remove interviewer by ID/All.	     * Remove interviewer by ID/All.
-     *	     *
+     * Remove interviewer by ID/All
      * If you want to delete all, { <br>
      * interviewerId : [0]
      * status: "all" <br>}<br>
