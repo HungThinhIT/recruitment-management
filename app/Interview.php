@@ -9,7 +9,7 @@ class Interview extends Model
     protected $table = 'interviews';
     protected $primaryKey = 'id';
 
-    public $fillable = ["name", "timeStart", "address", "status"];
+    public $fillable = ["name", "timeStart", "timeEnd", "address", "status"];
   
     public function scopeFilter($query, QueryFilter $filters)
     {
