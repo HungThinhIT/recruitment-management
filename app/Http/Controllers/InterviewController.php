@@ -191,8 +191,6 @@ class InterviewController extends Controller
     private function customResponseData($interviewActive)
     {
         $interviewActive->map(function ($interview){
-            $interview->timeStart = date("H:i d-m-Y", strtotime($interview->timeStart));
-            $interview->timeEnd = date("H:i d-m-Y", strtotime($interview->timeEnd));
             $interview->address = $this->convertNumberAddressToString($interview->address);
             $interview->status = $this->convertStatusCodeToString($interview->status);
             return $interview;
