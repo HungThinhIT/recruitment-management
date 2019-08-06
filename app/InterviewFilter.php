@@ -6,12 +6,12 @@ namespace App;
 
 class InterviewFilter extends QueryFilter
 {
-    public function name($name)
+    public function keyword($keyword)
     {
-        if($name == "all")
+        if($keyword == "all")
             return $this->builder;
         else
-          return $this->builder->where("name","LIKE",'%'.$name.'%');
+          return $this->builder->where("name","LIKE",'%'.$keyword.'%');
     }
 
     public function address($address)
