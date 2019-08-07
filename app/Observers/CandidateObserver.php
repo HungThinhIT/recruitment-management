@@ -6,8 +6,22 @@ use App\Candidate;
 use App\User;
 use App\Notifications\NewApplication;
 
-class CandidateObserver
+class CandidateObserver implements ShouldBroadcast
 {
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $message;
+
+    public function __construct(Request $request)
+    {
+        $this->message  = $request->contents;
+    }
+
+    public function broadcastOn()
+    {
+        return ['candidate-notify'];
+    }
+
     /**
      * Handle the candidate "created" event.
      *
