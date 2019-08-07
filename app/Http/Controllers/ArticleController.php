@@ -6,7 +6,7 @@ use App\Article;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests\ArticleRequest;
-
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * @group Article management
@@ -228,13 +228,27 @@ class ArticleController extends Controller
     {
         $count = $request->input('count')? $request->input('count'): 10;
         $currentArticle = Article::findOrFail($idArticle);
-        $articles = Article::with(["job"])  ->where('id','!=',$idArticle)
-                                ->where('isPublic',1)                                        
-                                ->where('jobId',$currentArticle->jobId)
-                                ->orwhere('catId',$currentArticle->catId)
-                                ->orderby('created_at','desc')
+        if ($currentArticle->jobId)
+        {
+            $articles = Article::with(["job"])  ->where('id','!=',$idArticle)
+                                ->where('isPublic',1)  
+                                ->where('catId',$currentArticle->catId)                                   
+                                ->WhereHas('job', function (Builder $q) use ($currentArticle){
+                                    $q ->where('id', '=', $currentArticle->job->id)
+                                    ->orwhere('position', '=', $currentArticle->job->position)
+                                    ->orwhere('category', '=', $currentArticle->job->category);
+                                })  
                                 ->limit($count)
                                 ->get();
+        }
+        else
+        {
+            $articles = Article::where('id','!=',$idArticle)
+                                ->where('isPublic',1)  
+                                ->where('catId',$currentArticle->catId)                                   
+                                ->limit($count)
+                                ->get();
+        }
         return response()->json($articles);
     }
 }

@@ -191,8 +191,6 @@ class InterviewController extends Controller
     private function customResponseData($interviewActive)
     {
         $interviewActive->map(function ($interview){
-            $interview->timeStart = date("H:i d-m-Y", strtotime($interview->timeStart));
-            $interview->timeEnd = date("H:i d-m-Y", strtotime($interview->timeEnd));
             $interview->address = $this->convertNumberAddressToString($interview->address);
             $interview->status = $this->convertStatusCodeToString($interview->status);
             return $interview;
@@ -242,8 +240,7 @@ class InterviewController extends Controller
     private function convertStatusCodeToString($statusCode){
         /*
          * Status_code = 1 => Pending
-         * Status_code = 2 => Opening
-         * Status_code = 3 => Closed
+         * Status_code = 2 => Closed
          */
         $status = NULL;
         switch ((int)$statusCode){
@@ -251,9 +248,6 @@ class InterviewController extends Controller
                 return $status = "Pending";
                 break;
             case 2 :
-                return $status = "Opening";
-                break;
-            case 3 :
                 return $status = "Closed";
                 break;
             default :
