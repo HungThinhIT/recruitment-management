@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Article extends Model
 {
     protected $table = 'articles';
-    protected $fillable= ["title", "content", "image", "jobId", "catId", "userId"];
+    protected $fillable= ["title", "content", "image", "jobId", "catId", "userId","isPublic"];
 	public function user()
     {
         return $this->belongsTo('App\User','userId');
@@ -55,6 +55,14 @@ class Article extends Model
         if ($location) 
             return $query->whereHas('job', function (Builder $q) use ($location){
                             $q  ->where('address', $location);
+                            })
+                            ->orderBy("created_at", $orderby);
+    }
+    public function scopeOfStatus($query,$status,$orderby)
+    {
+        if ($status) 
+            return $query->whereHas('job', function (Builder $q) use ($status){
+                            $q  ->where('status', $status);
                             })
                             ->orderBy("created_at", $orderby);
     }
