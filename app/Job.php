@@ -40,6 +40,9 @@ class Job extends Model
     {
         $stringExperience = NULL;
         switch ((int)$numberExperience) {
+            case 0:
+                $stringExperience = "No experience";
+                break;
             case 1:
                 $stringExperience = "1 years";
                 break;
