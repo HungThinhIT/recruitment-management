@@ -102,7 +102,6 @@ class CandidateController extends Controller
                             +["CV"=> $fileName]
                             +["status"=>1]);
             $candidate->jobs()->attach($request->input("jobId"));
-
             event(new CandidatePusherEvent($candidate));
             return response()->json(['message'=>'Updated a candidate successfully'],200);
         }
@@ -116,6 +115,7 @@ class CandidateController extends Controller
                             +["CV"=> $fileName]
                             +["status"=>1]);
             $candidate->jobs()->attach($request->input("jobId"));
+            event(new CandidatePusherEvent($candidate));
             return response()->json(['message'=>'Created a candidate successfully'],200);
         }       
     }

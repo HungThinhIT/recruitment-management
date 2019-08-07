@@ -34,8 +34,8 @@ class CandidatePusherEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-//        return new PrivateChannel('channel-name');
-        return ['candidate-notify'];
+        return new PrivateChannel('channel-name');
+    //        return ['candidate-notify'];
     }
 
     public function broadcastAs()
