@@ -26,14 +26,27 @@ class CandidateController extends Controller
      * @bodyParam keyword string keyword want to search.
      * @bodyParam property string Field in table you want to sort(fullname,email,phone,address,cv,status,created_at,updated_at). Example: fullname
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+    * @bodyParam all string If all=1, return all candidates, else return paginate 10 candidates/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {   
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $candidates = Candidate::with(["jobs","interviews"])
+        if ($request->input("all") == 1)
+        {
+            $candidates = Candidate::with(["jobs","interviews"])
                         ->SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->get();
+        }
+        else
+        {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
+            $candidates = Candidate::with(["jobs","interviews"])
+                        ->SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate($perpage);
+        }        
         return response()->json($candidates);
     }
         
@@ -60,6 +73,19 @@ class CandidateController extends Controller
      */
     public function store(CandidateRequest $request)
     {
+        //validate type file
+        $file = $request->file("file");
+        $extensions = $file->getClientOriginalExtension();
+        if($extensions != 'png'
+            and $extensions != 'jpeg'
+            and $extensions != 'jpg'
+            and $extensions != 'pdf'
+            and $extensions != 'doc'
+            and $extensions != 'docx'
+        ) {
+            return response()->json(['message'=>'The type file support is: png, jpeg, jpg, pdf, doc, docx'],422);
+        }
+
         //check by email if candidate is existed
         $candidate = Candidate::where('email','=',$request["email"])->first();
         if ($candidate!=null)
@@ -67,11 +93,11 @@ class CandidateController extends Controller
             //update old candidate
             //delete old CV and upload new CV
             unlink('upload/CV/'.$candidate->CV);
-             $fileName = $this->candidateServices->handleUploadNewCV($request->file('CV'));
+             $fileName = $this->candidateServices->handleUploadNewCV($request->file('file'));
             if ($fileName == NULL){
                 return response()->json(['message' => "Upload failed, file not exist"],422);
             }
-            $candidate->update($request->except("CV","created_at","updated_at")
+            $candidate->update($request->except("file","created_at","updated_at")
                             +["CV"=> $fileName]
                             +["status"=>1]);
             return response()->json(['message'=>'Updated a candidate successfully'],200);
@@ -80,11 +106,11 @@ class CandidateController extends Controller
         else
         {
             //upload CV
-            $fileName = $this->candidateServices->handleUploadNewCV($request->file('CV'));
+            $fileName = $this->candidateServices->handleUploadNewCV($request->file('file'));
             if($fileName == NULL){
                 return response()->json(['message' => "Upload failed, file not exist"],422);
             }
-            Candidate::create($request->except("CV","created_at","updated_at")
+            Candidate::create($request->except("file","created_at","updated_at")
                             +["CV"=> $fileName]
                             +["status"=>1]);
             return response()->json(['message'=>'Created a candidate successfully'],200);

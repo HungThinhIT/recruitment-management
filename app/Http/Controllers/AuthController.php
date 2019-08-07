@@ -41,13 +41,14 @@ class AuthController extends Controller
         // if ($request->remember_me)
         //     $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
-
+        auth()->user()->roles;
+        //Set session for front-end side
+        $request->session()->put('user-information', auth()->user());
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
-            )->toDateTimeString()
+            'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
+            'user' => auth()->user() 
         ]);
     }
 
@@ -78,6 +79,8 @@ class AuthController extends Controller
     public function logout(AuthRequest $request)
     {
         $request->user()->token()->revoke();
+        //Delete session
+        $request->session()->forget('user-information');
         return response()->json([
             'message' => 'Successfully logged out'
         ]);

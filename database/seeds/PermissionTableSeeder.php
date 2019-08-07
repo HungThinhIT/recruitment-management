@@ -39,6 +39,9 @@ class PermissionTableSeeder extends Seeder
             'name'=>'Article-list'
         ],
         [
+            'name'=>'Article-publish'
+        ],
+        [
             'name'=>'Article-create'
         ],
         [
@@ -109,6 +112,9 @@ class PermissionTableSeeder extends Seeder
         ],
         [
             'name'=>'Category-delete'
+        ],
+        [
+            'name'=>'Format-management'
         ]
         ]);     
 }

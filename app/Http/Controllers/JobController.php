@@ -18,13 +18,25 @@ class JobController extends Controller
      * @bodyParam keyword string keyword want to search (search by name, description, position, address, salary, status, amount).
      * @bodyParam property string Field in table you want to sort(name, description, position,address, salary, experience, status,amount,publishOn,deadline). Example: name
      * @bodyParam orderby string The order sort (ASC/DESC). Example: asc
+     * @bodyParam all string If all=1, return all jobs, else return paginate 10 jobs/page.
+     * @Param perpage integer
      */
     public function index(Request $request)
     {
         $orderby = $request->input('orderby')? $request->input('orderby'): 'desc';
-        $jobs = Job::SearchByKeyWord($request->input('keyword'))
+        if ($request->input("all") == 1)
+        {
+            $jobs = Job::SearchByKeyWord($request->input('keyword'))
                         ->sort($request->input('property'),$orderby)
-                        ->paginate(10);
+                        ->get();
+        }
+        else
+        {
+            $perpage = $request->input('perpage')? $request->input('perpage'): 10;
+            $jobs = Job::SearchByKeyWord($request->input('keyword'))
+                        ->sort($request->input('property'),$orderby)
+                        ->paginate($perpage);
+        }       
         return response()->json($jobs);                               
     }
 
@@ -51,8 +63,10 @@ class JobController extends Controller
 
     public function store(JobRequest $request)
     {
-        Job::create($request->except("created_at","updated_at"));
-        return response()->json(['message'=>'Created a job successfully'],200);
+        $job = Job::create($request->except("created_at","updated_at"));
+        $job->experience = $job->convertExperiencetoString($job->experience);
+        return response()->json(['message'=>'Created a job successfully',
+                                'job'=>$job],200);
     }
 
     /**

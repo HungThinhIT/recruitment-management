@@ -34,6 +34,7 @@ Route::group(['middleware' => ['cors']], function () {
     */
     Route::post("article-web","ArticleController@showListArticleForCandidatePage");
     Route::get("article-web/{id}","ArticleController@showArticleForCandidatePage");
+    Route::post("article-related/{id}","ArticleController@showArticleRelatedForCandidatePage");
 
     /*
     * Store candidate's information .
@@ -67,7 +68,7 @@ Route::group(['middleware' => ['cors']], function () {
         /*
         * Permission routes
         */
-        Route::get('permission','PermissionController@index');
+        Route::post('permission','PermissionController@index');
 
         /*
         * User routes
@@ -77,6 +78,12 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('user/{id}','UserController@show')->middleware('can:user.view');
         Route::put('user/{id}','UserController@update')->middleware('can:user.edit');
         Route::delete("user","UserController@destroy")->middleware("can:user.delete");
+
+        /*
+        * Notifications route
+        */
+        Route::get('notifications', 'NotificationController@notifications');
+        Route::get('notifications/{id}', 'NotificationController@show');
 
         /*
         * Job routes
@@ -93,8 +100,9 @@ Route::group(['middleware' => ['cors']], function () {
         Route::post("list-article","ArticleController@index")->middleware("can:article.view");
         Route::get("article/{id}","ArticleController@show")->middleware("can:article.view");
         Route::post("article","ArticleController@store")->middleware("can:article.create");
-        Route::put("article/{id}","ArticleController@update")->middleware("can:article.edit");
+        Route::post("article/{article}","ArticleController@update")->middleware("can:article.edit,article");
         Route::delete("article","ArticleController@destroy")->middleware("can:article.delete");
+        Route::get("publish-article/{id}","ArticleController@publish")->middleware("can:article-publish.edit");
 
         /*
         * Interviewer routes
@@ -111,20 +119,42 @@ Route::group(['middleware' => ['cors']], function () {
         */
         Route::post("list-candidate","CandidateController@index")->middleware("can:candidate.view");
         Route::get("candidate/{id}","CandidateController@show")->middleware("can:candidate.view");
-        Route::post("candidate","CandidateController@update")->middleware("can:candidate.edit");
         Route::post("candidate-status","CandidateController@updateStatus")->middleware("can:candidate.edit");
         Route::delete("candidate","CandidateController@destroy")->middleware("can:candidate.delete");
 
          /*
          * Interview routes
          */
+        Route::post("list-interview","InterviewController@index")->middleware("can:interview.view");
+        Route::post("interview","InterviewController@store")->middleware("can:interview.create");
         Route::get("interview/{id}","InterviewController@show")->middleware("can:interview.view");
         Route::delete("interview","InterviewController@destroy")->middleware("can:interview.delete");
-      
+        Route::put("interview/{id}","InterviewController@update")->middleware("can:interview.edit");
+
+
         /*
          * Category routes
          */
         Route::post("category","CategoryController@index");
+
+        /*
+         * Format article routes
+         */
+        Route::post("format-article","FormatArticleController@store")->middleware("can:format.management");
+        Route::put("format-article/{id}","FormatArticleController@update")->middleware("can:format.management");
+        Route::delete("format-article","FormatArticleController@destroy")->middleware("can:format.management");
+        Route::get("format-article/{id}","FormatArticleController@show");
+        Route::get("format-article","FormatArticleController@index");
+
+
+        /*
+         * Sessions for front-end's authorize
+         */
+
+        Route::group(['prefix' => 'session'], function ()
+        {
+            Route::get('user-information', 'SessionController@informationUser');
+        });
     });
 });
 
