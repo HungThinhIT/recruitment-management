@@ -28,7 +28,7 @@ class FormatArticlePolicy
      * @param  \App\FormatArticle  $formatArticle
      * @return mixed
      */
-    public function view(User $user, FormatArticle $formatArticle)
+    public function view(User $user)
     {
         return $user->hasAccess(["Format-management"]);
     }
@@ -51,7 +51,7 @@ class FormatArticlePolicy
      * @param  \App\FormatArticle  $formatArticle
      * @return mixed
      */
-    public function update(User $user, FormatArticle $formatArticle)
+    public function update(User $user)
     {
         return $user->hasAccess(["Format-management"]);
     }
@@ -63,7 +63,7 @@ class FormatArticlePolicy
      * @param  \App\FormatArticle  $formatArticle
      * @return mixed
      */
-    public function delete(User $user, FormatArticle $formatArticle)
+    public function delete(User $user)
     {
         return $user->hasAccess(["Format-management"]);
     }
@@ -75,7 +75,7 @@ class FormatArticlePolicy
      * @param  \App\FormatArticle  $formatArticle
      * @return mixed
      */
-    public function restore(User $user, FormatArticle $formatArticle)
+    public function restore(User $user)
     {
         //
     }
@@ -87,7 +87,7 @@ class FormatArticlePolicy
      * @param  \App\FormatArticle  $formatArticle
      * @return mixed
      */
-    public function forceDelete(User $user, FormatArticle $formatArticle)
+    public function forceDelete(User $user)
     {
         //
     }
