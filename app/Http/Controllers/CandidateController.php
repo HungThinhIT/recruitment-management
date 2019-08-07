@@ -7,6 +7,7 @@ use App\Services\CandidateService;
 use App\Candidate;
 use Illuminate\Http\Request;
 use App\Http\Requests\CandidateRequest;
+use App\Events\CandidatePusherEvent;
 
 /**
  * @group Candidate management
@@ -101,6 +102,8 @@ class CandidateController extends Controller
                             +["CV"=> $fileName]
                             +["status"=>1]);
             $candidate->jobs()->attach($request->input("jobId"));
+
+            event(new CandidatePusherEvent($candidate));
             return response()->json(['message'=>'Updated a candidate successfully'],200);
         }
         //if candidate is not existed in database

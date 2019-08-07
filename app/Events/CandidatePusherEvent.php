@@ -23,7 +23,7 @@ class CandidatePusherEvent implements ShouldBroadcast
 
     public function __construct(Request $request)
     {
-        $this->message  = $request->contents;
+        $this->message  = $request->fullname;
     }
 
     /**
