@@ -55,7 +55,7 @@ class JobController extends Controller
      * @bodyParam salary string required The salary of job.
      * @bodyParam status string required The status of job.
      * @bodyParam category string required The category of job (Internship/Engineer). Example: Engineer
-     * @bodyParam experience numeric required The experience of job. 1- 1 year;2- 2 years;3- 3 years;4: 4 years;5: 5 years; 6: more than 5 years. Example: 2
+     * @bodyParam experience numeric required The experience of job. 0- No experience; 1- 1 year;2- 2 years;3- 3 years;4: 4 years;5: 5 years; 6: more than 5 years. Example: 2
      * @bodyParam amount integer required The amount of job.
      * @bodyParam publishedOn datetime required The publishedOn date of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
      * @bodyParam deadline datetime required The deadline of job (Ex: 2019-07-10 00:00:00). Example: 2019-07-10 00:00:00
