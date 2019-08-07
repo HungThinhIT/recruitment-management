@@ -5,26 +5,7 @@ namespace App\Observers;
 use App\Candidate;
 use App\User;
 use App\Notifications\NewApplication;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Http\Request;
-use Illuminate\Queue\SerializesModels;
-class CandidateObserver implements ShouldBroadcast
-{
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public $message;
-
-    public function __construct(Request $request)
-    {
-        $this->message  = $request->contents;
-    }
-
-    public function broadcastOn()
-    {
-        return ['candidate-notify'];
-    }
+class CandidateObserver{
 
     /**
      * Handle the candidate "created" event.
@@ -38,6 +19,7 @@ class CandidateObserver implements ShouldBroadcast
         foreach ($users as $user) {
             $user->notify(new NewApplication($candidate));
         }
+        event(new App\Events\CandidatePusherEvent($candidate));
     }
 
     /**
