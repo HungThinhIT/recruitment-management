@@ -5,7 +5,11 @@ namespace App\Observers;
 use App\Candidate;
 use App\User;
 use App\Notifications\NewApplication;
-
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Http\Request;
+use Illuminate\Queue\SerializesModels;
 class CandidateObserver implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
