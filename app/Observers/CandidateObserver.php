@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Candidate;
 use App\User;
 use App\Notifications\NewApplication;
+use App\Events\CandidatePusherEvent;
 class CandidateObserver{
 
     /**
@@ -16,10 +17,10 @@ class CandidateObserver{
     public function created(Candidate $candidate)
     {
         $users = User::all();
+        event(new CandidatePusherEvent($candidate));
         foreach ($users as $user) {
             $user->notify(new NewApplication($candidate));
         }
-        event(new App\Events\CandidatePusherEvent($candidate));
     }
 
     /**
