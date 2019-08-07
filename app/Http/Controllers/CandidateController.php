@@ -69,6 +69,7 @@ class CandidateController extends Controller
      * @bodyParam address string required The address of the candidate.
      * @bodyParam description string The description of the candidate.
      * @bodyParam technicalSkill string  The technicalSkill of the candidate. Example: NodeJs-2, PHP-1
+     * @bodyParam jobId numeric required The job that the candidate apply.
      * @bodyParam file file The resume of the candidate.
      */
     public function store(CandidateRequest $request)
@@ -99,6 +100,7 @@ class CandidateController extends Controller
             $candidate->update($request->except("file","created_at","updated_at")
                             +["CV"=> $fileName]
                             +["status"=>1]);
+            $candidate->jobs()->attach($request->input("jobId"));
             return response()->json(['message'=>'Updated a candidate successfully'],200);
         }
         //if candidate is not existed in database
@@ -107,9 +109,10 @@ class CandidateController extends Controller
             //upload CV
             $fileName = $this->candidateServices->handleUploadNewCV($request->file('file'));
             
-            Candidate::create($request->except("file","created_at","updated_at")
+            $candidate = Candidate::create($request->except("file","created_at","updated_at")
                             +["CV"=> $fileName]
                             +["status"=>1]);
+            $candidate->jobs()->attach($request->input("jobId"));
             return response()->json(['message'=>'Created a candidate successfully'],200);
         }       
     }
