@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Candidate;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -21,9 +22,9 @@ class CandidatePusherEvent implements ShouldBroadcast
      */
     public $message;
 
-    public function __construct(Request $request)
+    public function __construct(Candidate $candidate)
     {
-        $this->message  = $request->fullname;
+        $this->message  = $candidate->fullname;
     }
 
     /**
@@ -35,5 +36,10 @@ class CandidatePusherEvent implements ShouldBroadcast
     {
 //        return new PrivateChannel('channel-name');
         return ['candidate-notify'];
+    }
+
+    public function broadcastAs()
+    {
+        return 'send-notifications';
     }
 }
