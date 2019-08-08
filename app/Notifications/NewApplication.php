@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Candidate;
-
 class NewApplication extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -47,4 +46,5 @@ class NewApplication extends Notification implements ShouldQueue
                 'candidate_name' => $this->candidate->fullname
         ];
     }
+
 }
