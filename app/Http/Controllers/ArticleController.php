@@ -164,7 +164,6 @@ class ArticleController extends Controller
         $imageName = $article->image;
         if ($request->file("image"))
         {
-            unlink('upload/images/articles/'.$article->image);
             $imageName = $this->articleServices->handleUploadedImage($request->file('image'));
             if(!$imageName) 
                 return response()->json(['message' => "Upload failed, image is not exist"],422);
