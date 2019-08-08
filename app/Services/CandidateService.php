@@ -43,7 +43,7 @@ class CandidateService
             case "deny":
                 return $numberStatus = 2;
                 break;
-            case "approve Application":
+            case "approve application":
                 return $numberStatus = 3;
                 break;
             case "passed":
