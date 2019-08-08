@@ -196,16 +196,12 @@ class UserServices
     public function handleUploadedImage($image,$oldImageName)
     {
         if (!is_null($image)) {
-            //Delete old image except default image
-            if($oldImageName != "avt_default_profile.png"){
-                unlink('upload/images/avatars/'.$oldImageName);
-            }
             $imageProfileName = 'avatar_'.str_random(12).'.'.$image->getClientOriginalExtension();
             $image->move(public_path('upload/images/avatars'),$imageProfileName);
             return $imageProfileName;
         }
         else{
-            return NULL;
+            return $oldImageName;
         }
     }
 }

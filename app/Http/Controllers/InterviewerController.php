@@ -233,7 +233,6 @@ class InterviewerService{
     public function handleUpdatedImage($image,$oldImageName)
     {
         if (!is_null($image)) {
-            unlink('upload/interviewer/avatars/' . $oldImageName);
             $imageProfileName = 'avatar_' . str_random(12) . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('upload/interviewer/avatars'), $imageProfileName);
             return $imageProfileName;
