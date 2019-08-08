@@ -6,6 +6,8 @@ use App\Candidate;
 use App\User;
 use App\Notifications\NewApplication;
 use App\Events\CandidatePusherEvent;
+use Pusher\Pusher;
+
 class CandidateObserver{
 
     /**
@@ -19,6 +21,7 @@ class CandidateObserver{
         $users = User::all();
         foreach ($users as $user) {
             $user->notify(new NewApplication($candidate));
+            $this->sendNotification($user->id, $candidate);
         }
     }
 
@@ -70,5 +73,23 @@ class CandidateObserver{
     public function forceDeleted(Candidate $candidate)
     {
         //
+    }
+
+
+    private function sendNotification($idUser, $messages)
+    {
+        $options = array(
+            'cluster' => 'ap1',
+            'encrypted' => true
+        );
+
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+
+        $pusher->trigger('user-notifications-id-'.$idUser, 'send-new-candidates', $messages);
     }
 }
