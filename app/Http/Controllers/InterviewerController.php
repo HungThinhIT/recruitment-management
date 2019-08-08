@@ -162,10 +162,9 @@ class InterviewerController extends Controller
         ) {
             return response()->json(['message'=>'The type file support is: png, jpeg, jpg'],422);
         }
-
         $interviewerActive = Interviewer::findOrFail($request->input("interviewerId"));
         $profileImageName = $this->interviewerService->handleUpdatedImage($request->file("image"),$interviewerActive->image);
-        $interviewerActive->update($request->except("created_at","updated_at") + ["image" => $profileImageName]);
+        $interviewerActive->update(['image' => $profileImageName]);
         return response()->json(['message' => "Updated avatar for ".$interviewerActive->fullname." successfully!"],200);
     }
 
