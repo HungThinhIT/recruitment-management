@@ -43,7 +43,7 @@ class PasswordResetRequest extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         $token = $this->token;
-        $url = "http://enclavei3dev.tk/dashboard/reset-password?token=".$token;
+        $url = "http://enclavei3.tk/dashboard/reset-password?token=".$token;
         return (new MailMessage)
             ->line('You are receiving this email because we received a password reset request for your account.')
             ->action('Reset Password', url($url))
